@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>AI 發展最新趨勢｜CTK Pro · BNI 創智分會 2026-06-26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1a1a;          /* 主要文字（近黑） */
+    --muted:#6b6b6b;        /* 次要文字 */
+    --line:#e2e2e2;         /* 分隔線 */
+    --blue:#2f4fb0;         /* 插畫藍墨，作為強調色 */
+    --bni-red:#CF0A2C;      /* BNI 官方品牌紅（取自 BNI logo） */
+    --paper:#f3ead8;        /* 暖紙色，圖片底襯 */
+    --bg:#ffffff;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',-apple-system,'Helvetica Neue',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+    line-height:1.35;
+  }
+
+  /* ---- 投影片容器 ---- */
+  .deck{ position:fixed; inset:0; }
+  .slide{
+    position:absolute; inset:0;
+    display:none;
+    padding:5vh 6vw;
+    opacity:0;
+    transition:opacity .35s ease;
+  }
+  .slide.active{ display:flex; opacity:1; }
+
+  /* 置中型（封面、純文字、結尾） */
+  .slide.center{ flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+  /* 雙欄型（文字 + 圖） */
+  .slide.split{ align-items:center; justify-content:center; gap:5vw; }
+  .slide.split .col-text{ flex:1 1 0; max-width:54%; }
+  .slide.split .col-media{ flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
+  .nw{ white-space:nowrap; }
+
+  /* ---- Logo ---- */
+  .logos{ display:flex; align-items:center; gap:28px; margin-bottom:6vh; }
+  .logos img.bni{ height:34px; width:auto; }
+  .logos img.ctk{ height:24px; width:auto; }
+  .logos .divider{ width:1px; height:26px; background:var(--line); }
+
+  .corner-logo{ position:absolute; top:4vh; left:6vw; }
+  .corner-logo img{ height:18px; width:auto; opacity:.75; }
+
+  /* ---- 文字樣式（高橋流：大字、極簡） ---- */
+  .kicker{ color:var(--muted); font-weight:500; letter-spacing:.04em; font-size:clamp(15px,1.9vw,22px); margin-bottom:2.4vh; }
+  h1.title{ font-weight:900; font-size:clamp(38px,6.6vw,96px); line-height:1.12; letter-spacing:-.01em; }
+  h1.title .em{ color:var(--blue); }
+  .subtitle{ color:var(--muted); font-weight:500; font-size:clamp(18px,2.6vw,34px); margin-top:3.2vh; }
+  .footer-line{ color:var(--muted); font-size:clamp(14px,1.7vw,20px); margin-top:7vh; letter-spacing:.02em; }
+
+  h2.head{ font-weight:900; font-size:clamp(30px,5vw,72px); line-height:1.18; letter-spacing:-.01em; }
+  h2.head .em{ color:var(--blue); }
+  .lead{ color:var(--muted); font-weight:500; font-size:clamp(17px,2.3vw,30px); margin-top:3.4vh; }
+  .note{ color:var(--muted); font-size:clamp(14px,1.7vw,20px); margin-top:4vh; }
+
+  /* 重點清單 */
+  .points{ list-style:none; margin-top:4.5vh; display:flex; flex-direction:column; gap:2.6vh; }
+  .points li{ display:flex; align-items:flex-start; gap:18px; font-weight:700; font-size:clamp(20px,2.9vw,40px); }
+  .points .n{ color:var(--blue); font-weight:900; flex:0 0 auto; }
+
+  /* ---- 大字事實卡（鉤子頁：三個勁爆事實） ---- */
+  .facts{ list-style:none; margin-top:4.5vh; display:flex; flex-direction:column; gap:2.6vh; max-width:1100px; width:100%; }
+  .facts li{ display:flex; align-items:baseline; gap:24px; text-align:left; }
+  .facts .fn{ color:var(--blue); font-weight:900; font-size:clamp(24px,3.4vw,48px); flex:0 0 auto; line-height:1; }
+  .facts .ft{ font-weight:700; font-size:clamp(18px,2.4vw,34px); line-height:1.3; }
+  .facts .ft b{ color:var(--blue); }
+  .facts .ft small{ display:block; color:var(--muted); font-weight:500; font-size:.62em; margin-top:.3em; }
+
+  /* ---- 數據主視覺（拆頁後：單一巨大數字） ---- */
+  .bignum{ color:var(--blue); font-weight:900; font-size:clamp(80px,16vw,220px); line-height:.92; letter-spacing:-.03em; margin-top:1vh; }
+  .bignum small{ font-size:.34em; font-weight:700; }
+  .biglabel{ font-weight:700; font-size:clamp(20px,2.8vw,38px); margin-top:1vh; }
+  .bigsub{ color:var(--muted); font-size:clamp(15px,1.9vw,24px); margin-top:1.4vh; }
+
+  /* ---- UX → AX → AXO 三層 ---- */
+  .layers{ display:flex; align-items:stretch; gap:1.6vw; margin-top:5vh; width:100%; }
+  .layer{ flex:1 1 0; border:1px solid var(--line); border-radius:18px; padding:3.6vh 1.6vw; text-align:center; }
+  .layer.hi{ border-color:var(--blue); background:#f7f9ff; }
+  .layer .lcode{ font-weight:900; font-size:clamp(28px,4.4vw,60px); color:var(--blue); line-height:1; letter-spacing:-.01em; }
+  .layer .lname{ font-weight:700; font-size:clamp(14px,1.6vw,20px); margin-top:1.2vh; }
+  .layer .ldesc{ color:var(--muted); font-size:clamp(13px,1.5vw,18px); margin-top:1.4vh; line-height:1.4; }
+  .layers .arrow{ align-self:center; color:var(--blue); font-weight:900; font-size:clamp(24px,3vw,40px); flex:0 0 auto; }
+
+  /* ---- 手繪插畫 ---- */
+  .illus{
+    height:64vh; width:auto; max-width:42vw;
+    object-fit:contain;
+    border-radius:14px;
+    box-shadow:0 18px 50px rgba(0,0,0,.12);
+  }
+  /* 置中頁裡的寬幅插畫（如 Agent 演進、時間軸） */
+  .illus-wide{
+    width:min(76vw,1000px); height:auto; max-height:46vh;
+    object-fit:contain; margin-top:4vh;
+    border-radius:14px;
+    box-shadow:0 18px 50px rgba(0,0,0,.12);
+  }
+
+  /* ---- 文章清單卡（引薦頁，標題為超連結） ---- */
+  .articles{ list-style:none; margin-top:3vh; display:flex; flex-direction:column; gap:1.6vh; width:100%; max-width:880px; }
+  .articles li{ display:flex; align-items:flex-start; gap:16px; border:1px solid var(--line); border-radius:14px; padding:1.8vh 1.8vw; text-align:left; transition:border-color .2s ease, box-shadow .2s ease; }
+  .articles li:hover{ border-color:var(--blue); box-shadow:0 10px 26px rgba(47,79,176,.10); }
+  .articles .atag{ flex:0 0 auto; color:var(--blue); font-weight:900; font-size:clamp(13px,1.5vw,18px); border:1px solid var(--blue); border-radius:8px; padding:.2em .6em; line-height:1.2; }
+  .articles a.atext{ font-weight:700; font-size:clamp(15px,1.8vw,23px); line-height:1.3; color:var(--ink); text-decoration:none; }
+  .articles a.atext:hover{ color:var(--blue); text-decoration:underline; }
+  .articles a.atext::after{ content:"↗"; color:var(--blue); font-size:.8em; margin-left:.3em; }
+  .articles .asub{ color:var(--muted); font-weight:500; font-size:clamp(12px,1.4vw,17px); margin-top:.4em; }
+
+  /* QR Code 區塊 */
+  .qr{ display:flex; align-items:center; gap:18px; margin-top:3vh; }
+  .qr img{ width:clamp(96px,10vw,132px); height:auto; border:1px solid var(--line); border-radius:10px; padding:6px; background:#fff; }
+  .qr .qr-text{ text-align:left; }
+  .qr .qr-title{ font-weight:700; font-size:clamp(16px,1.9vw,24px); }
+  .qr .qr-sub{ color:var(--muted); font-size:clamp(13px,1.5vw,18px); margin-top:.4em; }
+
+  /* ---- 結尾 / 謝謝頁 ---- */
+  .thanks{ font-weight:900; font-size:clamp(72px,16vw,200px); line-height:1; letter-spacing:.04em; margin-top:5vh; }
+  .end-tag{ font-weight:700; font-size:clamp(22px,3vw,40px); margin-top:6vh; line-height:1.3; }
+  .end-tag .em{ color:var(--blue); }
+  .end-logo{ height:36px; width:auto; }
+  .end-contact{ color:var(--muted); font-size:clamp(16px,2vw,26px); margin-top:7vh; }
+  .end-org{ font-weight:900; color:var(--bni-red); font-size:clamp(17px,2.1vw,28px); margin-top:3vh; letter-spacing:.04em; }
+
+  /* ---- 底部來源小字（footnote） ---- */
+  .source{
+    position:absolute; left:6vw; right:6vw; bottom:6.5vh;
+    color:#a9a9a9; font-size:clamp(11px,1.25vw,15px);
+    letter-spacing:.01em; line-height:1.5; text-align:center;
+  }
+  .source a{ color:#8a93b5; text-decoration:none; }
+  .source a:hover{ color:var(--blue); text-decoration:underline; }
+  .slide.split .source{ text-align:left; }
+  /* center 版型且底部同時有 note 與 source 時，note 收緊上方間距、避免與 source 相撞 */
+  .slide.center.has-source .note{ margin-top:2.4vh; margin-bottom:5vh; }
+
+  /* ---- 頁碼與進度 ---- */
+  .pageno{ position:fixed; right:2.5vw; bottom:3vh; color:#b5b5b5; font-size:clamp(12px,1.4vw,16px); letter-spacing:.08em; z-index:10; }
+  .progress{ position:fixed; left:0; bottom:0; height:3px; background:var(--blue); width:0; transition:width .35s ease; z-index:10; }
+  .hint{ position:fixed; left:2.5vw; bottom:3vh; color:#cfcfcf; font-size:12px; z-index:10; transition:opacity .6s ease; }
+
+  /* ---- 響應式：窄螢幕改直向堆疊 ---- */
+  @media (max-width:760px), (max-aspect-ratio:1/1){
+    .slide.split{ flex-direction:column; gap:3vh; }
+    .slide.split .col-text{ max-width:100%; text-align:center; }
+    .slide.split .source{ text-align:center; }
+    .points li, .facts li{ justify-content:center; }
+    .facts li{ text-align:left; }
+    .layers{ flex-direction:column; }
+    .layers .arrow{ transform:rotate(90deg); }
+    .illus{ height:auto; width:auto; max-height:38vh; max-width:80vw; }
+    .illus-wide{ width:88vw; max-height:34vh; }
+    .source{ position:static; margin-top:3vh; }
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 1. 封面 -->
+  <section class="slide center active">
+    <div class="logos">
+      <img class="bni" src="images/bni-logo-onwhite.svg" alt="BNI 新竹B區">
+      <span class="divider"></span>
+      <img class="ctk" src="images/ctkpro-logo.png" alt="CTK Pro">
+    </div>
+    <h1 class="title">AI 發展最新趨勢</h1>
+    <p class="subtitle">當你的客人，開始用 <span style="color:var(--blue);font-weight:700;">AI</span> 買東西</p>
+    <p class="footer-line">2026-06-26　｜　BNI 創智分會　｜　Alfred Kang・CTK Pro</p>
+  </section>
+
+  <!-- 2. 鉤子：上週三件大事 -->
+  <section class="slide center">
+    <img class="corner-logo" src="images/ctkpro-logo.png" alt="CTK Pro" style="position:absolute;top:4vh;left:6vw;height:18px;opacity:.75;">
+    <p class="kicker">上週，AI 圈發生了「電影情節」</p>
+    <h2 class="head">三件大事，<span class="em">都跟你有關</span></h2>
+    <ul class="facts">
+      <li><span class="fn">①</span><span class="ft">全世界最強的 AI 模型 <b>Claude Fable 5</b>，發布 <b>96 小時</b>就被美國政府勒令下架
+        <small>史上第一次，政府叫一家領先 AI 公司把模型全面關掉。</small></span></li>
+      <li><span class="fn">②</span><span class="ft">AI 程式工具 <b>Cursor</b>，被馬斯克的 <b>SpaceX 用 600 億美元</b>收購
+        <small>史上最大的新創併購案。</small></span></li>
+      <li><span class="fn">③</span><span class="ft">中國免費開源的 <b>GLM 5.2</b>，悄悄追上最強模型（<b>Claude Opus 4.8</b>）八到九成的能力
+        <small>而且成本只要約六分之一。</small></span></li>
+    </ul>
+    <div class="source">
+      來源：
+      <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener">Anthropic 官方聲明</a>、
+      <a href="https://www.nbcnews.com/tech/security/anthropic-fable-5-ai-offline-trump-order-administration-claude-rcna350117" target="_blank" rel="noopener">NBC News</a>　｜
+      <a href="https://www.cbsnews.com/news/spacex-cursor-60-billion-ai-acquisition/" target="_blank" rel="noopener">CBS News（SpaceX × Cursor）</a>　｜
+      <a href="https://venturebeat.com/technology/z-ais-open-weights-glm-5-2-beats-gpt-5-5-on-multiple-long-horizon-coding-benchmarks-for-1-6th-the-cost" target="_blank" rel="noopener">VentureBeat（GLM 5.2）</a>
+    </div>
+  </section>
+
+  <!-- 3. 轉折：水電 + Agent 落地元年 -->
+  <section class="slide center">
+    <p class="kicker">這些大事的共同訊號</p>
+    <h2 class="head">AI 不只是「水電」<br>2026 更是 <span class="em">AI Agent 落地</span>元年</h2>
+    <img class="illus-wide" src="images/s03-agent-evolution.png" alt="AI Agent 能力演進：做研究 → 控制瀏覽器 → 產出檔案 → 操作電腦">
+    <p class="note">從「幫你查資料」，到能控制瀏覽器、做出檔案，現在已經能<strong>操作你的電腦</strong>。<br>AI 不再只是工具——今年起，它是會替你「動手做事」的 Agent。</p>
+  </section>
+
+  <!-- 4. 核心命題：客人變「人＋AI」 -->
+  <section class="slide split">
+    <div class="col-text">
+      <p class="kicker">核心命題</p>
+      <h2 class="head">你的客人，<br>從「人」變成<br>「人 <span class="em">＋</span> 一個 AI 助理」</h2>
+      <p class="lead">以前：自己 Google、自己比價、自己下單。<br>現在：對 AI 說一句「幫我找、幫我比、幫我訂」。</p>
+      <p class="note">當決定「買誰家」的不再是人、是 AI——<br>你的生意，AI 看得到嗎？叫得動嗎？</p>
+    </div>
+    <div class="col-media">
+      <img class="illus" src="images/s04-human-vs-ai.png" alt="左：人自己搜尋比價下單；右：人放鬆，AI 助理幫他全包">
+    </div>
+  </section>
+
+  <!-- 5. 案例 1：瑞幸（支付寶 MCP） -->
+  <section class="slide split">
+    <div class="col-text">
+      <p class="kicker">真實案例 ① ｜ 瑞幸咖啡</p>
+      <h2 class="head">在對話裡說一句<br><span class="em">AI 直接幫你點單付款</span></h2>
+      <p class="lead">瑞幸接上支付寶的 AI 介面（MCP），<br>你在對話中說「下單」，AI 直接幫你點咖啡、完成付款<br>——全程不用離開對話、不用打開 App。</p>
+    </div>
+    <div class="col-media">
+      <img class="illus" src="images/s05-luckin.png" alt="在聊天中對 AI 說一句，AI 就幫你點好咖啡並完成付款">
+    </div>
+    <div class="source">
+      來源：<a href="https://www.finextra.com/newsarticle/46581/alipays-agentic-ai-tech-goes-live-with-coffee-ordering-app-luckin" target="_blank" rel="noopener">Finextra — Alipay agentic AI goes live with Luckin</a>
+    </div>
+  </section>
+
+  <!-- 6. 案例 2a：Amazon Rufus 轉化率 -->
+  <section class="slide split">
+    <div class="col-text">
+      <p class="kicker">真實案例 ② ｜ Amazon Rufus</p>
+      <h2 class="head">用 AI 導購的客人<br>成交率是 <span class="em">3.5 倍</span></h2>
+      <p class="lead">用 Amazon AI 助理 Rufus 的購物流程，<br>轉化率是沒用的約 <strong>3.5 倍</strong>；用過的人，<br>成交可能性高出約 60%。</p>
+      <p class="note">AI 不是讓客人少花錢，<br>是讓「想買的人」更快、更篤定地買。</p>
+    </div>
+    <div class="col-media">
+      <img class="illus" src="images/s06-rufus.png" alt="一般購物車 vs AI 加持的購物車，轉化明顯放大">
+    </div>
+    <div class="source">
+      來源：<a href="https://www.techbuzz.ai/articles/amazon-s-rufus-ai-chatbot-drives-5x-higher-sales-conversion" target="_blank" rel="noopener">TechBuzz / Sensor Tower</a>、<a href="https://sensortower.com/blog/state-of-ai-2026" target="_blank" rel="noopener">State of AI 2026</a>
+    </div>
+  </section>
+
+  <!-- 7. 案例 2b：Walmart Sparky 客單價 -->
+  <section class="slide split">
+    <div class="col-text">
+      <p class="kicker">真實案例 ② ｜ 沃爾瑪 Sparky</p>
+      <h2 class="head">用 AI 助理的客人<br>客單價高 <span class="em">+35%</span></h2>
+      <p class="lead">沃爾瑪在財報上認證：<br>用 AI 助理 Sparky 的客人，<br>平均一張單買得比別人多 <strong>35%</strong>。</p>
+      <p class="note">大公司搶著做 AI 導購，<br>就是因為它真的讓客人買更多。</p>
+    </div>
+    <div class="col-media">
+      <img class="illus" src="images/s06-sparky.png" alt="AI 助理讓購物籃裝得更滿，客單價更高">
+    </div>
+    <div class="source">
+      來源：<a href="https://app.dealroom.co/news/feed/walmart-s-ai-assistant-sparky-drives-35-higher-basket-sizes-as-e-commerce-sales-surge-27" target="_blank" rel="noopener">Dealroom（Walmart Q4 FY26 財報）</a>
+    </div>
+  </section>
+
+  <!-- 8. 框架：UX → AX → AXO -->
+  <section class="slide center">
+    <p class="kicker">生意的入口，正在多一層</p>
+    <h2 class="head">UX <span class="em">→</span> AX <span class="em">→</span> AXO</h2>
+    <div class="layers">
+      <div class="layer">
+        <div class="lcode">UX</div>
+        <div class="lname">User Experience</div>
+        <div class="ldesc">給「人」看的<br>你現在的官網、菜單、按鈕</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="layer">
+        <div class="lcode">AX</div>
+        <div class="lname">Agent Experience</div>
+        <div class="ldesc">給「AI」用的<br>AI 看得懂、能幫客人完成任務</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="layer hi">
+        <div class="lcode">AXO</div>
+        <div class="lname">Agent Experience Optimization</div>
+        <div class="ldesc">讓 AI 比較多家時<b style="color:var(--blue)">選你</b><br>這是「新版 SEO」</div>
+      </div>
+    </div>
+    <p class="note">以前做 SEO，讓客人 Google 時找到你。未來做 AXO，讓客人的 AI 在比較時，挑你。</p>
+  </section>
+
+  <!-- 9. 翻成各行各業 -->
+  <section class="slide center">
+    <p class="kicker">這對「你」這一行意味著什麼？</p>
+    <h2 class="head">每一行，<span class="em">都要對號入座</span></h2>
+    <ul class="points" style="max-width:1000px;text-align:left;">
+      <li><span class="n">餐廳</span><span>客人的 AI 訂位、點餐時，找得到你、知道你今天的菜嗎？</span></li>
+      <li><span class="n">房仲・保險</span><span>客人叫 AI「幫我找符合條件的」，你的物件／方案在清單裡嗎？</span></li>
+      <li><span class="n">零售・電商</span><span>AI 幫客人比價時，你的商品資訊 AI 讀得懂嗎？</span></li>
+      <li><span class="n">服務業</span><span>客人問 AI「附近推薦哪家」，AI 為什麼會推你？</span></li>
+    </ul>
+    <p class="note">你不需要懂技術，但你要開始問：我的生意，在 AI 的世界裡存在嗎？</p>
+  </section>
+
+  <!-- 10. 怎麼開始：三件事 -->
+  <section class="slide center">
+    <p class="kicker">那，怎麼開始？</p>
+    <h2 class="head">你今天可以做的<span class="em">三件事</span></h2>
+    <ul class="points" style="max-width:920px;text-align:left;">
+      <li><span class="n">問</span><span>我的客人，會用 AI 來找／買我這類服務嗎？</span></li>
+      <li><span class="n">查</span><span>現在用 AI 搜尋我的店／服務，它講得對嗎？找得到嗎？</span></li>
+      <li><span class="n">備</span><span>開始想：我的生意需不需要一個 AI 看得懂、叫得動的版本？</span></li>
+    </ul>
+    <p class="note">不用一步到位。先有意識，就贏過 90% 還沒想到的同行。</p>
+  </section>
+
+  <!-- 12. 引薦：被 AI 找到（官網文章背書，標題為超連結） -->
+  <section class="slide center">
+    <img class="corner-logo" src="images/ctkpro-logo.png" alt="CTK Pro" style="position:absolute;top:4vh;left:6vw;height:18px;opacity:.75;">
+    <p class="kicker" style="margin-bottom:1.4vh;">如果你想讓你的生意</p>
+    <h2 class="head">被 AI <span class="em">找到</span></h2>
+    <p class="lead" style="margin-top:2vh;font-size:clamp(15px,2vw,26px);">幫企業把服務做成 AI 可調用的版本，優化官網服務流程，<br>讓 AI 幫你的客人完成交易。</p>
+    <ul class="articles">
+      <li>
+        <span class="atag">AXO</span>
+        <div>
+          <a class="atext" href="https://ctkpro.com/category/geo/" target="_blank" rel="noopener">GEO 系列｜生成式搜尋優化七部曲</a>
+          <div class="asub">讓你的網站「被 AI 找到、被 AI 引用」——傳統 SEO 的進化</div>
+        </div>
+      </li>
+      <li>
+        <span class="atag">AX</span>
+        <div>
+          <a class="atext" href="https://ctkpro.com/what-is-webmcp-google-ai-agent-web-standard/" target="_blank" rel="noopener">AI 代理不再假裝人類了：Google WebMCP 技術解析</a>
+          <div class="asub">Google／Microsoft 新標準，讓 AI 直接調用你的網站功能</div>
+        </div>
+      </li>
+      <li>
+        <span class="atag">AX</span>
+        <div>
+          <a class="atext" href="https://ctkpro.com/webmcp-enterprise-agent-ready-guide/" target="_blank" rel="noopener">你的網站 Agent-Ready 了嗎？WebMCP 企業因應與實作指南</a>
+          <div class="asub">不用急著全面導入，但現在該開始盤點</div>
+        </div>
+      </li>
+    </ul>
+    <div class="qr">
+      <img src="images/qr-geo.png" alt="CTK Pro GEO 系列文章 QR Code">
+      <div class="qr-text">
+        <div class="qr-title">掃描看我們怎麼解這題</div>
+        <div class="qr-sub">ctkpro.com／GEO 系列文章</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. 收尾金句 -->
+  <section class="slide center">
+    <h2 class="head">未來的生意，要被兩種人喜歡<br>你的客人，<span class="em">和他的 AI</span></h2>
+    <p class="end-tag">以前我們讓「人」找到我們。<br>未來，你還要讓「<span class="em">AI</span>」推薦你。<br>今天開始想的人，就是贏家。</p>
+  </section>
+
+  <!-- 14. 謝謝頁 -->
+  <section class="slide center">
+    <img class="end-logo" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <h2 class="thanks">謝謝</h2>
+    <p class="end-contact">Alfred Kang｜CTK Pro｜https://ctkpro.com</p>
+    <p class="end-org">BNI 創智分會</p>
+  </section>
+
+</div>
+
+<div class="pageno" id="pageno">1 / 13</div>
+<div class="progress" id="progress"></div>
+<div class="hint" id="hint">← → 翻頁</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let idx = 0;
+  const pageno = document.getElementById('pageno');
+  const progress = document.getElementById('progress');
+  const hint = document.getElementById('hint');
+
+  function render(){
+    slides.forEach((s,i)=> s.classList.toggle('active', i===idx));
+    pageno.textContent = (idx+1) + ' / ' + total;
+    progress.style.width = ((idx)/(total-1))*100 + '%';
+  }
+  function go(n){
+    const next = Math.max(0, Math.min(total-1, n));
+    if(next!==idx){ idx=next; render(); }
+  }
+  function next(){ go(idx+1); }
+  function prev(){ go(idx-1); }
+
+  // 鍵盤
+  document.addEventListener('keydown', (e)=>{
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case 'PageDown': case ' ': e.preventDefault(); next(); break;
+      case 'ArrowLeft':  case 'ArrowUp':   case 'PageUp':   e.preventDefault(); prev(); break;
+      case 'Home': e.preventDefault(); go(0); break;
+      case 'End':  e.preventDefault(); go(total-1); break;
+    }
+  });
+
+  // 點擊：右半下一頁、左半上一頁（點連結時不翻頁）
+  document.getElementById('deck').addEventListener('click', (e)=>{
+    if(e.target.closest('a')) return;
+    (e.clientX > window.innerWidth/2) ? next() : prev();
+  });
+
+  // 觸控滑動
+  let tx=0, ty=0;
+  document.addEventListener('touchstart',(e)=>{ tx=e.changedTouches[0].clientX; ty=e.changedTouches[0].clientY; },{passive:true});
+  document.addEventListener('touchend',(e)=>{
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)){ dx<0 ? next() : prev(); }
+  },{passive:true});
+
+  // 數秒後淡出操作提示
+  setTimeout(()=>{ hint.style.opacity='0'; }, 4000);
+
+  render();
+})();
+</script>
+</body>
+</html>

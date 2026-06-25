@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BNI 分享投影片庫｜CTK Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1a1a;          /* 主要文字（近黑） */
+    --muted:#6b6b6b;        /* 次要文字 */
+    --line:#e2e2e2;         /* 分隔線 */
+    --blue:#2f4fb0;         /* 插畫藍墨，作為強調色 */
+    --paper:#f3ead8;        /* 暖紙色，圖片底襯 */
+    --bg:#ffffff;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',-apple-system,'Helvetica Neue',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+    min-height:100%;
+  }
+
+  .wrap{ max-width:980px; margin:0 auto; padding:7vh 6vw 12vh; }
+
+  /* ---- 頁首 ---- */
+  header{ border-bottom:1px solid var(--line); padding-bottom:5vh; margin-bottom:6vh; }
+  .logos{ display:flex; align-items:center; gap:24px; margin-bottom:4vh; }
+  .logos img.bni{ height:32px; width:auto; }
+  .logos img.ctk{ height:22px; width:auto; }
+  .logos .divider{ width:1px; height:24px; background:var(--line); }
+
+  .kicker{ color:var(--muted); font-weight:500; letter-spacing:.04em; font-size:clamp(14px,1.6vw,18px); margin-bottom:1.6vh; }
+  h1.title{ font-weight:900; font-size:clamp(34px,5.6vw,64px); line-height:1.12; letter-spacing:-.01em; }
+  h1.title .em{ color:var(--blue); }
+  .subtitle{ color:var(--muted); font-weight:500; font-size:clamp(16px,2vw,22px); margin-top:2.4vh; }
+
+  /* ---- 區塊標題 ---- */
+  h2.section{ font-weight:900; font-size:clamp(22px,3vw,32px); margin:7vh 0 3vh; letter-spacing:-.01em; }
+  h2.section:first-of-type{ margin-top:0; }
+  h2.section .n{ color:var(--blue); margin-right:.4em; }
+
+  /* ---- 卡片清單 ---- */
+  .cards{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:22px; }
+  a.card{
+    display:block; text-decoration:none; color:inherit;
+    border:1px solid var(--line); border-radius:16px;
+    padding:26px 26px 28px;
+    background:var(--bg);
+    transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  }
+  a.card:hover{
+    border-color:var(--blue);
+    box-shadow:0 14px 38px rgba(47,79,176,.12);
+    transform:translateY(-2px);
+  }
+  .card .date{ color:var(--blue); font-weight:700; font-size:clamp(14px,1.6vw,17px); letter-spacing:.02em; }
+  .card .card-title{ font-weight:900; font-size:clamp(19px,2.3vw,24px); margin-top:.8em; line-height:1.25; }
+  .card .card-desc{ color:var(--muted); font-size:clamp(14px,1.6vw,16px); margin-top:.9em; }
+  .card .arrow{ color:var(--blue); font-weight:700; font-size:15px; margin-top:1.4em; display:inline-flex; align-items:center; gap:.4em; }
+
+  /* 占位卡（尚未製作） */
+  a.card.soon{ border-style:dashed; opacity:.7; pointer-events:none; }
+  a.card.soon .date{ color:var(--muted); }
+  a.card.soon .arrow{ color:var(--muted); }
+
+  /* ---- 頁尾 ---- */
+  footer{ margin-top:9vh; padding-top:5vh; border-top:1px solid var(--line); color:var(--muted); font-size:clamp(13px,1.5vw,16px); }
+  footer .brand{ font-weight:900; color:var(--ink); font-size:clamp(16px,2vw,20px); }
+  footer a{ color:var(--blue); text-decoration:none; }
+  footer a:hover{ text-decoration:underline; }
+
+  @media (max-width:560px){
+    .cards{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logos">
+      <img class="bni" src="ctkpro-intro/images/bni-logo-onwhite.svg" alt="BNI 新竹B區">
+      <span class="divider"></span>
+      <img class="ctk" src="ctkpro-intro/images/ctkpro-logo.png" alt="CTK Pro">
+    </div>
+    <p class="kicker">BNI 分享投影片庫</p>
+    <h1 class="title">AI 新聞 <span class="em">×</span> 趨勢分享</h1>
+    <p class="subtitle">每週在 BNI 早餐會分享的 AI 觀察與商業洞察 — by Alfred Kang｜CTK Pro</p>
+  </header>
+
+  <!-- ============ 每週 AI 新聞分享 ============ -->
+  <h2 class="section"><span class="n">▸</span>每週 AI 新聞分享</h2>
+  <div class="cards">
+
+    <a class="card" href="2026-06-25/index.html">
+      <div class="date">2026-06-26 · BNI 創智分會</div>
+      <div class="card-title">AI 發展最新趨勢</div>
+      <div class="card-desc">你的生意要為 AI 顧客重做：UX → AX → AXO。以瑞幸支付寶 MCP、Amazon Rufus、Walmart Sparky 為例（14 頁，含來源與配圖）。</div>
+      <span class="arrow">開啟投影片 →</span>
+    </a>
+
+  </div>
+
+  <!-- ============ 公司介紹 ============ -->
+  <h2 class="section"><span class="n">▸</span>公司介紹</h2>
+  <div class="cards">
+
+    <a class="card" href="ctkpro-intro/index.html">
+      <div class="date">CTK Pro</div>
+      <div class="card-title">AI × 創新與政府補助</div>
+      <div class="card-desc">把「想法」變成「上線的產品」。CTK Pro 公司介紹簡報（7 頁），亦為本庫的投影片風格標準。</div>
+      <span class="arrow">開啟投影片 →</span>
+    </a>
+
+  </div>
+
+  <footer>
+    <p class="brand">CTK Pro</p>
+    <p style="margin-top:.6em;">Alfred Kang｜AI 與數位導入整合單位｜<a href="https://ctkpro.com">ctkpro.com</a></p>
+  </footer>
+
+</div>
+</body>
+</html>
