@@ -13,6 +13,7 @@
     --muted:#6b6b6b;        /* 次要文字 */
     --line:#e2e2e2;         /* 分隔線 */
     --blue:#2f4fb0;         /* 插畫藍墨，作為強調色 */
+    --bni-red:#CF0A2C;      /* BNI 官方品牌紅 */
     --paper:#f3ead8;        /* 暖紙色，圖片底襯 */
     --bg:#ffffff;
   }
@@ -60,6 +61,7 @@
   h1.title{ font-weight:900; font-size:clamp(40px,7.4vw,108px); line-height:1.12; letter-spacing:-.01em; }
   .subtitle{ color:var(--muted); font-weight:500; font-size:clamp(18px,2.6vw,34px); margin-top:3.2vh; }
   .footer-line{ color:var(--muted); font-size:clamp(14px,1.7vw,20px); margin-top:7vh; letter-spacing:.02em; }
+  .cover-org{ font-weight:900; color:var(--bni-red); font-size:clamp(16px,2vw,26px); margin-top:3vh; letter-spacing:.06em; }
 
   h2.head{ font-weight:900; font-size:clamp(32px,5.4vw,78px); line-height:1.18; letter-spacing:-.01em; }
   h2.head .em{ color:var(--blue); }
@@ -92,7 +94,7 @@
     content:""; position:absolute; top:13px; left:50%; transform:translateX(-50%);
     width:84px; height:6px; border-radius:6px; background:#3a3a3a; z-index:2;
   }
-  .phone img{ display:block; height:72vh; width:auto; max-width:36vw; object-fit:contain; background:#fff; border-radius:18px; }
+  .phone img{ display:block; height:56vh; width:auto; max-width:34vw; object-fit:contain; background:#fff; border-radius:18px; }
 
   /* QR Code 區塊（現場掃描體驗） */
   .qr{ display:flex; align-items:center; gap:18px; margin-top:5vh; }
@@ -136,15 +138,15 @@
     <h1 class="title">AI <span style="color:var(--blue)">×</span> 創新與政府補助</h1>
     <p class="subtitle">把「想法」變成「上線的產品」</p>
     <p class="footer-line">Alfred Kang｜CTK Pro｜AI 與數位導入整合單位</p>
+    <p class="cover-org">BNI 創智分會</p>
   </section>
 
   <!-- 2. 痛點 -->
   <section class="slide split">
-    <img class="corner-logo-hidden" hidden>
     <div class="col-text">
-      <p class="kicker">現在的處境</p>
+      <p class="kicker">申請補助的人，最後都卡在這一關</p>
       <h2 class="head">「做得出來」<br><span class="em">≠</span>「上得了線」</h2>
-      <p class="lead">AI 讓人人都能做出 demo<br>—— 卻只留在筆電裡。</p>
+      <p class="lead">AI 讓人人都能做出 demo，<br>卻只留在筆電裡。<br>補助核下來——然後呢？</p>
     </div>
     <div class="col-media">
       <img class="illus" src="images/slide2-gap.png" alt="demo 卡在本機、跨不過上線的斷層">
@@ -157,18 +159,18 @@
     <p class="kicker">我們是誰</p>
     <h2 class="head">我們，幫你把它<span class="em">變成真的</span></h2>
     <ul class="points">
-      <li><span class="n">①</span><span>界定 Prototype 開發範圍</span></li>
+      <li><span class="n">①</span><span>界定範圍，做出能用的 POC</span></li>
       <li><span class="n">②</span><span>真正上線到 Production</span></li>
     </ul>
-    <p class="note">— 以 ISO 27001 資訊安全為本 —</p>
+    <p class="note">服務範圍：網站・軟體系統・AI POC・上線維運　｜　以 ISO 27001 資訊安全為本</p>
   </section>
 
   <!-- 4. 真實案例 -->
   <section class="slide split">
     <div class="col-text">
-      <p class="kicker">真實案例 ｜ 西北影像</p>
+      <p class="kicker">真實案例 ｜ 補助案實證 · 西北影像</p>
       <h2 class="head"><span class="nw">報價，從「層層關卡」</span><br><span class="nw">到 <span class="em">「秒回」</span></span></h2>
-      <p class="lead">申請紡拓會補助<br>→ 打造 LINE 報價機器人</p>
+      <p class="lead">申請紡拓會補助 →<br>打造 LINE 報價機器人，<br>已實際上線運作。</p>
       <div class="qr">
         <img src="images/line-qr-cip.png" alt="西北影像 LINE 報價機器人 QR Code">
         <div class="qr-text">
@@ -197,12 +199,12 @@
   <!-- 6. Referral Ask -->
   <section class="slide split">
     <div class="col-text">
-      <p class="kicker">如果你身邊有這種人</p>
-      <h2 class="head">請把這種人，<br><span class="em">介紹給我</span></h2>
-      <p class="lead">想申請補助做 AI／數位轉型、<br>有 idea 卻卡在上線的企業主。</p>
+      <p class="kicker">如果你正在申請、或正要申請補助</p>
+      <h2 class="head">卡在「落地」這關？<br>我當你的<span class="em">協力廠商</span></h2>
+      <p class="lead">從提案的技術可行性，到 POC、上線、資安——<br>幫你把補助，變成真的上線的產品。</p>
     </div>
     <div class="col-media">
-      <img class="illus" src="images/slide6-referral.png" alt="有想法卻卡在上線的企業主">
+      <img class="illus" src="images/slide6-referral.png" alt="有想法卻卡在上線的企業主，由協力廠商幫忙落地">
     </div>
   </section>
 
@@ -211,7 +213,14 @@
     <img class="end-logo" src="images/ctkpro-logo.png" alt="CTK Pro">
     <p class="end-brand">CTK Pro</p>
     <p class="end-contact">Alfred Kang｜https://ctkpro.com</p>
-    <p class="end-tag">有想法，我們幫你<span class="em">安全地上線</span>。</p>
+    <p class="end-tag" style="margin-top:3.5vh;">有想法，我們幫你<span class="em">安全地上線</span>。</p>
+    <div class="qr" style="justify-content:center;margin-top:3.5vh;">
+      <img src="images/qr-ctkpro.png" alt="ctkpro.com 官網 QR Code">
+      <div class="qr-text">
+        <div class="qr-title">掃描看更多</div>
+        <div class="qr-sub">ctkpro.com｜今晚也歡迎直接找我聊</div>
+      </div>
+    </div>
   </section>
 
 </div>
