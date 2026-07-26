@@ -5,3 +5,9 @@ node_modules/
 .DS_Store
 .playwright-mcp/
 .memsearch/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
