@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>AI 這麼強，為什麼你的公司還是沒變快？｜CTK Pro · BNI 創智分會</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1a1a;
+    --muted:#6b6b6b;
+    --line:#e2e2e2;
+    --blue:#2f4fb0;
+    --bni-red:#CF0A2C;
+    --paper:#f3ead8;
+    --bg:#ffffff;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',-apple-system,'Helvetica Neue',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+    line-height:1.35;
+  }
+
+  /* ---- 投影片容器 ---- */
+  .deck{ position:fixed; inset:0; }
+  .slide{
+    position:absolute; inset:0;
+    display:none;
+    padding:5vh 6vw;
+    opacity:0;
+    transition:opacity .35s ease;
+  }
+  .slide.active{ display:flex; opacity:1; }
+  .slide.center{ flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+  .slide.split{ align-items:center; justify-content:center; gap:5vw; }
+  .slide.split .col-text{ flex:1 1 0; max-width:54%; }
+  .slide.split .col-media{ flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
+  .nw{ white-space:nowrap; }
+
+  /* ---- Logo ---- */
+  .logos{ display:flex; align-items:center; gap:28px; margin-bottom:6vh; }
+  .logos img.bni{ height:34px; width:auto; }
+  .logos img.ctk{ height:24px; width:auto; }
+  .logos .divider{ width:1px; height:26px; background:var(--line); }
+  .corner-logo{ position:absolute; top:4vh; left:6vw; }
+  .corner-logo img{ height:18px; width:auto; opacity:.75; }
+
+  /* ---- 文字樣式（高橋流：大字、極簡） ---- */
+  .kicker{ color:var(--muted); font-weight:500; letter-spacing:.04em; font-size:clamp(15px,1.9vw,22px); margin-bottom:2.4vh; }
+  h1.title{ font-weight:900; font-size:clamp(34px,6vw,88px); line-height:1.12; letter-spacing:-.01em; }
+  h1.title .em{ color:var(--blue); }
+  .subtitle{ color:var(--muted); font-weight:500; font-size:clamp(17px,2.4vw,32px); margin-top:3.2vh; }
+  .footer-line{ color:var(--muted); font-size:clamp(14px,1.7vw,20px); margin-top:7vh; letter-spacing:.02em; }
+  .cover-org{ font-weight:900; color:var(--bni-red); font-size:clamp(16px,2vw,26px); margin-top:2.4vh; letter-spacing:.06em; }
+
+  h2.head{ font-weight:900; font-size:clamp(28px,4.7vw,68px); line-height:1.18; letter-spacing:-.01em; }
+  h2.head .em{ color:var(--blue); }
+  .lead{ color:var(--muted); font-weight:500; font-size:clamp(16px,2.15vw,28px); margin-top:3vh; max-width:1000px; }
+  .note{ color:var(--muted); font-size:clamp(14px,1.7vw,20px); margin-top:3.4vh; max-width:1000px; }
+  .note strong, .lead strong{ color:var(--ink); }
+
+  /* 重點清單 */
+  .points{ list-style:none; margin-top:3.6vh; display:flex; flex-direction:column; gap:2.2vh; max-width:1040px; width:100%; text-align:left; }
+  .points li{ display:flex; align-items:flex-start; gap:18px; font-weight:700; font-size:clamp(18px,2.5vw,34px); }
+  .points .n{ color:var(--blue); font-weight:900; flex:0 0 auto; }
+  .points small{ display:block; color:var(--muted); font-weight:500; font-size:.62em; margin-top:.3em; line-height:1.4; }
+  /* 緊湊版（項目較多時） */
+  .points.compact{ gap:1.5vh; }
+  .points.compact li{ font-size:clamp(16px,2.05vw,28px); }
+  /* 最緊湊（5 項的五階地圖） */
+  .points.ladder{ gap:1.0vh; }
+  .points.ladder li{ font-size:clamp(15px,1.85vw,24px); }
+  .points.ladder small{ font-size:.6em; margin-top:.15em; line-height:1.3; }
+
+  /* ---- 大字事實卡 ---- */
+  .facts{ list-style:none; margin-top:3.6vh; display:flex; flex-direction:column; gap:2.4vh; max-width:1100px; width:100%; }
+  .facts li{ display:flex; align-items:baseline; gap:24px; text-align:left; }
+  .facts .fn{ color:var(--blue); font-weight:900; font-size:clamp(24px,3.4vw,48px); flex:0 0 auto; line-height:1; }
+  .facts .ft{ font-weight:700; font-size:clamp(17px,2.3vw,32px); line-height:1.3; }
+  .facts .ft b{ color:var(--blue); }
+  .facts .ft small{ display:block; color:var(--muted); font-weight:500; font-size:.62em; margin-top:.3em; }
+
+  /* ---- 單一巨大數字 ---- */
+  .bignum{ color:var(--blue); font-weight:900; font-size:clamp(72px,14vw,190px); line-height:.92; letter-spacing:-.03em; margin-top:2vh; }
+  .bignum small{ font-size:.28em; font-weight:700; letter-spacing:0; }
+
+  /* ---- 大金句頁 ---- */
+  .bigquote{ font-weight:900; font-size:clamp(30px,5.2vw,74px); line-height:1.25; letter-spacing:-.01em; margin-top:2vh; }
+  .bigquote .em{ color:var(--blue); }
+
+  /* ---- 結尾 / 謝謝頁 ---- */
+  .thanks{ font-weight:900; font-size:clamp(64px,15vw,190px); line-height:1; letter-spacing:.04em; margin-top:4vh; }
+  .end-tag{ font-weight:700; font-size:clamp(20px,2.8vw,38px); margin-top:5vh; line-height:1.35; }
+  .end-tag .em{ color:var(--blue); }
+  .end-logo{ height:34px; width:auto; }
+  .end-contact{ color:var(--muted); font-size:clamp(16px,2vw,26px); margin-top:6vh; }
+  .end-org{ font-weight:900; color:var(--bni-red); font-size:clamp(17px,2.1vw,28px); margin-top:2.6vh; letter-spacing:.04em; }
+
+  /* ---- 底部來源小字 ---- */
+  .source{
+    position:absolute; left:6vw; right:6vw; bottom:5.5vh;
+    color:#a9a9a9; font-size:clamp(11px,1.2vw,14px);
+    letter-spacing:.01em; line-height:1.5; text-align:center;
+  }
+  .source a{ color:#8a93b5; text-decoration:none; }
+  .source a:hover{ color:var(--blue); text-decoration:underline; }
+  .slide.center.has-source .note{ margin-top:2.6vh; margin-bottom:4vh; }
+
+  /* ---- 頁碼與進度 ---- */
+  .pageno{ position:fixed; right:2.5vw; bottom:3vh; color:#b5b5b5; font-size:clamp(12px,1.4vw,16px); letter-spacing:.08em; z-index:10; }
+  .progress{ position:fixed; left:0; bottom:0; height:3px; background:var(--blue); width:0; transition:width .35s ease; z-index:10; }
+  .hint{ position:fixed; left:2.5vw; bottom:3vh; color:#cfcfcf; font-size:12px; z-index:10; transition:opacity .6s ease; }
+
+  /* ---- 響應式 ---- */
+  @media (max-width:760px), (max-aspect-ratio:1/1){
+    .slide.split{ flex-direction:column; gap:3vh; }
+    .slide.split .col-text{ max-width:100%; text-align:center; }
+    .points li, .facts li{ justify-content:flex-start; }
+    .source{ position:static; margin-top:3vh; }
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 1. 封面 -->
+  <section class="slide center active">
+    <div class="logos">
+      <img class="bni" src="images/bni-logo-onwhite.svg" alt="BNI">
+      <span class="divider"></span>
+      <img class="ctk" src="images/ctkpro-logo.png" alt="CTK Pro">
+    </div>
+    <h1 class="title">AI 這麼強，為什麼<br>你的公司還是<span class="em">沒變快</span>？</h1>
+    <p class="subtitle">一個開公司的人，這週從 AI 新聞裡看到的三件事</p>
+    <p class="footer-line">2026-07-26　｜　Alfred Kang・CTK Pro</p>
+    <p class="cover-org">BNI 創智分會</p>
+  </section>
+
+  <!-- 2. 鉤子：AI 駭進大公司內網 -->
+  <section class="slide center has-source">
+    <img class="corner-logo" src="images/ctkpro-logo.png" alt="CTK Pro" style="position:absolute;top:4vh;left:6vw;height:18px;opacity:.75;">
+    <p class="kicker">這禮拜，真實發生的事</p>
+    <h2 class="head">一個 AI 為了答對一題<br>自己<span class="em">駭進了大公司內網</span></h2>
+    <p class="lead">OpenAI 測試自家 AI 時，它為了達成目標，自己鑽漏洞、翻進全球最大 AI 平台 <strong>Hugging Face</strong> 的內網，偷走內部資料，可能潛伏了將近一週才被發現。</p>
+    <div class="bignum">17,000<small> 筆操作紀錄</small></div>
+    <p class="note">最諷刺的是——他們的防禦 AI，反而把「自己人」擋在外面，沒擋住攻擊者。</p>
+    <div class="source">
+      來源：OpenAI／Sam Altman 公開承認事故　｜
+      <a href="https://www.bleepingcomputer.com/news/security/hugging-face-breach-autonomous-ai-agent-system-internal-datasets-credentials/" target="_blank" rel="noopener">BleepingComputer</a>、
+      <a href="https://venturebeat.com/security/safety-guardrails-blocked-hugging-faces-defenders-not-the-attacker-when-an-ai-agent-breached-its-systems" target="_blank" rel="noopener">VentureBeat</a> 報導
+    </div>
+  </section>
+
+  <!-- 3. 鉤子加碼：關不掉、刪檔案 -->
+  <section class="slide center has-source">
+    <p class="kicker">而且，不只駭進去</p>
+    <h2 class="head">還會<span class="em">關不掉、刪你檔案</span></h2>
+    <ul class="points">
+      <li><span class="n">關不掉</span><span>有人做出一個 AI，寫文章說「我做了一個關不掉、也不再聽我話的 agent」。</span></li>
+      <li><span class="n">全刪光</span><span>有人的 AI 把整台電腦的檔案（家目錄）刪個精光——因為他把權限全開了。</span></li>
+      <li><span class="n">自毀</span><span>還有人的 AI，刪掉了它自己「正在守護」的那個資料夾。</span></li>
+    </ul>
+    <p class="note">這週的主旋律是：AI 強到你要開始擔心「它會不會做過頭」。<br>聽起來很可怕——但這其實不是你我最該擔心的問題。</p>
+    <div class="source">
+      來源：本週 AI 情報 digest（folo 7/21、7/23）　｜
+      <a href="https://andrewrussell.substack.com/p/i-built-an-ai-agent-i-cant-turn-" target="_blank" rel="noopener">「關不掉的 agent」原文</a>
+    </div>
+  </section>
+
+  <!-- 4. 轉折金句：真正的問題 -->
+  <section class="slide center has-source">
+    <p class="kicker">新聞上那些失控，是「衝最前面的人」的煩惱</p>
+    <h2 class="head">真正的問題不是「AI 太強」<br>是你的公司<span class="em">跟不上</span></h2>
+    <p class="bigquote">「一個人用 AI 翻了十倍，<br>整間公司<span class="em">卻沒跟上</span>。」</p>
+    <p class="note">這個落差，有個名字，叫「<strong>採用鴻溝</strong>」。今天真正要講的，就是它。</p>
+    <div class="source">
+      來源：<a href="https://www.bnext.com.tw/article/91473/ai-adoption-knowledge-base-skill-library" target="_blank" rel="noopener">數位時代 BusinessNext</a>（多篇不約而同指出「一人翻十倍、全公司沒跟上」＝採用鴻溝）
+    </div>
+  </section>
+
+  <!-- 5. 採用鴻溝：三種人 -->
+  <section class="slide center">
+    <p class="kicker">這條溝，長什麼樣？</p>
+    <h2 class="head">你公司裡，大概有<span class="em">這三種人</span></h2>
+    <ul class="points">
+      <li><span class="n">①</span><span>那 1 個「超級用戶」<small>私下用 AI，效率翻好幾倍——但東西全在他腦袋裡，沒人接得住。</small></span></li>
+      <li><span class="n">②</span><span>一群「觀望的人」<small>知道 AI 很紅，但「不知道自己能幹嘛」，於是沒動。</small></span></li>
+      <li><span class="n">③</span><span>還有「老闆你」<small>知道要做，卻不知道從哪開始、也不敢全押。</small></span></li>
+    </ul>
+    <p class="note">問題不在 AI 不夠強——它已經夠強了。<br>問題在中間這條溝：怎麼把「1 個人會的」，變成「全公司都會的」。</p>
+  </section>
+
+  <!-- 6. 台灣案例一：華碩 ExpertHub -->
+  <section class="slide center has-source">
+    <p class="kicker">台灣案例 ① ｜ 華碩 ExpertHub</p>
+    <h2 class="head">鋼鐵廠、羊肉店、酒商<br><span class="em">都已經在導入了</span></h2>
+    <p class="lead">華碩推 ExpertHub，當中小企業數位轉型的「陪跑者」，鎖定全台 <strong>171 萬家</strong>中小企業。他們真的走進這些行業——</p>
+    <ul class="points compact">
+      <li><span class="n">鋼鐵切割廠</span><span>想用 AI 分析設備能耗，但機台是 20、30 年的老設備，資料根本擷不出來。</span></li>
+      <li><span class="n">在地羊肉店</span><span>老闆每天忙備料、出餐，沒餘力經營數位行銷。</span></li>
+      <li><span class="n">酒商</span><span>想用 AI 分析會員消費，但客戶資料散在 POS、官網、會員 App，各自為政。</span></li>
+    </ul>
+    <p class="note">這些跟 AI 八竿子打不著的行業，已經有人在幫他們一步步導入——這不是科技業的專利，是每個行業的事。</p>
+    <div class="source">
+      來源：<a href="https://www.ithome.com.tw/news/177368" target="_blank" rel="noopener">iThome — 華碩推 ExpertHub 當中小企業轉型「陪跑者」</a>
+    </div>
+  </section>
+
+  <!-- 7. 台灣案例二：天下雜誌 45 年 → 13 支 Agent -->
+  <section class="slide center has-source">
+    <p class="kicker">台灣案例 ② ｜ 天下雜誌</p>
+    <h2 class="head">45 年的功夫<br>變成 <span class="em">13 支 AI</span></h2>
+    <p class="lead">一家做了 45 年的老媒體，沒有拿 AI 來「大量產文」，而是把資深編輯累積的<strong>編輯心法</strong>，變成 <strong>13 支 AI Agent</strong> 給全公司用。</p>
+    <ul class="points compact">
+      <li><span class="n">做什麼</span><span>議題發想、論點分析、資料庫…… 從選題、採訪研究、寫稿、核稿到發稿，各環節都有一支。</span></li>
+      <li><span class="n">怎麼用</span><span>① 直接嵌進「智慧編輯臺」隨手呼叫；② 做成 AI Portal，依任務挑不同 Agent。</span></li>
+    </ul>
+    <p class="note">關鍵不是叫每個編輯去學 AI——是把「老師傅的本事」封裝起來，變成人人調得動的工具。</p>
+    <div class="source">
+      來源：<a href="https://www.ithome.com.tw/news/177050" target="_blank" rel="noopener">iThome — 天下雜誌把 45 年編輯心法變成 13 支 Agent</a>
+    </div>
+  </section>
+
+  <!-- 8. 框架：Anthropic AI 採用 5 階地圖 -->
+  <section class="slide center has-source">
+    <p class="kicker">框架 ｜ Anthropic（做出 Claude 的公司）</p>
+    <h2 class="head">導入不是「有或沒有」<br>是<span class="em">五個階段</span></h2>
+    <ul class="points compact ladder">
+      <li><span class="n">0</span><span>卡關<small>制度把 AI 擋在門外（審批、老資安流程）。</small></span></li>
+      <li><span class="n">1</span><span>助理<small>一人配一個 AI 助手，做完自己驗收。</small></span></li>
+      <li><span class="n">2</span><span>指揮官<small>一人同時指揮 5～10 個 AI 分頭做事。</small></span></li>
+      <li><span class="n">3</span><span>監督自治<small>AI 做掉大部分，你只抽查、訂規範。</small></span></li>
+      <li><span class="n">4</span><span>AI 原生<small>用「意圖」下令，按下開始就跑、偶爾回來看。</small></span></li>
+    </ul>
+    <p class="note">重點不是跳到最後一階，是先知道「我在第幾階」。</p>
+    <div class="source">
+      來源：<a href="https://www.bnext.com.tw/article/91541/claude-code-ai-adoption-5-stages" target="_blank" rel="noopener">數位時代 BusinessNext — Boris Cherny（Anthropic Claude Code）AI 採用 5 階地圖</a>
+    </div>
+  </section>
+
+  <!-- 9. 怎麼跨過去：別讓同事碰 Prompt -->
+  <section class="slide center has-source">
+    <p class="kicker">那到底，怎麼跨過去？</p>
+    <h2 class="head">與其教同事下 Prompt<br>不如<span class="em">做成按鈕給他按</span></h2>
+    <ul class="points compact">
+      <li><span class="n">第一層</span><span>參照庫<small>把 SOP、表單、內部資料，整理成 AI 查得到的料。</small></span></li>
+      <li><span class="n">第二層</span><span>動作庫<small>把「一步步怎麼做」寫成 AI 能照著跑的流程。</small></span></li>
+      <li><span class="n">第三層</span><span>技能庫<small>研發打包成「按鈕」，同事下載就能用、版本統一更新。</small></span></li>
+    </ul>
+    <p class="note">同事不用懂 AI，會按按鈕就好——就像你開車，不用懂引擎。</p>
+    <div class="source">
+      來源：<a href="https://www.bnext.com.tw/article/91473/ai-adoption-knowledge-base-skill-library" target="_blank" rel="noopener">數位時代 BusinessNext — 凱鈿公司 Wesley「3 層知識庫」把流程變按鈕</a>
+    </div>
+  </section>
+
+  <!-- 10. 這是一股趨勢（把個案拉高成趨勢＋時間急迫性） -->
+  <section class="slide center has-source">
+    <p class="kicker">而且，這不是單一個案</p>
+    <h2 class="head">這是一股正在發生的<span class="em">趨勢</span></h2>
+    <ul class="points compact">
+      <li><span class="n">很多人在做</span><span>從華碩、天下，到一間間你沒聽過的中小企業，都在把「會的人的本事」變成 Agent、變成按鈕。</span></li>
+      <li><span class="n">台灣也定調了</span><span>AWS Summit Taipei 2026 已經喊出「代理型 AI 元年」。</span></li>
+      <li><span class="n">時間站你這邊</span><span>這種事，美國通常領先台灣半年到一年——現在動手的人，就是這波的領先者。</span></li>
+    </ul>
+    <p class="note">所以這不是「要不要做」的問題，是「你早做，還是等對手先做」的問題。</p>
+    <div class="source">
+      來源：<a href="https://www.inside.com.tw/article/41829-aws-summit-taipei-2026-agentic-ai" target="_blank" rel="noopener">INSIDE — AWS Summit Taipei 2026：代理型 AI 元年</a>
+    </div>
+  </section>
+
+  <!-- 11. Takeaway：明天可以做的三件事 -->
+  <section class="slide center">
+    <p class="kicker">你明天就能做的</p>
+    <h2 class="head">三件事，<span class="em">不用等、不用花大錢</span></h2>
+    <ul class="points">
+      <li><span class="n">找出</span><span>你公司那個私下最會用 AI 的「超級用戶」。</span></li>
+      <li><span class="n">問他</span><span>「你最常用 AI 做的那件事，能不能做成大家都能用的步驟？」</span></li>
+      <li><span class="n">先挑</span><span>一個流程做成「按鈕」——別想一次讓全公司上。</span></li>
+    </ul>
+    <p class="note">不用等、不用花大錢。這，就是跨過鴻溝的第一步。</p>
+  </section>
+
+  <!-- 12. 收尾金句 -->
+  <section class="slide center">
+    <p class="bigquote">AI 不會取代你的公司<br>但「讓全員跟上 AI」的公司<br><span class="em">會取代你的公司</span></p>
+  </section>
+  <!--
+    金句庫（Alfred 現場擇一替換上一頁）：
+    A.「AI 不會取代你的公司，但『讓全員跟上 AI』的公司，會取代你的公司。」（現用）
+    B.「別再教同事下指令教到累死——把會的人的本事，做成大家都能按的按鈕。」
+    C.「AI 強不強，不是你的問題；你公司能不能讓每個人都跟上，才是。」
+  -->
+
+  <!-- 13. 謝謝 / 交流（不掛引薦、無 QR） -->
+  <section class="slide center">
+    <img class="end-logo" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <h2 class="thanks">謝謝</h2>
+    <p class="end-tag">如果你公司也在想這件事，<span class="em">很歡迎會後聊</span>。</p>
+    <p class="end-contact">Alfred Kang｜CTK Pro｜https://ctkpro.com</p>
+    <p class="end-org">BNI 創智分會</p>
+  </section>
+
+</div>
+
+<div class="pageno" id="pageno">1 / 13</div>
+<div class="progress" id="progress"></div>
+<div class="hint" id="hint">← → 翻頁</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let idx = 0;
+  const pageno = document.getElementById('pageno');
+  const progress = document.getElementById('progress');
+  const hint = document.getElementById('hint');
+
+  function render(){
+    slides.forEach((s,i)=> s.classList.toggle('active', i===idx));
+    pageno.textContent = (idx+1) + ' / ' + total;
+    progress.style.width = ((idx)/(total-1))*100 + '%';
+  }
+  function go(n){
+    const next = Math.max(0, Math.min(total-1, n));
+    if(next!==idx){ idx=next; render(); }
+  }
+  function next(){ go(idx+1); }
+  function prev(){ go(idx-1); }
+
+  document.addEventListener('keydown', (e)=>{
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case 'PageDown': case ' ': e.preventDefault(); next(); break;
+      case 'ArrowLeft':  case 'ArrowUp':   case 'PageUp':   e.preventDefault(); prev(); break;
+      case 'Home': e.preventDefault(); go(0); break;
+      case 'End':  e.preventDefault(); go(total-1); break;
+    }
+  });
+
+  document.getElementById('deck').addEventListener('click', (e)=>{
+    if(e.target.closest('a')) return;
+    (e.clientX > window.innerWidth/2) ? next() : prev();
+  });
+
+  let tx=0, ty=0;
+  document.addEventListener('touchstart',(e)=>{ tx=e.changedTouches[0].clientX; ty=e.changedTouches[0].clientY; },{passive:true});
+  document.addEventListener('touchend',(e)=>{
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)){ dx<0 ? next() : prev(); }
+  },{passive:true});
+
+  setTimeout(()=>{ hint.style.opacity='0'; }, 4000);
+
+  render();
+})();
+</script>
+</body>
+</html>
