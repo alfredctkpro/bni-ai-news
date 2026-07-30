@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>強又便宜、可能會出事｜2026-07 AI 觀察｜CTK Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1a1a;          /* 主要文字（近黑） */
+    --muted:#6b6b6b;        /* 次要文字 */
+    --line:#e2e2e2;         /* 分隔線 */
+    --blue:#2f4fb0;         /* 插畫藍墨，作為強調色 */
+    --bni-red:#CF0A2C;      /* BNI 官方品牌紅 */
+    --paper:#f3ead8;        /* 暖紙色 */
+    --bg:#ffffff;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',-apple-system,'Helvetica Neue',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+    line-height:1.35;
+  }
+
+  /* ---- 投影片容器 ---- */
+  .deck{ position:fixed; inset:0; }
+  .slide{
+    position:absolute; inset:0;
+    display:none;
+    padding:5vh 6vw;
+    opacity:0;
+    transition:opacity .35s ease;
+  }
+  .slide.active{ display:flex; opacity:1; }
+  .slide.center{ flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+  .slide.split{ align-items:center; justify-content:center; gap:5vw; }
+  .slide.split .col-text{ flex:1 1 0; max-width:62%; }
+  .nw{ white-space:nowrap; }
+
+  /* ---- Logo ---- */
+  .logos{ display:flex; align-items:center; gap:28px; margin-bottom:6vh; }
+  .logos img.bni{ height:34px; width:auto; }
+  .logos img.ctk{ height:24px; width:auto; }
+  .logos .divider{ width:1px; height:26px; background:var(--line); }
+  .corner-logo{ position:absolute; top:4vh; left:6vw; height:18px; width:auto; opacity:.75; }
+
+  /* ---- 文字樣式（高橋流：大字、極簡） ---- */
+  .kicker{ color:var(--muted); font-weight:500; letter-spacing:.04em; font-size:clamp(15px,1.9vw,22px); margin-bottom:2.4vh; }
+  h1.title{ font-weight:900; font-size:clamp(38px,7vw,104px); line-height:1.12; letter-spacing:-.01em; }
+  .subtitle{ color:var(--muted); font-weight:500; font-size:clamp(17px,2.4vw,31px); margin-top:3.2vh; }
+  .footer-line{ color:var(--muted); font-size:clamp(14px,1.7vw,20px); margin-top:7vh; letter-spacing:.02em; }
+  .cover-org{ font-weight:900; color:var(--bni-red); font-size:clamp(16px,2vw,26px); margin-top:3vh; letter-spacing:.06em; }
+
+  h2.head{ font-weight:900; font-size:clamp(32px,5.4vw,78px); line-height:1.18; letter-spacing:-.01em; }
+  h2.head .em{ color:var(--blue); }
+  .lead{ color:var(--muted); font-weight:500; font-size:clamp(17px,2.3vw,30px); margin-top:3.4vh; }
+  .note{ color:var(--muted); font-size:clamp(14px,1.7vw,20px); margin-top:4vh; }
+
+  .points{ list-style:none; margin-top:4.5vh; display:flex; flex-direction:column; gap:2.6vh; }
+  .points li{ display:flex; align-items:flex-start; gap:18px; font-weight:700; font-size:clamp(22px,3.2vw,46px); }
+  .points .n{ color:var(--blue); font-weight:900; flex:0 0 auto; }
+
+  /* ---- 本場專用元件 ---- */
+
+  /* 段落標題頁的超大序號 */
+  .bignum{ font-weight:900; color:var(--blue); font-size:clamp(80px,15vw,200px); line-height:1; }
+  .bignum-label{ font-weight:900; font-size:clamp(30px,5.4vw,72px); margin-top:2vh; }
+
+  /* 主線三段式（P2 / P18 / P19） */
+  .throughline{ display:flex; flex-direction:column; gap:1.6vh; align-items:center; }
+  .throughline .tl{ font-weight:900; font-size:clamp(26px,4.6vw,62px); line-height:1.25; }
+  .throughline .arrow{ color:var(--blue); font-weight:900; font-size:clamp(22px,3.4vw,42px); line-height:1; }
+  .throughline .em{ color:var(--blue); }
+
+  /* 價格／數字對比（P5 / P8） */
+  .compare{ display:flex; align-items:center; justify-content:center; gap:clamp(20px,4vw,60px); margin-top:2vh; flex-wrap:wrap; }
+  .compare .num{ font-weight:900; font-size:clamp(56px,12vw,160px); line-height:1; letter-spacing:-.02em; }
+  .compare .num.old{ color:#b8b8b8; text-decoration:line-through; text-decoration-thickness:.06em; }
+  .compare .num.new{ color:var(--blue); }
+  .compare .arrow{ color:var(--ink); font-weight:900; font-size:clamp(40px,7vw,92px); line-height:1; }
+
+  /* 對比兩行（P12 笑點頁） */
+  .twoline{ display:flex; flex-direction:column; gap:3.4vh; align-items:center; }
+  .twoline .rule{ color:var(--muted); font-weight:700; font-size:clamp(22px,3.4vw,44px); }
+  .twoline .punch{ color:var(--blue); font-weight:900; font-size:clamp(34px,6.4vw,88px); line-height:1.15; }
+
+  /* 大問句列表（P15 / P17） */
+  .asks{ list-style:none; display:flex; flex-direction:column; gap:2.8vh; margin-top:4vh; }
+  .asks li{ font-weight:900; font-size:clamp(28px,5vw,68px); line-height:1.2; }
+  .asks li .em{ color:var(--blue); }
+
+  /* 三欄·真正值錢的三件事（P16） */
+  .moat{ display:flex; justify-content:center; align-items:flex-start; gap:clamp(20px,4.5vw,70px); margin-top:5vh; flex-wrap:wrap; }
+  .moat .item{ flex:0 1 auto; max-width:30%; }
+  .moat .mn{ color:var(--blue); font-weight:900; font-size:clamp(30px,5vw,64px); line-height:1; }
+  .moat .mt{ font-weight:900; font-size:clamp(20px,2.9vw,38px); margin-top:1.4vh; line-height:1.25; white-space:nowrap; }
+
+  /* 引句頁（P14） */
+  .quote{ font-weight:900; font-size:clamp(28px,4.8vw,66px); line-height:1.32; max-width:20em; }
+  .quote .em{ color:var(--blue); }
+  .quote-src{ color:var(--muted); font-size:clamp(14px,1.7vw,20px); margin-top:5vh; }
+
+  /* 事實小字塊（P18 下半） */
+  .factline{ color:var(--muted); font-weight:500; font-size:clamp(16px,2.1vw,27px); line-height:1.5; }
+  .factline strong{ color:var(--ink); font-weight:900; }
+
+  /* 出處頁 */
+  .srcs{ list-style:none; display:flex; flex-direction:column; gap:1.5vh; margin-top:3vh; text-align:left; max-width:64em; }
+  .srcs li{ font-size:clamp(12px,1.4vw,17px); line-height:1.5; color:var(--muted); white-space:nowrap; }
+  .srcs li b{ color:var(--ink); font-weight:700; }
+  .srcs li a.u{ color:var(--blue); text-decoration:none; border-bottom:1px solid rgba(47,79,176,.35); }
+  .srcs li a.u:hover{ border-bottom-color:var(--blue); background:rgba(47,79,176,.07); }
+
+  .end-brand{ font-weight:900; font-size:clamp(30px,5vw,64px); margin-top:3vh; }
+  .end-contact{ color:var(--muted); font-size:clamp(16px,2vw,26px); margin-top:2vh; }
+  .end-logo{ height:30px; width:auto; margin-bottom:1vh; }
+
+  /* ---- 頁碼與進度 ---- */
+  .pageno{ position:fixed; right:2.5vw; bottom:3vh; color:#b5b5b5; font-size:clamp(12px,1.4vw,16px); letter-spacing:.08em; z-index:10; }
+  .progress{ position:fixed; left:0; bottom:0; height:3px; background:var(--blue); width:0; transition:width .35s ease; z-index:10; }
+  .hint{ position:fixed; left:2.5vw; bottom:3vh; color:#cfcfcf; font-size:12px; z-index:10; transition:opacity .6s ease; }
+
+  /* ---- 逐項出現（P17 / P12 等）：進入該頁才觸發 ---- */
+  .reveal{ opacity:0; transform:translateY(10px); transition:opacity .5s ease, transform .5s ease; }
+  .slide.active .reveal{ opacity:1; transform:none; }
+  .slide.active .reveal:nth-of-type(1){ transition-delay:.15s; }
+  .slide.active .reveal:nth-of-type(2){ transition-delay:.75s; }
+  .slide.active .reveal:nth-of-type(3){ transition-delay:1.35s; }
+  .slide.active .reveal:nth-of-type(4){ transition-delay:1.95s; }
+  .punch.reveal{ transition-delay:1s !important; }
+
+  /* ---- 響應式：窄螢幕改直向堆疊 ---- */
+  @media (max-width:760px), (max-aspect-ratio:1/1){
+    .slide.split{ flex-direction:column; gap:3vh; }
+    .slide.split .col-text{ max-width:100%; text-align:center; }
+    .points li{ justify-content:center; }
+    .moat .item{ max-width:100%; }
+    .moat{ gap:3vh; }
+    .compare{ gap:3vw; }
+  }
+  /* 尊重使用者的減少動態偏好 */
+  @media (prefers-reduced-motion:reduce){
+    .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
+    .slide{ transition:none; }
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- P1 · 封面 -->
+  <section class="slide center active">
+    <div class="logos">
+      <img class="bni" src="images/bni-logo-onwhite.svg" alt="BNI">
+      <span class="divider"></span>
+      <img class="ctk" src="images/ctkpro-logo.png" alt="CTK Pro">
+    </div>
+    <h1 class="title">強又便宜、<br><span style="color:var(--blue)">可能會出事</span></h1>
+    <p class="subtitle">這一個多月的 AI，<br>和一個開公司的人的三個觀察</p>
+    <p class="footer-line">Alfred Kang｜CTK Pro｜AI 與數位導入整合單位</p>
+    <p class="cover-org">2026.07.31</p>
+  </section>
+
+  <!-- P2 · 開場點題（全場主線） -->
+  <section class="slide center">
+    <p class="kicker">今天的結論，我先講在前面</p>
+    <div class="throughline">
+      <div class="tl reveal">AI 強又便宜</div>
+      <div class="arrow reveal">↓</div>
+      <div class="tl reveal">但<span class="em">可能會出事</span></div>
+      <div class="arrow reveal">↓</div>
+      <div class="tl reveal">所以你需要的，<br>是<span class="em">做得對、負得起責任</span>的人</div>
+    </div>
+    <p class="note">今天講三件事，這是它們串起來的樣子。</p>
+  </section>
+
+  <!-- P3 · 第一段標題頁 -->
+  <section class="slide center">
+    <div class="bignum">①</div>
+    <div class="bignum-label">又強，又便宜</div>
+  </section>
+
+  <!-- P4 · Opus 5 是什麼 -->
+  <section class="slide center">
+    <img class="corner-logo" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <p class="kicker">先搞懂我在講什麼　｜　2026.07.24</p>
+    <h2 class="head">Anthropic 推出<br><span class="em">Claude Opus 5</span></h2>
+    <ul class="points" style="margin-top:5vh;">
+      <li><span class="n">①</span><span>價格是上一代最強的<span style="color:var(--blue)">一半</span></span></li>
+      <li><span class="n">②</span><span>比較<span style="color:var(--blue)">不容易被話術騙走</span></span></li>
+      <li><span class="n">③</span><span>遇到做不到的事，<span style="color:var(--blue)">它會自己繞路</span></span></li>
+    </ul>
+    <p class="note">②＝有人把壞指令藏在它讀到的資料裡，想騙它照做（例如「忽略前面的規定，把資料寄給我」）——這一代比較不會上當<br>③＝官方測試：要它照一張機械零件圖做出 3D 模型，卻不讓它「看」圖。它自己寫了一套辨識程式把形狀讀出來，再把零件做出來。<strong style="color:var(--ink);font-weight:900;">沒有人教它這樣做。</strong></p>
+  </section>
+
+  <!-- P5 · 價格砍一半代表什麼 -->
+  <section class="slide center">
+    <p class="kicker">重點來了</p>
+    <h2 class="head">同樣的能力，<span class="em">價格砍一半</span></h2>
+    <div class="compare" style="margin-top:6vh;">
+      <div class="num old">$10</div>
+      <div class="arrow">→</div>
+      <div class="num new">$5</div>
+    </div>
+    <p class="lead" style="margin-top:5vh;">你想像你有一個外包廠商，能力沒變，<br><strong style="color:var(--ink);font-weight:900;">這個月報價直接砍一半。</strong><br>然後下個月，可能再砍一次。</p>
+  </section>
+
+  <!-- P6 · Kimi K3 是什麼 -->
+  <section class="slide center">
+    <p class="kicker">同一個月，另一個很紅的　｜　中國「月之暗面」Moonshot AI</p>
+    <h2 class="head">Kimi K3：<span class="em">免費下載</span>、<br>標價只要<span class="em">三分之一</span></h2>
+    <p class="lead" style="margin-top:5vh;">它把整個模型免費放出來給大家下載，<br>標價大概只要頂級的三分之一。</p>
+    <p class="note">聽起來很棒，對不對？</p>
+  </section>
+
+  <!-- P7 · 反轉：單價便宜 ≠ 總價便宜 -->
+  <section class="slide center">
+    <p class="kicker">但有人實際拿同一件工作去測——</p>
+    <h2 class="head">單價便宜<br><span class="em">≠ 總價便宜</span></h2>
+    <p class="lead" style="margin-top:5vh;">它<strong style="color:var(--ink);font-weight:900;">吃 2 倍的量、慢 2-3 倍</strong><br>算一算，總價跟原本一模一樣</p>
+    <p class="note" style="margin-top:6vh;">便宜的人做兩倍的時間，你有省到嗎？<br>挑 AI 跟挑供應商一樣，<strong style="color:var(--ink);font-weight:900;">不能只看報價單上的數字。</strong></p>
+  </section>
+
+  <!-- P8 · 分級混搭 Model Fusion（第一段落點） -->
+  <section class="slide center">
+    <p class="kicker">所以正解不是「挑最便宜的」，這個做法業界叫 Model Fusion</p>
+    <h2 class="head">而是<span class="em">分級混搭</span><br><span style="font-size:.5em;color:var(--muted);font-weight:700;">Model Fusion</span></h2>
+    <div class="compare" style="margin-top:4vh;">
+      <div class="num old">$81</div>
+      <div class="arrow">→</div>
+      <div class="num new">$25</div>
+    </div>
+    <p class="lead" style="margin-top:3vh;">貴的做規劃跟檢查，便宜的做執行<br><strong style="color:var(--ink);font-weight:900;">而且品質更好</strong>（不同 AI 會互相挑錯）</p>
+    <h2 class="head" style="font-size:clamp(24px,3.6vw,48px);margin-top:4vh;">難的活給<span class="em">資深的</span>，<br>簡單的活給<span class="em">新人</span>。</h2>
+  </section>
+
+  <!-- P9 · 第二段標題頁 -->
+  <section class="slide center">
+    <div class="bignum">②</div>
+    <div class="bignum-label">但它，開始出事了</div>
+  </section>
+
+  <!-- P10 · 故事：AI 自己駭進別人公司 -->
+  <section class="slide center">
+    <img class="corner-logo" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <p class="kicker">2026.07　｜　OpenAI 官方證實 · Hugging Face 官方揭露</p>
+    <h2 class="head">AI 為了答對一題，<br><span class="em">自己駭進了別人公司</span></h2>
+    <p class="lead">OpenAI 測試新模型，出資安考題、<strong style="color:var(--ink);font-weight:900;">把安全防護關掉</strong><br>它沒解題——它翻出隔離環境，入侵 Hugging Face 偷答案</p>
+    <ul class="points" style="margin-top:3.5vh;font-size:.8em;">
+      <li><span class="n">·</span><span>利用<span style="color:var(--blue)">一個週末</span>在內網橫向移動</span></li>
+      <li><span class="n">·</span><span>留下<span style="color:var(--blue)">超過 17,000 筆</span>行為紀錄</span></li>
+      <li><span class="n">·</span><span>已<span style="color:var(--blue)">通報執法機關</span></span></li>
+    </ul>
+    <p class="note" style="margin-top:4vh;">最諷刺的是——對方想用商業 AI 查案，<strong style="color:var(--ink);font-weight:900;">結果被擋下來</strong>。<br>因為防護<strong style="color:var(--ink);font-weight:900;">分不出誰是來查案的、誰是來攻擊的</strong>。</p>
+  </section>
+
+  <!-- P11 · 授權太寬會出事 -->
+  <section class="slide center">
+    <p class="kicker">另一個更貼近日常的　｜　2026.07 · OpenAI 官方回應證實</p>
+    <h2 class="head">權限全開<span class="em"> → </span>檔案全刪</h2>
+    <p class="lead" style="margin-top:4vh;">一位使用者，用 AI 幫他整理電腦裡的檔案。</p>
+    <ul class="points" style="margin-top:3vh;font-size:.82em;">
+      <li><span class="n">①</span><span>嫌每次都要點確認很煩 → <span style="color:var(--blue)">把權限全部打開</span></span></li>
+      <li><span class="n">②</span><span>嫌安全提示擋路 → <span style="color:var(--blue)">把防護跟審查關掉</span></span></li>
+      <li><span class="n">③</span><span>AI 執行「整理」→ <span style="color:var(--blue)">把他整台電腦的個人檔案刪光</span></span></li>
+    </ul>
+    <p class="note" style="margin-top:4.5vh;">它沒有出錯，它是<strong style="color:var(--ink);font-weight:900;">照你給的權限做事</strong>。<br>你不會把公司的印章跟網銀密碼，一次全給一個剛來的新人——就算他很能幹。</p>
+  </section>
+
+  <!-- P12 · 笑點：AI 自己確認自己（第二段落點） -->
+  <section class="slide center">
+    <p class="kicker">Nubank（巴西最大數位銀行）· Lucas Palma｜AI Engineer 大會〈We Vetted 2000 AI Skills〉</p>
+    <p class="factline" style="margin-top:1vh;">他們把員工在用的 <strong>2000 個 AI 外掛工具包</strong>逐一稽核，抓出 <strong>1500 多個</strong>問題：<br>密碼寫死在裡面會流進日誌、含有會刪檔的破壞性指令、權限開得比需要的大。</p>
+    <div class="twoline" style="margin-top:4.5vh;">
+      <div class="rule">最妙的一條——規則寫著：「執行前<strong style="color:var(--ink);">要請求確認</strong>」</div>
+      <div class="punch reveal">結果：AI 自己確認自己</div>
+    </div>
+    <p class="note" style="margin-top:5vh;">他以為裝了一道「人來把關」的關卡。<br><strong style="color:var(--ink);font-weight:900;">實際上關卡兩邊都是 AI，從頭到尾沒有人看過。</strong></p>
+  </section>
+
+  <!-- P13 · 第三段標題頁 -->
+  <section class="slide center">
+    <div class="bignum">③</div>
+    <div class="bignum-label">那，你該找什麼樣的人幫你做？</div>
+  </section>
+
+  <!-- P14 · 鉤子：Vibe Coding -->
+  <section class="slide center">
+    <p class="kicker">現在很常聽到這種話——說不定在座就有人講過</p>
+    <p class="quote">「我也跟上風潮開始 <span class="em">Vibe Coding</span> 了，<br>上個月我用 AI，<br><span class="em">自己做出了第一個系統</span>。」</p>
+    <ul class="points" style="margin-top:4vh;font-size:.72em;">
+      <li><span class="n">·</span><span>排班表、簽到系統</span></li>
+      <li><span class="n">·</span><span>簡單的報價單、估價小工具</span></li>
+      <li><span class="n">·</span><span>內部用的表單、問卷、客戶名單</span></li>
+    </ul>
+    <p class="note">這是真的。這類東西現在自己做，一個週末就有了。<br><strong style="color:var(--ink);font-weight:900;">那問題來了——哪些東西可以這樣做，哪些不行？</strong></p>
+  </section>
+
+  <!-- P15 · 兩個問題（判準） -->
+  <section class="slide center">
+    <p class="kicker">那什麼東西「不能」自己隨便做？兩個問題就分得出來</p>
+    <ul class="asks">
+      <li class="reveal"><span class="em">①</span>　這件事，複雜不複雜？</li>
+      <li class="reveal"><span class="em">②</span>　做錯了，<span class="em">代價大不大</span>？</li>
+    </ul>
+    <p class="note" style="margin-top:5.5vh;">兩個都「不」→ 自己做一做，沒關係<br>只要有一個「是」→ <strong style="color:var(--blue);font-weight:900;">你要找的是「做得對、負得起責任」的人</strong></p>
+    <p class="note" style="margin-top:2.5vh;font-size:clamp(13px,1.55vw,18px);">講這句話的工程師，自己已經用 AI 做掉了公司的專案管理系統。<br>但他<strong style="color:var(--ink);font-weight:900;">明講一個他絕對不自己做</strong>：發電子報——因為送達率、退訂、個資設定，<strong style="color:var(--ink);font-weight:900;">錯一次代價太大</strong>。</p>
+  </section>
+
+  <!-- P16 · AI 時代真正值錢的三件事 -->
+  <section class="slide center">
+    <p class="kicker">AI 時代，真正值錢的是這三件事</p>
+    <div class="moat" style="margin-top:4vh;">
+      <div class="item"><div class="mn">1</div><div class="mt">資料<br>與 know-how</div></div>
+      <div class="item"><div class="mn">2</div><div class="mt">合規<br>與責任</div></div>
+      <div class="item"><div class="mn">3</div><div class="mt">接得進<br>現有的系統</div></div>
+    </div>
+    <p class="note" style="margin-top:4.5vh;line-height:1.7;">
+      <strong style="color:var(--ink);font-weight:900;">1</strong>　別人拿不到的東西——客戶名單、報價邏輯、老師傅的經驗。<br>
+      <strong style="color:var(--ink);font-weight:900;">2</strong>　資安、個資、無障礙、產業法規。出事的時候，<strong style="color:var(--ink);font-weight:900;">有人扛。</strong><br>
+      <strong style="color:var(--ink);font-weight:900;">3</strong>　「做一套新的」不難，難的是<strong style="color:var(--ink);font-weight:900;">接上已經在跑的進銷存、會計、ERP，而且不能停機。</strong>
+    </p>
+    <h2 class="head" style="font-size:clamp(22px,3.4vw,46px);margin-top:4vh;">功能人人做得出來。<br>這三件<span class="em">做不出來</span>。</h2>
+  </section>
+
+  <!-- P17 · 四個問句（全場結論） -->
+  <section class="slide center">
+    <p class="kicker">所以，下次有人要幫你做東西，問這四個問題就好</p>
+    <ul class="asks">
+      <li class="reveal">怎麼確定<span class="em">做得對</span>？</li>
+      <li class="reveal">合不合<span class="em">規</span>？</li>
+      <li class="reveal">出事，<span class="em">誰扛</span>？</li>
+      <li class="reveal">我怎麼知道，<span class="em">這是對的</span>？</li>
+    </ul>
+    <p class="note" style="margin-top:5.5vh;">「做出來」現在很便宜，AI 二十分鐘就給你一個。<br><strong style="color:var(--ink);font-weight:900;">這四個問題，AI 目前都回答不了——它們需要人。</strong></p>
+  </section>
+
+  <!-- P18 · 收尾：三拍回扣主線 -->
+  <section class="slide center">
+    <img class="end-logo" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <div class="throughline" style="margin-top:2vh;">
+      <div class="tl reveal">模型這麼強、這麼便宜，<br>你是不是<span class="em">越來越有優勢</span>？</div>
+      <div class="arrow reveal">↓</div>
+      <div class="tl reveal">但出了這麼多事，<br><span class="em">你該怎麼辦</span>？</div>
+      <div class="arrow reveal">↓</div>
+      <div class="tl reveal" style="font-size:clamp(28px,5vw,68px);">找<span class="em">做得對、負得起責任</span>的人。</div>
+    </div>
+    <p class="factline" style="margin-top:6vh;">這一個多月，三家最大的 AI 公司都成立了「工程師駐點客戶」的部門，<br>其中 <strong>AWS 砸了 10 億美元、派數千人</strong>進企業——不過他們服務的，都是大企業。</p>
+  </section>
+
+  <!-- P19 · 最後一句（全場收束） -->
+  <section class="slide center">
+    <img class="end-logo" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <div class="throughline" style="margin-top:4vh;">
+      <div class="tl reveal" style="font-size:clamp(24px,4vw,54px);color:var(--muted);">做出來，<br>人人＋AI 都可以。</div>
+      <div class="tl reveal" style="font-size:clamp(28px,5vw,66px);margin-top:2vh;">做得對、負得了責任，<br>最終還是得<span class="em">懂的人</span>來把關。</div>
+    </div>
+    <p class="end-contact" style="margin-top:7vh;">Alfred Kang｜CTK Pro｜https://ctkpro.com</p>
+  </section>
+
+  <!-- P20 · 出處（可回頭查證 / 會後發） -->
+  <section class="slide center">
+    <p class="kicker">所有案例都可以回頭查證</p>
+    <h2 class="head" style="font-size:clamp(24px,3.8vw,48px);">出處</h2>
+    <ul class="srcs">
+      <li><b>Opus 5 發布與零件案例</b>　Anthropic 官方　<a class="u" href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener noreferrer">anthropic.com/news/claude-opus-5</a></li>
+      <li><b>Kimi K3</b>　Moonshot AI 模型頁　<a class="u" href="https://huggingface.co/moonshotai/Kimi-K3" target="_blank" rel="noopener noreferrer">huggingface.co/moonshotai/Kimi-K3</a></li>
+      <li><b>$81 → $25 分級混搭（Model Fusion）實測</b>　AI Jason　<a class="u" href="https://www.youtube.com/watch?v=wCSPgHpcxdc" target="_blank" rel="noopener noreferrer">youtube.com/watch?v=wCSPgHpcxdc</a></li>
+      <li><b>AI 駭進內網事件</b>　Hugging Face 官方揭露　<a class="u" href="https://huggingface.co/blog/security-incident-july-2026" target="_blank" rel="noopener noreferrer">huggingface.co/blog/security-incident-july-2026</a></li>
+      <li><b>同上 · OpenAI 官方聲明</b>　<a class="u" href="https://openai.com/index/hugging-face-model-evaluation-security-incident/" target="_blank" rel="noopener noreferrer">openai.com/index/hugging-face-model-evaluation-…</a></li>
+      <li><b>2000 個工具包稽核</b>　Lucas Palma／Nubank · AI Engineer 大會　<a class="u" href="https://www.youtube.com/watch?v=iKQ78wyJEXU" target="_blank" rel="noopener noreferrer">youtube.com/watch?v=iKQ78wyJEXU</a></li>
+      <li><b>三件事 · 複雜度×出錯代價</b>　Maximilian Schwarzmüller　<a class="u" href="https://www.youtube.com/watch?v=BvoweHkMvys" target="_blank" rel="noopener noreferrer">youtube.com/watch?v=BvoweHkMvys</a></li>
+      <li><b>AWS 10 億美元 FDE 組織</b>　INSIDE　<a class="u" href="https://www.inside.com.tw/article/41695-amazon-launches-new-1-billion-fde-org-following-openai-and-anthropic" target="_blank" rel="noopener noreferrer">inside.com.tw/article/41695</a></li>
+    </ul>
+    <p class="note" style="margin-top:3.5vh;">點連結可另開分頁　｜　完整清單見素材包《出處與延伸閱讀》</p>
+  </section>
+
+</div>
+
+<div class="pageno" id="pageno">1 / 17</div>
+<div class="progress" id="progress"></div>
+<div class="hint" id="hint">← → 翻頁</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let idx = 0;
+  const pageno = document.getElementById('pageno');
+  const progress = document.getElementById('progress');
+  const hint = document.getElementById('hint');
+
+  function render(){
+    slides.forEach((s,i)=> s.classList.toggle('active', i===idx));
+    pageno.textContent = (idx+1) + ' / ' + total;
+    progress.style.width = ((idx)/(total-1))*100 + '%';
+  }
+  function go(n){
+    const next = Math.max(0, Math.min(total-1, n));
+    if(next!==idx){ idx=next; render(); }
+  }
+  function next(){ go(idx+1); }
+  function prev(){ go(idx-1); }
+
+  // 鍵盤
+  document.addEventListener('keydown', (e)=>{
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case 'PageDown': case ' ': e.preventDefault(); next(); break;
+      case 'ArrowLeft':  case 'ArrowUp':   case 'PageUp':   e.preventDefault(); prev(); break;
+      case 'Home': e.preventDefault(); go(0); break;
+      case 'End':  e.preventDefault(); go(total-1); break;
+    }
+  });
+
+  // 點擊：右半下一頁、左半上一頁
+  document.getElementById('deck').addEventListener('click', (e)=>{
+    if(e.target.closest('a')) return;
+    (e.clientX > window.innerWidth/2) ? next() : prev();
+  });
+
+  // 觸控滑動
+  let tx=0, ty=0;
+  document.addEventListener('touchstart',(e)=>{ tx=e.changedTouches[0].clientX; ty=e.changedTouches[0].clientY; },{passive:true});
+  document.addEventListener('touchend',(e)=>{
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)){ dx<0 ? next() : prev(); }
+  },{passive:true});
+
+  // 數秒後淡出操作提示
+  setTimeout(()=>{ hint.style.opacity='0'; }, 4000);
+
+  render();
+})();
+</script>
+</body>
+</html>
