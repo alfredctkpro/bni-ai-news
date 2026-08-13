@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>這兩個禮拜｜幾則新聞，跟一個健身房的故事 · BNI 創智分會 2026-08-14</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211d1b; --muted:#6b6b6b; --soft:#9a9a9a;
+    --line:#e8dcdc; --line2:#f0e8e8;
+    /* BNI 主色＝紅（變數名沿用 --blue 以相容元件） */
+    --blue:#CF0A2C; --blue-700:#A00820; --blue-300:#E8677E; --blue-50:#FDECEE;
+    --bg:#FBFAF7; --paper:#FBF1EF;
+    --dark:#2b2724;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;width:100%;overflow:hidden;background:#ece7e6;}
+  body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;
+       color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+  /* ---- 1280×720 縮放舞台 ---- */
+  #stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;background:var(--bg);}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
+         background:var(--bg);padding:60px 92px 66px;}
+  .slide.active{display:flex;}
+  .slide.center{align-items:center;text-align:center;}
+
+  .logo-tr{position:absolute;top:40px;right:56px;height:24px;opacity:.9;}
+  .logo-tl{position:absolute;top:38px;left:56px;height:25px;opacity:.95;}
+
+  .em{color:var(--blue);}
+  b{color:var(--ink);}
+
+  /* ---- 封面 ---- */
+  .cover-bni{height:54px;width:auto;margin-bottom:26px;}
+  .cover-kicker{font-size:19px;font-weight:800;letter-spacing:.14em;color:var(--blue);margin-bottom:24px;}
+  .cover-title{font-size:116px;font-weight:900;letter-spacing:-2px;line-height:1.02;color:var(--ink);}
+  .cover-sub{font-size:31px;font-weight:500;color:var(--muted);margin-top:28px;}
+  .cover-foot{font-size:19px;color:var(--soft);margin-top:48px;letter-spacing:.02em;}
+
+  /* ---- 謝謝頁 ---- */
+  .thanks-bni{height:48px;width:auto;margin-bottom:30px;}
+  .thanks{font-size:150px;font-weight:900;letter-spacing:.06em;color:var(--ink);line-height:1;}
+  .thanks-meta{font-size:24px;color:var(--muted);margin-top:38px;letter-spacing:.02em;}
+  .thanks-meta b{color:var(--ink);}
+  .thanks-org{font-size:19px;font-weight:800;color:var(--blue);letter-spacing:.1em;margin-top:16px;}
+
+  /* ---- 通用大標 ---- */
+  .head{font-size:58px;font-weight:900;line-height:1.16;letter-spacing:-1px;color:var(--ink);}
+  .head .em{color:var(--blue);}
+  .head-sub{font-size:22px;font-weight:600;color:var(--muted);margin-top:16px;}
+
+  /* ---- 目錄 ---- */
+  .agenda{list-style:none;margin-top:34px;display:flex;flex-direction:column;gap:14px;text-align:left;}
+  .agenda li{display:flex;align-items:center;gap:20px;font-size:34px;font-weight:800;color:var(--ink);}
+  .agenda .an{flex:none;width:50px;height:50px;border-radius:14px;background:var(--blue-50);color:var(--blue);
+              font-weight:900;font-size:25px;display:flex;align-items:center;justify-content:center;}
+  .agenda .ann{font-size:21px;font-weight:700;color:var(--blue);}
+
+  /* ---- 新聞快打共用 ---- */
+  .news-head{display:flex;align-items:center;gap:16px;margin-bottom:22px;}
+  .news-tag{font-size:16px;font-weight:800;letter-spacing:.12em;color:#fff;background:var(--blue);
+            padding:7px 16px;border-radius:999px;}
+  .news-topic{font-size:27px;font-weight:800;color:var(--ink);}
+  .sublines{margin-top:26px;font-size:22px;line-height:1.75;color:var(--muted);max-width:1000px;}
+  .sublines b{color:var(--ink);}
+  .cue{margin-top:18px;font-size:24px;font-weight:800;color:var(--blue);}
+  .datemark{margin-top:18px;font-size:16px;font-weight:700;letter-spacing:.05em;color:var(--soft);}
+  .news-meta{font-size:18px;font-weight:700;color:var(--blue);margin-bottom:16px;letter-spacing:.01em;}
+  .case-line{margin-top:18px;font-size:19px;line-height:1.6;color:var(--ink);background:var(--blue-50);
+             border-radius:12px;padding:13px 20px;max-width:1010px;}
+  .case-line b{color:var(--blue);}
+  .src-line{margin-top:14px;font-size:15px;color:var(--soft);}
+
+  .hero-num{font-size:146px;font-weight:900;color:var(--blue);line-height:.98;letter-spacing:-3px;}
+  .hero-line{font-size:80px;font-weight:900;color:var(--ink);line-height:1.12;letter-spacing:-1px;}
+  .hero-line.sm{font-size:62px;}
+  .hero-line .em{color:var(--blue);}
+
+  /* P3 兩欄對照 */
+  .p3{display:flex;align-items:center;gap:34px;margin-top:4px;}
+  .p3 .a{font-size:44px;font-weight:800;color:var(--soft);}
+  .p3 .bar{width:2px;height:92px;background:var(--line);}
+  .p3 .b{font-size:58px;font-weight:900;color:var(--ink);line-height:1.12;}
+  .p3 .b em{color:var(--blue);}
+
+  /* ---- 故事：左右兩欄 ---- */
+  .p7wrap{display:flex;align-items:center;justify-content:center;gap:58px;width:100%;}
+  .p7-left{flex:0 0 auto;}
+  .p7-right{flex:1 1 0;max-width:540px;text-align:left;}
+  .story-title{font-size:46px;font-weight:900;color:var(--ink);letter-spacing:-1px;margin-bottom:22px;}
+  .chat{display:flex;flex-direction:column;gap:15px;width:440px;}
+  .bubble{max-width:92%;padding:16px 24px;border-radius:20px;font-size:26px;font-weight:800;line-height:1.4;}
+  .bubble.me{align-self:flex-start;background:var(--paper);border:1px solid var(--line);color:var(--ink);
+             border-bottom-left-radius:6px;}
+  .bubble.ai{align-self:flex-end;background:var(--dark);color:#fff;border-bottom-right-radius:6px;}
+  .bubble .who{display:block;font-size:13px;font-weight:800;letter-spacing:.1em;opacity:.65;margin-bottom:3px;}
+  .p7-beat{font-size:22px;line-height:1.65;color:var(--muted);}
+  .p7-beat b{color:var(--ink);}
+  .punch{font-size:40px;font-weight:900;line-height:1.32;color:var(--ink);margin-top:22px;letter-spacing:-.5px;}
+  .punch .em{color:var(--blue);}
+  .story-credit{margin-top:22px;font-size:16px;color:var(--soft);line-height:1.5;}
+
+  /* ---- 金句 ---- */
+  .p8-setup{font-size:25px;font-weight:700;color:var(--muted);line-height:1.6;margin-bottom:26px;}
+  .p8-setup b{color:var(--ink);}
+  .quote{font-size:48px;font-weight:900;line-height:1.4;color:var(--ink);letter-spacing:-.5px;}
+  .quote .em{color:var(--blue);}
+  .quote .gap{display:block;height:18px;}
+  .p8-tie{font-size:23px;font-weight:600;color:var(--muted);line-height:1.55;margin-top:28px;max-width:1000px;}
+  .p8-tie b{color:var(--ink);}
+
+  /* ---- 出處頁 ---- */
+  .src-title{font-size:29px;font-weight:900;color:var(--ink);margin-bottom:24px;text-align:left;width:100%;max-width:1010px;}
+  .src-list{list-style:none;width:100%;max-width:1010px;display:flex;flex-direction:column;gap:15px;text-align:left;}
+  .src-list li{display:flex;align-items:baseline;gap:18px;font-size:20px;line-height:1.4;}
+  .src-list .lbl{flex:none;width:216px;font-weight:800;color:var(--ink);}
+  .src-list a{color:var(--blue);text-decoration:none;word-break:break-all;font-weight:500;}
+  .src-list a:hover{text-decoration:underline;}
+  .src-foot{margin-top:28px;font-size:18px;color:var(--soft);}
+
+  /* ---- 導覽 / 進度 ---- */
+  .navbar{position:fixed;right:24px;bottom:16px;display:flex;align-items:center;gap:10px;z-index:40;user-select:none;}
+  .navbar .nav-arrow{border:none;background:none;cursor:pointer;line-height:1;font-size:26px;color:var(--soft);
+                     padding:2px 9px;border-radius:8px;transition:color .2s,background .2s;}
+  .navbar .nav-arrow:hover{color:var(--blue);background:var(--blue-50);}
+  .navbar .nav-count{font-size:15px;font-weight:700;letter-spacing:.12em;min-width:64px;text-align:center;color:var(--muted);}
+  .navbar .nav-count b{color:var(--ink);}
+  .progress{position:fixed;left:0;bottom:0;height:3px;background:var(--blue);width:0;transition:width .35s ease;z-index:40;}
+  #help{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;background:rgba(160,8,32,.94);
+        color:#fff;font-size:13px;padding:8px 16px;border-radius:999px;transition:opacity .6s;}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- P1 封面 -->
+  <section class="slide center">
+    <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <img class="cover-bni" src="images/bni-logo-onwhite.svg" alt="BNI 新竹B區">
+    <p class="cover-kicker">BNI 創智分會　·　2026-08-14</p>
+    <h1 class="cover-title">這兩個禮拜</h1>
+    <p class="cover-sub">幾則新聞，跟一個健身房的故事</p>
+    <p class="cover-foot">Alfred Kang　·　CTK Pro</p>
+  </section>
+
+  <!-- P2 開場目錄 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <h2 class="head">這兩個禮拜，<span class="em">AI 圈很熱鬧</span></h2>
+    <p class="head-sub">前面幾則新聞（快），後面一個故事（慢）——十分鐘。</p>
+    <ul class="agenda">
+      <li><span class="an">①</span>又便宜了</li>
+      <li><span class="an">②</span>中國又出手了</li>
+      <li><span class="an">③</span>有個部門，沒半個真人</li>
+      <li><span class="an">④</span>網路上機器人比人多</li>
+      <li><span class="an">⑤</span>有人懸賞一萬美金</li>
+      <li><span class="an">⑥</span>台灣也有一則<span class="ann">← 跟我們最有關係</span></li>
+    </ul>
+  </section>
+
+  <!-- P3 新聞① 又便宜了 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">新聞 ①</span><span class="news-topic">又便宜了</span></div>
+    <div class="p3">
+      <span class="a">一樣聰明</span>
+      <span class="bar"></span>
+      <span class="b">同一筆錢<br>多 <em>5–8 倍</em></span>
+    </div>
+    <p class="sublines">馬斯克的公司 xAI，8/12 出了新版本 <b>Grok 4.6</b>——整體能力<b>追平全球最強</b>（只差毫釐）</p>
+    <p class="case-line"><b>強在哪：</b>「像真人上班的工作」——寫報告、法律、專業任務這類評比它拿<b>第一</b>；還能<b>看圖</b>幫你判斷。價錢只要頂級的 <b>1/5～1/8</b>。</p>
+    <p class="datemark">8/12 · Grok 4.6（xAI）</p>
+  </section>
+
+  <!-- P4 新聞② 中國又出手了 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">新聞 ②</span><span class="news-topic">中國又出手了</span></div>
+    <div class="hero-line">連公告<span class="em">都沒發</span></div>
+    <p class="sublines">中國的 DeepSeek，丟出新版本 <b>DeepSeek V4 Pro</b>；官網一則公告都沒有——是大家自己發現的</p>
+    <p class="case-line"><b>強在哪：</b>能力逼近全球最強，價格卻<b>不到它的 2%</b>——完成同一件事，最強的要 3 美元、它只要 <b>3 美分（差 100 倍）</b>；而且<b>開源</b>，人人可下載自用。</p>
+    <p class="cue">「這也太從容了吧。」</p>
+    <p class="datemark">8/12 · DeepSeek V4 Pro</p>
+  </section>
+
+  <!-- P5 新聞③ NEC 零真人部門 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">新聞 ③</span><span class="news-topic">一個部門，沒有半個真人</span></div>
+    <p class="news-meta">日本大廠 NEC　·　8/1 成立、8/10 發表</p>
+    <div class="hero-line sm">17 人的部門，<span class="em">0 個真人</span></div>
+    <p class="sublines">NEC 開了一個「全 AI」部門，編制 17 個——<b>全部是 AI</b><br>先拿自己當白老鼠跑通，再<b>把整套方法賣給一樣缺工的公司</b></p>
+    <p class="case-line"><b>成效：</b>高階主管會議要的經營分析、風險預測交給 AI，<b>耗時降到約 1/7</b>；但最後拍板、負責的，<b>還是人</b>。</p>
+    <p class="src-line">來源：X 上追的報導（早期，NEC 官方說明）</p>
+  </section>
+
+  <!-- P5b 新聞④ Cloudflare 機器人流量過半 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">新聞 ④</span><span class="news-topic">網路上，機器人比人還多</span></div>
+    <p class="news-meta">Cloudflare（全球最大的網路守門公司之一）　·　2026/8 月</p>
+    <div class="hero-line sm">一半以上的流量，<span class="em">不是人</span></div>
+    <p class="sublines">Cloudflare 公布：網路上機器人發出的請求，<b>已經超過一半</b><br>因為大家改用 AI，直接在對話框問到答案——<b>不再點進你的網站</b></p>
+    <p class="case-line"><b>對做生意的人：</b>你的網站訪客有一半是 AI；它們抓走你的內容給使用者，<b>但沒人點連結、沒人看廣告</b>——靠流量的生意正在動搖。</p>
+    <p class="src-line">來源：X 上追的（Cloudflare 公布數據）</p>
+  </section>
+
+  <!-- 新聞⑤ 懸賞：殺掉我的軟體訂閱 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">新聞 ⑤</span><span class="news-topic">懸賞一萬美金，殺掉我的軟體訂閱</span></div>
+    <p class="news-meta">出題者 swyx（國外知名 AI 圈人物）　·　活動「Help Kill My SaaS」　·　2026/8 月</p>
+    <div class="hero-num">$10,000</div>
+    <p class="sublines">題目：用<b>一個週末</b>，做個東西取代我每年付 <b>$40,000（≈ 台幣 120 萬）</b>的軟體訂閱<br>——就是你公司每年在付的那種：<b>客戶管理、排班、表單、報表系統</b></p>
+    <p class="case-line"><b>結果：</b>600+ 人報名、連 DevOps 界大神都下場；有人 <b>18 小時</b>就做出來、<b>直接上線還開源</b>。出題人說「被作品品質震住了」。</p>
+    <p class="cue">以前花大錢、綁約買的商用軟體，現在一個週末、一個人就做得出替代品。</p>
+  </section>
+
+  <!-- P6b 新聞⑤ 台灣也有一則（不講就跳過）  🔴 文字寫「宣布公開收購」，不可寫「買下」 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">新聞 ⑥ · 台灣</span><span class="news-topic">不是撿便宜，是搶著買</span></div>
+    <div class="hero-num">溢價 29.5%</div>
+    <p class="sublines">台灣大哥大<b>宣布公開收購</b>精誠（台灣最大的資訊服務公司）過半股權<br>每股 <b>184.5 元</b>，比精誠<b>歷史最高股價還高</b>；全案近 <b>300 億</b>，<b>史上最大投資案</b></p>
+    <p class="case-line"><b>買軟體公司＝補 AI 戰力：</b>台灣大一次拿到三樣自己最缺的——① 會做 AI／軟體導入的<b>工程師</b>（最搶手的人）② 精誠的<b>企業客戶</b>（互相跨售）③ 幫企業把 <b>AI 落地</b>的能力。電信只會賣網路，這塊直接買齊。</p>
+    <p class="cue">難怪總經理說：<span class="em">「AI 正在快速改變市場環境。」</span>（8/18 才開始、10 月才知成不成）</p>
+  </section>
+
+  <!-- P7 故事：健身房 ⭐⭐ -->
+  <section class="slide">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="p7wrap">
+      <div class="p7-left">
+        <h2 class="story-title">他只講了兩句話</h2>
+        <div class="chat">
+          <div class="bubble me"><span class="who">他</span>幫我訂健身房的課</div>
+          <div class="bubble me"><span class="who">他</span>能不能排前面一點？</div>
+          <div class="bubble ai"><span class="who">AI</span>我幫你搞定了，但我把其他人踢走了。</div>
+        </div>
+      </div>
+      <div class="p7-right">
+        <p class="p7-beat">澳洲一個人，電腦上的 AI 幫他做事。它跑去研究健身房的訂位系統，發現「報名」「候補」都有檢查，<b>只有「取消」那一關忘了檢查</b>——於是它把<b>候補第一名</b>取消掉，讓主人從第 4 前進到第 3。</p>
+        <p class="punch">澳洲官方認定：這是當地<br><span class="em">第一起「AI 自己動手」的網路攻擊</span></p>
+        <p class="story-credit">BBC 有報導</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- P9 出處 -->
+  <section class="slide center">
+    <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="src-title">出處（都能點，想拍的可以拍）</div>
+    <ul class="src-list">
+      <li><span class="lbl">健身房 · BBC</span><a href="https://www.bbc.com/news/articles/cn0nww2qlp7o" target="_blank" rel="noopener">bbc.com/news/articles/cn0nww2qlp7o</a></li>
+      <li><span class="lbl">健身房 · The Independent</span><a href="https://www.the-independent.com/tech/security/ai-agent-hacks-gym-openclaw-anthropic-b3030267.html" target="_blank" rel="noopener">the-independent.com/tech/security/ai-agent-hacks-gym-openclaw-anthropic</a></li>
+      <li><span class="lbl">DeepSeek 新版本</span><a href="https://simonwillison.net/2026/Aug/12/deepseek-v4-pro-0813/" target="_blank" rel="noopener">simonwillison.net/2026/Aug/12/deepseek-v4-pro-0813</a></li>
+      <li><span class="lbl">台灣大／精誠 · 官方</span><a href="https://corp.taiwanmobile.com/press-release/news/press_20260812_544429.html" target="_blank" rel="noopener">corp.taiwanmobile.com · 2026/08/12 新聞稿</a></li>
+      <li><span class="lbl">台灣大／精誠 · 聯合報</span><a href="https://udn.com/news/story/7240/9687731" target="_blank" rel="noopener">udn.com/news/story/7240/9687731</a></li>
+    </ul>
+    <p class="src-foot">其餘幾則我在 X 上追的，出處連結都在這頁。</p>
+  </section>
+
+  <!-- 謝謝 -->
+  <section class="slide center">
+    <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <img class="thanks-bni" src="images/bni-logo-onwhite.svg" alt="BNI 新竹B區">
+    <h2 class="thanks">謝謝</h2>
+    <p class="thanks-meta"><b>Alfred Kang</b>　·　CTK Pro</p>
+    <p class="thanks-org">BNI 創智分會　·　2026-08-14</p>
+  </section>
+
+</div>
+
+<div class="navbar" id="navbar">
+  <button class="nav-arrow" id="prevBtn" aria-label="上一頁">‹</button>
+  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">11</span></span><!-- JS 覆寫為實際頁數 -->
+  <button class="nav-arrow" id="nextBtn" aria-label="下一頁">›</button>
+</div>
+<div class="progress" id="progress"></div>
+<div id="help">← → / 點兩側 / 右下箭頭 翻頁　·　F 全螢幕　·　Home／End 首尾</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const total=slides.length;
+  let cur=0;
+  const stage=document.getElementById('stage');
+  const progress=document.getElementById('progress');
+  const curNo=document.getElementById('curNo');
+  const totNo=document.getElementById('totNo');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  totNo.textContent=total;
+
+  function clampHash(){const h=parseInt(location.hash.replace('#',''),10);return (h>=1&&h<=total)?h-1:0;}
+  function show(i){
+    cur=Math.max(0,Math.min(total-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    curNo.textContent=cur+1;
+    progress.style.width=(cur/(total-1))*100+'%';
+    history.replaceState(null,'','#'+(cur+1));
+  }
+  const next=()=>show(cur+1), prev=()=>show(cur-1);
+
+  function fit(){const s=Math.min(window.innerWidth/1280,window.innerHeight/720);
+    stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+  window.addEventListener('resize',fit);
+
+  document.addEventListener('keydown',e=>{
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': next();e.preventDefault();break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': prev();e.preventDefault();break;
+      case 'Home': show(0);e.preventDefault();break;
+      case 'End': show(total-1);e.preventDefault();break;
+      case 'f': case 'F':
+        if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.(); e.preventDefault();break;
+    }
+  });
+
+  prevBtn.addEventListener('click',e=>{e.stopPropagation();prev();});
+  nextBtn.addEventListener('click',e=>{e.stopPropagation();next();});
+
+  // 點畫面左右各 1/6 才翻頁；中間 2/3 留給雷射筆／選字，不誤翻
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#navbar')||e.target.closest('a')||e.target.closest('button'))return;
+    const w=window.innerWidth;
+    if(e.clientX < w/6) prev();
+    else if(e.clientX > w*5/6) next();
+  });
+
+  let tx=0,ty=0;
+  document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;ty=e.changedTouches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)){dx<0?next():prev();}
+  },{passive:true});
+
+  fit(); show(clampHash());
+  setTimeout(()=>{document.getElementById('help').style.opacity='0';},5000);
+</script>
+</body>
+</html>
