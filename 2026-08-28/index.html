@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>組一個隊，先想清楚自己 · BNI 創智分會 2026-08-28</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211d1b; --muted:#6b6b6b; --soft:#9a9a9a;
+    --line:#e8dcdc; --line2:#f0e8e8;
+    /* BNI 主色＝紅（變數名沿用 --blue 以相容元件） */
+    --blue:#CF0A2C; --blue-700:#A00820; --blue-300:#E8677E; --blue-50:#FDECEE;
+    --bg:#FBFAF7; --paper:#FBF1EF;
+    --dark:#2b2724;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;width:100%;overflow:hidden;background:#ece7e6;}
+  body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;
+       color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+  /* ---- 1280×720 縮放舞台 ---- */
+  #stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;background:var(--bg);}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
+         background:var(--bg);padding:60px 92px 66px;}
+  .slide.active{display:flex;}
+  .slide.center{align-items:center;text-align:center;}
+
+  .logo-tr{position:absolute;top:40px;right:56px;height:24px;opacity:.9;}
+  .logo-tl{position:absolute;top:38px;left:56px;height:25px;opacity:.95;}
+
+  .em{color:var(--blue);}
+  b{color:var(--ink);}
+
+  /* ---- 封面 ---- */
+  .cover-bni{height:54px;width:auto;margin-bottom:26px;}
+  .cover-kicker{font-size:19px;font-weight:800;letter-spacing:.14em;color:var(--blue);margin-bottom:24px;}
+  .cover-title{font-size:96px;font-weight:900;letter-spacing:-2px;line-height:1.08;color:var(--ink);}
+  .cover-title .em{color:var(--blue);}
+  .cover-sub{font-size:29px;font-weight:500;color:var(--muted);margin-top:28px;}
+  .cover-foot{font-size:19px;color:var(--soft);margin-top:46px;letter-spacing:.02em;}
+
+  /* ---- 謝謝頁 ---- */
+  .thanks-bni{height:44px;width:auto;margin-bottom:24px;}
+  .thanks{font-size:84px;font-weight:900;letter-spacing:-1px;color:var(--ink);line-height:1.2;}
+  .thanks .em{color:var(--blue);}
+  .thanks-meta{font-size:23px;color:var(--muted);margin-top:26px;letter-spacing:.02em;}
+  .thanks-meta b{color:var(--ink);}
+  .thanks-org{font-size:18px;font-weight:800;color:var(--blue);letter-spacing:.1em;margin-top:12px;}
+  .thanks-qr{height:128px;width:auto;margin-top:26px;border-radius:12px;}
+  .thanks-src{margin-top:24px;font-size:13px;color:var(--soft);line-height:1.6;max-width:960px;}
+
+  /* ---- 通用大標 ---- */
+  .head{font-size:58px;font-weight:900;line-height:1.16;letter-spacing:-1px;color:var(--ink);}
+  .head .em{color:var(--blue);}
+  .head-sub{font-size:22px;font-weight:600;color:var(--muted);margin-top:16px;}
+
+  /* ---- 段落標籤（沿用新聞快打元件） ---- */
+  .news-head{display:flex;align-items:center;gap:16px;margin-bottom:22px;}
+  .news-tag{font-size:16px;font-weight:800;letter-spacing:.12em;color:#fff;background:var(--blue);
+            padding:7px 16px;border-radius:999px;white-space:nowrap;}
+  .news-topic{font-size:27px;font-weight:800;color:var(--ink);}
+  .sublines{margin-top:26px;font-size:22px;line-height:1.75;color:var(--muted);max-width:1000px;}
+  .sublines b{color:var(--ink);}
+  .cue{margin-top:20px;font-size:24px;font-weight:800;color:var(--blue);}
+  .news-meta{font-size:18px;font-weight:700;color:var(--blue);margin-bottom:16px;letter-spacing:.01em;}
+  .case-line{margin-top:20px;font-size:19px;line-height:1.6;color:var(--ink);background:var(--blue-50);
+             border-radius:12px;padding:13px 20px;max-width:1010px;}
+  .case-line b{color:var(--blue);}
+  .src-line{margin-top:14px;font-size:15px;color:var(--soft);}
+
+  .hero-num{font-size:132px;font-weight:900;color:var(--blue);line-height:.98;letter-spacing:-3px;}
+  .hero-line{font-size:80px;font-weight:900;color:var(--ink);line-height:1.12;letter-spacing:-1px;}
+  .hero-line.sm{font-size:60px;}
+  .hero-line .em{color:var(--blue);}
+
+  /* ---- 名詞 vs 動詞 兩欄對照 ---- */
+  .p3{display:flex;align-items:center;gap:34px;margin-top:4px;}
+  .p3 .a{font-size:40px;font-weight:800;color:var(--soft);line-height:1.3;}
+  .p3 .a small,.p3 .b small{display:block;font-size:19px;font-weight:700;letter-spacing:.05em;margin-bottom:6px;}
+  .p3 .a small{color:var(--soft);}
+  .p3 .b small{color:var(--blue);}
+  .p3 .bar{width:2px;height:110px;background:var(--line);}
+  .p3 .b{font-size:52px;font-weight:900;color:var(--ink);line-height:1.2;}
+  .p3 .b em{color:var(--blue);font-style:normal;}
+
+  /* ---- 條列（沿用 agenda 元件） ---- */
+  .agenda{list-style:none;margin-top:30px;display:flex;flex-direction:column;gap:16px;text-align:left;}
+  .agenda li{display:flex;align-items:center;gap:20px;font-size:30px;font-weight:800;color:var(--ink);}
+  .agenda li small{display:block;font-size:19px;font-weight:600;color:var(--muted);margin-top:2px;letter-spacing:0;}
+  .agenda .an{flex:none;width:50px;height:50px;border-radius:14px;background:var(--blue-50);color:var(--blue);
+              font-weight:900;font-size:25px;display:flex;align-items:center;justify-content:center;}
+
+  /* ---- 界線表 ---- */
+  .tbl{margin-top:26px;border-collapse:collapse;font-size:22px;text-align:left;}
+  .tbl th,.tbl td{padding:12px 26px;border-bottom:1px solid var(--line2);}
+  .tbl th{font-size:19px;font-weight:800;letter-spacing:.06em;color:var(--muted);border-bottom:2px solid var(--line);}
+  .tbl th.us{color:var(--blue);}
+  .tbl td:first-child{font-weight:800;color:var(--ink);}
+  .tbl td.yes{font-weight:800;color:var(--ink);}
+  .tbl td.us{font-weight:900;color:var(--blue);}
+  .tbl td.no{color:var(--soft);}
+
+  /* ---- 金句 ---- */
+  .quote{font-size:48px;font-weight:900;line-height:1.4;color:var(--ink);letter-spacing:-.5px;}
+  .quote .em{color:var(--blue);}
+  .quote .gap{display:block;height:18px;}
+  .p8-tie{font-size:23px;font-weight:600;color:var(--muted);line-height:1.55;margin-top:30px;max-width:1000px;}
+  .p8-tie b{color:var(--ink);}
+
+  /* ---- 實績名單 ---- */
+  .clients{margin-top:30px;display:flex;flex-direction:column;gap:18px;align-items:center;}
+  .clients .row{display:flex;align-items:baseline;gap:26px;flex-wrap:wrap;justify-content:center;}
+  .clients .tag2{font-size:17px;font-weight:800;letter-spacing:.1em;color:var(--blue);}
+  .clients .nm{font-size:40px;font-weight:900;color:var(--ink);letter-spacing:0;}
+  .clients .nm.sm{font-size:33px;}
+
+  /* ---- 三路匯流圖 ---- */
+  .conv{margin-top:34px;display:flex;align-items:center;justify-content:center;gap:20px;}
+  .conv .srcs{display:flex;flex-direction:column;gap:14px;}
+  .conv .nd{font-size:22px;font-weight:800;color:var(--muted);background:#fff;border:1.5px solid var(--line);
+            border-radius:14px;padding:13px 20px;white-space:nowrap;line-height:1.35;text-align:left;}
+  .conv .nd small{display:block;font-size:14px;font-weight:700;color:var(--soft);}
+  .conv .nd.hub{background:var(--blue);border-color:var(--blue);color:#fff;font-size:27px;font-weight:900;
+                padding:24px 26px;box-shadow:0 6px 18px rgba(207,10,44,.25);text-align:center;}
+  .conv .nd.hub small{color:#fff;opacity:.85;font-size:15px;margin-top:4px;}
+  .conv .nd.out{color:var(--ink);font-weight:900;text-align:center;}
+  .conv .ar{font-size:30px;font-weight:900;color:var(--blue-300);}
+
+  /* ---- P4 定位引導行 ---- */
+  .lead-in{font-size:34px;font-weight:800;color:var(--muted);margin-bottom:16px;}
+  .lead-in b{color:var(--ink);font-weight:900;}
+
+  /* ---- 引薦：客戶開口卡 ---- */
+  .asks{margin-top:28px;display:flex;flex-direction:column;gap:16px;width:100%;max-width:1000px;}
+  .ask{display:flex;align-items:flex-start;gap:16px;background:#fff;border:1.5px solid var(--line);
+       border-radius:16px;padding:16px 22px;text-align:left;}
+  .ask .atag{flex:none;font-size:15px;font-weight:800;letter-spacing:.08em;color:#fff;background:var(--blue);
+             padding:6px 13px;border-radius:999px;margin-top:3px;white-space:nowrap;}
+  .ask p{font-size:21px;line-height:1.55;color:var(--ink);font-weight:600;}
+  .ask p b{color:var(--blue);}
+
+  /* ---- 點名組隊卡 ---- */
+  .team{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:18px;width:100%;max-width:1080px;}
+  .team .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:20px 24px;text-align:left;}
+  .team .who2{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;}
+  .team .who2 .nm2{font-size:29px;font-weight:900;color:var(--blue);}
+  .team .who2 .co{font-size:17px;font-weight:700;color:var(--muted);}
+  .team .say{font-size:19px;line-height:1.55;color:var(--ink);font-weight:600;}
+  .team .say b{color:var(--blue);}
+
+  /* ---- 西北 QR 左右欄 ---- */
+  .p7wrap{display:flex;align-items:center;justify-content:center;gap:58px;width:100%;}
+  .p7-left{flex:0 0 auto;text-align:center;}
+  .p7-left img{height:230px;width:auto;border-radius:14px;border:1px solid var(--line);}
+  .p7-left .qrcap{margin-top:12px;font-size:16px;font-weight:700;color:var(--muted);}
+  .p7-right{flex:1 1 0;max-width:560px;text-align:left;}
+
+  /* ---- 出處頁（保留元件備用） ---- */
+  .src-list{list-style:none;width:100%;max-width:1010px;display:flex;flex-direction:column;gap:15px;text-align:left;}
+  .src-list li{display:flex;align-items:baseline;gap:18px;font-size:20px;line-height:1.4;}
+  .src-list .lbl{flex:none;width:216px;font-weight:800;color:var(--ink);}
+  .src-list a{color:var(--blue);text-decoration:none;word-break:break-all;font-weight:500;}
+  .src-foot{margin-top:28px;font-size:18px;color:var(--soft);}
+
+  /* ---- 導覽 / 進度 ---- */
+  .navbar{position:fixed;right:24px;bottom:16px;display:flex;align-items:center;gap:10px;z-index:40;user-select:none;}
+  .navbar .nav-arrow{border:none;background:none;cursor:pointer;line-height:1;font-size:26px;color:var(--soft);
+                     padding:2px 9px;border-radius:8px;transition:color .2s,background .2s;}
+  .navbar .nav-arrow:hover{color:var(--blue);background:var(--blue-50);}
+  .navbar .nav-count{font-size:15px;font-weight:700;letter-spacing:.12em;min-width:64px;text-align:center;color:var(--muted);}
+  .navbar .nav-count b{color:var(--ink);}
+  .progress{position:fixed;left:0;bottom:0;height:3px;background:var(--blue);width:0;transition:width .35s ease;z-index:40;}
+  #help{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;background:rgba(160,8,32,.94);
+        color:#fff;font-size:13px;padding:8px 16px;border-radius:999px;transition:opacity .6s;}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- P1 封面 -->
+  <section class="slide center">
+    <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <img class="cover-bni" src="images/bni-logo-onwhite.svg" alt="BNI 新竹B區">
+    <p class="cover-kicker">BNI 創智分會　·　2026-08-28</p>
+    <h1 class="cover-title">組一個隊，<br><span class="em">先想清楚自己</span></h1>
+    <p class="cover-sub">一場關於 Power Team——也關於我們自己的分享</p>
+    <p class="cover-foot">Alfred Kang　·　CTK Pro 竑盛科技</p>
+  </section>
+
+  <!-- P2 開場故事 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <h2 class="head">上次的 Power Team 會議，<br>我回家<span class="em">想了很久</span></h2>
+    <p class="sublines">那天我們用 AI 很快產出了一版內容——<b>看起來都對</b>，但總覺得少了什麼。<br>於是我把 BNI 官方的 Power Team 方法論，<b>從頭研究了一遍</b>。</p>
+    <p class="cue">研究完發現：組隊的第一步，是把自己公司想清楚。</p>
+  </section>
+
+  <!-- P3 Power Team 一頁帶過 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">快轉</span><span class="news-topic">Power Team，大家都熟——只補一句</span></div>
+    <div class="p3">
+      <span class="a"><small>Contact Sphere（聯絡圈）</small>名詞<br>一張名單</span>
+      <span class="bar"></span>
+      <span class="b"><small>Power Team</small>動詞<br><em>動起來的名單</em></span>
+    </div>
+    <p class="sublines">BNI 內部統計：加入 Power Team 的會員，<b>50–70% 的引薦來自隊友</b>。</p>
+    <p class="cue">要讓隊友能引薦你——你得把自己講到「一句話能轉述」。</p>
+  </section>
+
+  <!-- P4 一句話定位 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <p class="news-meta">所以，這是我做完作業的版本</p>
+    <p class="lead-in">我們讓<b>企業網站</b>——</p>
+    <div class="hero-line sm"><span class="em">上得去・活得久・出事有人扛</span></div>
+    <p class="sublines">對客戶來說，就是把網站的風險<b>外包</b>——變成<b>有人負責</b>。</p>
+  </section>
+
+  <!-- P5 合作①：三道牆 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">合作 ①</span><span class="news-topic">跟設計公司接力：設計做完之後，還有三道牆</span></div>
+    <ul class="agenda">
+      <li><span class="an">🧱</span><span>做得出來，但推不上去<small>AI 工具給的是「會動的原型」，不是能上線的成品</small></span></li>
+      <li><span class="an">🧱</span><span>客戶的資訊部門那一關<small>行銷部門談美感，資訊部門談合規與責任</small></span></li>
+      <li><span class="an">🧱</span><span>無障礙合規<small>政府、金融、大企業，越來越常寫進合約</small></span></li>
+    </ul>
+    <p class="case-line">卡住的通常<b>不是設計的問題</b>——但專案延宕的帳，常算在設計公司頭上。</p>
+  </section>
+
+  <!-- P6 合作①：界線表 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">合作 ①</span><span class="news-topic">設計歸你，落地歸我們</span></div>
+    <table class="tbl">
+      <tr><th></th><th>設計公司</th><th class="us">CTK Pro</th></tr>
+      <tr><td>視覺與互動原型</td><td class="yes">✅ 做得很好</td><td class="no">不碰</td></tr>
+      <tr><td>簡單形象站上線</td><td class="yes">✅ 工具夠用</td><td class="no">不搶</td></tr>
+      <tr><td>接客戶既有系統・CMS</td><td class="no">—</td><td class="us">✅ 我們來</td></tr>
+      <tr><td>企業資安審查</td><td class="no">—</td><td class="us">✅ 我們來</td></tr>
+      <tr><td>長期維運</td><td class="no">—</td><td class="us">✅ 我們來</td></tr>
+    </table>
+    <p class="cue">客戶是你們的，我們不繞過你們。</p>
+  </section>
+
+  <!-- P7 合作①：金句 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="quote">你搞得定行銷部門的美感，<br>搞不定資訊部門的問卷。<span class="gap"></span><span class="em">那份問卷，我們天天在填。</span></p>
+    <p class="p8-tie">而且我們維護的不只是網站——<b>是設計公司的作品集</b>。你花三個月做的設計，值得撐三年。</p>
+  </section>
+
+  <!-- P8 合作①：實績 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">合作 ①</span><span class="news-topic">這不是構想——我們已經在做</span></div>
+    <div class="clients">
+      <div class="row"><span class="tag2">合作過的設計團隊</span></div>
+      <div class="row"><span class="nm">良艮設計</span><span class="nm">Happ Design</span><span class="nm">JL Design</span></div>
+    </div>
+    <p class="cue">分會裡做品牌、設計、行銷、攝影的夥伴——這條線，就是為你們留的。</p>
+  </section>
+
+  <!-- P9 合作②：DMZ 白話 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">合作 ②</span><span class="news-topic">在企業裡當 DMZ：先講 DMZ 是什麼</span></div>
+    <div class="hero-line sm">外面被攻擊，<span class="em">裡面不受傷</span></div>
+    <p class="sublines">企業把「對外」的系統——官網、活動網站、對外服務——放進一個隔離區，像<b>前院</b>：<br>前院被砸，放貴重東西的<b>金庫</b>在後面好好的。<br>這個隔離區，叫 <b>DMZ</b>（Demilitarized Zone，<b>非軍事區</b>）。</p>
+  </section>
+
+  <!-- P10 合作②：正面案例（2022/8 政府網站 DDoS） -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">合作 ②</span><span class="news-topic">做對了，長這樣</span></div>
+    <p class="news-meta">2022 年 8 月・裴洛西訪台那晚</p>
+    <div class="hero-line sm">總統府網站被 <span class="em">200 倍</span>流量打掛<br>政府<span class="em">一分鐘都沒停擺</span></div>
+    <p class="sublines">官網 <b>20 分鐘恢復</b>；當天全政府承受的攻擊量，是過去單日最高的 <b>23 倍</b>。</p>
+    <p class="case-line">因為那個網站本來就放在<b>前院</b>——前院設計成可以被砸；前院被砸，<b>金庫在後面好好的</b>。</p>
+    <p class="src-line">出處：總統府發言人證實（2022/8/2）・唐鳳對中央社說明（2022/8/3）</p>
+  </section>
+
+  <!-- P11 合作②：反面案例（Equifax 2017） -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">合作 ②</span><span class="news-topic">沒隔離，長這樣</span></div>
+    <p class="news-meta">美國三大信用機構之一 Equifax・2017</p>
+    <div class="hero-num">1.47 億人</div>
+    <p class="sublines">對外網站一個<b>沒人修的漏洞</b>（官方警告了、公司拖了四個月）——<br>駭客走進去，發現內網<b>連一道門都沒有</b>：從 3 個資料庫橫走到另外 48 個，潛伏 76 天。</p>
+    <p class="case-line">1.47 億人個資外洩、和解金<b>超過 5 億美元</b>。前院跟金庫之間，<b>連道牆都沒有</b>。</p>
+    <p class="src-line">出處：美國 FTC 和解公告（2019）・GAO 調查報告（GAO-18-559）</p>
+  </section>
+
+  <!-- P11 合作②：我們的角色 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">合作 ②</span><span class="news-topic">我們的位置</span></div>
+    <div class="hero-line sm">被企業放在 DMZ 位置的<span class="em">那家廠商</span></div>
+    <p class="sublines">對外系統的<b>建置＋維運＋出事有人扛</b>——網站的安全風險外包給我們，<br>風險降低，變成「<b>有人負責</b>」的狀態。</p>
+    <p class="case-line">在客戶的組織裡，我們同時對接<b>行銷部門</b>（講品牌、講速度）和<b>資訊部門</b>（講合規、講責任）——兩邊的語言，我們都會講。</p>
+  </section>
+
+  <!-- P12 合作②：四張考卷 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">合作 ②</span><span class="news-topic">中大型企業挑廠商的四張考卷</span></div>
+    <ul class="agenda">
+      <li><span class="an">①</span><span>IR 投資人專區<small>上市櫃的命脈頁面——要準確、自由度高、即時更新</small></span></li>
+      <li><span class="an">②</span><span>GDPR<small>歐盟個資合規——有海外業務就躲不掉</small></span></li>
+      <li><span class="an">③</span><span>無障礙（WCAG）<small>台灣與國際都在收緊的修正要求</small></span></li>
+      <li><span class="an">④</span><span>ISO 27001<small>外包廠商的管理方式，符不符合標準</small></span></li>
+    </ul>
+    <p class="cue">這四張考卷，我們天天在寫。</p>
+  </section>
+
+  <!-- P13 合作②：實績 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">合作 ②</span><span class="news-topic">這不是構想——我們已經在做</span></div>
+    <div class="clients">
+      <div class="row"><span class="tag2">現在進行式</span></div>
+      <div class="row"><span class="nm">前瞻科技</span><span class="nm">普生</span></div>
+      <div class="row" style="margin-top:10px;"><span class="tag2">歷來合作</span></div>
+      <div class="row"><span class="nm sm">力旺電子</span><span class="nm sm">熵碼</span><span class="nm sm">華碩</span></div>
+    </div>
+    <p class="cue">你的客戶若是中大型、上市櫃、被稽核追著跑——這條線，就是為他們準備的。</p>
+  </section>
+
+  <!-- P14 合作③：場景 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">合作 ③</span><span class="news-topic">AI 網站的最後一哩：三分鐘做出網站，然後呢？</span></div>
+    <p class="sublines">現在很多老闆自己用 AI，三分鐘就做出一個網站——<b>真的能做出來</b>。</p>
+    <p class="quote" style="margin-top:22px;font-size:42px;">「看起來都對」跟「能上線營運」之間，<br>差的是<span class="em">深度，跟責任</span>。</p>
+    <p class="src-line">——就像上次那份 AI 產的 Power Team 報告一樣。</p>
+    <p class="case-line">而且網路不等人：研究團隊故意放 <b>320 台沒人管的主機</b>上網——<b>24 小時內八成被攻陷</b>、最快 30 秒（Palo Alto Unit 42 實測）。只有「有人顧」跟「沒人顧」。</p>
+  </section>
+
+  <!-- P15 合作③：五件事 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">合作 ③</span><span class="news-topic">最後一哩，我們接（已經在做的五件事）</span></div>
+    <ul class="agenda">
+      <li><span class="an">①</span>網域與 CDN 怎麼設定</li>
+      <li><span class="an">②</span>版本管理——改壞了，隨時退回上一版</li>
+      <li><span class="an">③</span>挑什麼主機、需不需要資料庫</li>
+      <li><span class="an">④</span>資訊安全怎麼管理</li>
+      <li><span class="an">⑤</span>怎麼備份、出了錯怎麼查</li>
+    </ul>
+    <p class="case-line">小知識：連 GitHub 官方條款都<b>明文禁止拿免費空間做生意</b>——這種地雷，我們替你踩掉。</p>
+  </section>
+
+  <!-- P16 合作③：實績＋QR -->
+  <section class="slide">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="p7wrap">
+      <div class="p7-left">
+        <img src="images/line-qr-cip.png" alt="西北影像 LINE 報價機器人 QR">
+        <p class="qrcap">西北影像 LINE 報價機器人<br>現在就能掃、馬上體驗</p>
+      </div>
+      <div class="p7-right">
+        <div class="news-head"><span class="news-tag">合作 ③</span><span class="news-topic">我們已經在做</span></div>
+        <div class="clients" style="align-items:flex-start;margin-top:18px;">
+          <div class="row"><span class="nm">寬庭</span><span class="nm">西北影像</span></div>
+        </div>
+        <p class="sublines" style="margin-top:20px;">寬庭：用 AI 自建網站，最後一哩由我們部署、代管。<br>西北影像：LINE 報價機器人，從構想做到<b>真的上線</b>。</p>
+        <p class="cue" style="font-size:21px;">身邊有人自己用 AI 做東西、卡在上線？帶來找我。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- P17 收攏 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <p class="news-meta">三種合作，賣的是同一件事</p>
+    <p class="quote" style="font-size:56px;">託付，與責任轉移。<span class="gap"></span>技術會貶值，<span class="em">責任不會</span>。</p>
+  </section>
+
+  <!-- P18 事件鏈與輪軸 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">組隊</span><span class="news-topic">三條路，最後都要過同一關</span></div>
+    <div class="conv">
+      <div class="srcs">
+        <div class="nd">設計公司做好了設計<small>要推上線・要過客戶 IT</small></div>
+        <div class="nd">企業行銷部門要對外<small>資訊部門要合規・要有人負責</small></div>
+        <div class="nd">老闆用 AI 做出了網站<small>要掛網域・要不出事</small></div>
+      </div>
+      <span class="ar">⟶</span>
+      <div class="nd hub">上線・維運・資安<small>我們守這一關</small></div>
+      <span class="ar">⟶</span>
+      <div class="nd out">客戶安心<br>做生意</div>
+    </div>
+    <p class="cue">這一關，就是我們的位置。</p>
+  </section>
+
+  <!-- P19 點名組隊 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">組隊</span><span class="news-topic">強力的夥伴</span></div>
+    <div class="team">
+      <div class="card">
+        <div class="who2"><span class="nm2">Jonas</span><span class="co">ACE COMI · 品牌行銷策略、輔導企業國際化</span></div>
+        <p class="say">客戶要走向國際——<b>WCAG 無障礙與 GDPR，我們接</b><br>多語系也一起。</p>
+      </div>
+      <div class="card">
+        <div class="who2"><span class="nm2">Dio</span><span class="co">時川國際 · 廣告投放</span></div>
+        <p class="say">流量買進來——<b>接得住流量的基礎建設，我們來</b>。</p>
+      </div>
+      <div class="card">
+        <div class="who2"><span class="nm2">Sung</span><span class="co">牧草科技 · 客製化 App 開發</span></div>
+        <p class="say">客戶做 App 順便要網站——<b>連合規管理（ISO 27001）一起給</b>。</p>
+      </div>
+      <div class="card">
+        <div class="who2"><span class="nm2">震閎</span><span class="co">夆泩數位 · 製程 AI Agent</span></div>
+        <p class="say">客戶的系統留在廠內，對投資人只需要一個網站<br>——<b>那個網站我們顧（DMZ）</b>，幫客戶省心。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- P20 引薦流 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">引薦</span><span class="news-topic">聽到這些話——請想到我</span></div>
+    <div class="asks">
+      <div class="ask"><span class="atag">合作 ①</span><p>「設計稿都做好了，有沒有<b>可靠的開發廠商</b>，可以幫我們 100% 實現 pixel perfect、讓設計在網站上呈現？」</p></div>
+      <div class="ask"><span class="atag">合作 ②</span><p>「要做官網了，可是資訊部門的要求一大堆——到底哪間公司會這些<b>什麼 ISO 的東西</b>？」</p></div>
+      <div class="ask"><span class="atag">合作 ③</span><p>「我用 AI 做了個網站，但它<b>只能活在我的主機裡</b>，AI 還叫我去買一堆看不懂的東西——這是對的嗎？」</p></div>
+    </div>
+  </section>
+
+  <!-- P21 行動呼籲 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="p8-setup">設計、廣告、App、AI——三條路，最後都過我們這一關。</p>
+    <p class="quote">幫我記住一句話就好：<span class="gap"></span>企業網站——<span class="em">上得去・活得久・出事有人扛</span>。</p>
+    <p class="p8-tie">下次有人提到網站，<b>請把這句話借給我用</b>。</p>
+  </section>
+
+  <!-- P22 謝謝＋QR＋出處 -->
+  <section class="slide center">
+    <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <img class="thanks-bni" src="images/bni-logo-onwhite.svg" alt="BNI 新竹B區">
+    <h2 class="thanks">有想法，我們幫你<br><span class="em">安全地上線</span></h2>
+    <p class="thanks-meta"><b>Alfred Kang</b>　·　CTK Pro 竑盛科技</p>
+    <img class="thanks-qr" src="images/qr-ctkpro.png" alt="CTK Pro 官網 QR">
+    <p class="thanks-org">BNI 創智分會　·　2026-08-28</p>
+    <p class="thanks-src">出處：Power Team 理論——ivanmisner.com、BNI Podcast Ep.151／272／698／775、BNI NZ 教育文（50–70% 為 BNI 內部統計）｜2022/8 政府網站 DDoS——總統府發言人・中央社｜Equifax——美國 FTC・GAO 報告（GAO-18-559）｜蜜罐實驗——Palo Alto Networks Unit 42</p>
+  </section>
+
+</div>
+
+<div class="navbar" id="navbar">
+  <button class="nav-arrow" id="prevBtn" aria-label="上一頁">‹</button>
+  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">22</span></span><!-- JS 覆寫為實際頁數 -->
+  <button class="nav-arrow" id="nextBtn" aria-label="下一頁">›</button>
+</div>
+<div class="progress" id="progress"></div>
+<div id="help">← → / 點兩側 / 右下箭頭 翻頁　·　F 全螢幕　·　Home／End 首尾</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const total=slides.length;
+  let cur=0;
+  const stage=document.getElementById('stage');
+  const progress=document.getElementById('progress');
+  const curNo=document.getElementById('curNo');
+  const totNo=document.getElementById('totNo');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  totNo.textContent=total;
+
+  function clampHash(){const h=parseInt(location.hash.replace('#',''),10);return (h>=1&&h<=total)?h-1:0;}
+  function show(i){
+    cur=Math.max(0,Math.min(total-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    curNo.textContent=cur+1;
+    progress.style.width=(cur/(total-1))*100+'%';
+    history.replaceState(null,'','#'+(cur+1));
+  }
+  const next=()=>show(cur+1), prev=()=>show(cur-1);
+
+  function fit(){const s=Math.min(window.innerWidth/1280,window.innerHeight/720);
+    stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+  window.addEventListener('resize',fit);
+
+  document.addEventListener('keydown',e=>{
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': next();e.preventDefault();break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': prev();e.preventDefault();break;
+      case 'Home': show(0);e.preventDefault();break;
+      case 'End': show(total-1);e.preventDefault();break;
+      case 'f': case 'F':
+        if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.(); e.preventDefault();break;
+    }
+  });
+
+  prevBtn.addEventListener('click',e=>{e.stopPropagation();prev();});
+  nextBtn.addEventListener('click',e=>{e.stopPropagation();next();});
+
+  // 點畫面左右各 1/6 才翻頁；中間 2/3 留給雷射筆／選字，不誤翻
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#navbar')||e.target.closest('a')||e.target.closest('button'))return;
+    const w=window.innerWidth;
+    if(e.clientX < w/6) prev();
+    else if(e.clientX > w*5/6) next();
+  });
+
+  let tx=0,ty=0;
+  document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;ty=e.changedTouches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)){dx<0?next():prev();}
+  },{passive:true});
+
+  fit(); show(clampHash());
+  setTimeout(()=>{document.getElementById('help').style.opacity='0';},5000);
+</script>
+</body>
+</html>
