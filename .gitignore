@@ -5,3 +5,6 @@ node_modules/
 .DS_Store
 .playwright-mcp/
 .memsearch/
+
+# BNI 一對一五表含個資（地址／家庭），不進公開版控
+alfred-1-2-1/*.pdf

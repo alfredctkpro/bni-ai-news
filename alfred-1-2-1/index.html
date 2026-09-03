@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="both">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Alfred Kang · CTK Pro — BNI 1-to-1</title>
+<meta name="description" content="Enterprise websites that go live, stay alive, and have someone accountable when things break. Alfred Kang, CTK Pro, Taipei.">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Alfred Kang · CTK Pro — BNI 1-to-1">
+<meta property="og:description" content="Enterprise websites that go live, stay alive, and have someone accountable. Taipei · UTC+8 · ISO 27001 · 70+ sites maintained.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211d1b;
+    --muted:#6b6b6b;          /* 5.11:1 on --bg — AA pass */
+    --line:#e6e6e6;
+    --line2:#f0eaea;
+    --bg:#FBFAF7;             /* 暖紙白 */
+    --paper:#FBF1EF;
+    --brand:#CF0A2C;          /* BNI red — 5.39:1 on --bg, AA pass */
+    --brand-700:#A00820;
+    --brand-50:#FDECEE;
+    --font-en:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --font-zh:'Noto Sans TC','PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;
+    --maxw:1080px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:var(--font-en);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.55; font-size:17px;
+  }
+  a{ color:var(--brand); }
+  a:focus-visible, button:focus-visible{ outline:3px solid var(--brand); outline-offset:3px; border-radius:4px; }
+
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 clamp(20px,5vw,48px); }
+
+  /* ---------- bilingual pair (item-level, never drifts) ---------- */
+  .pair{ display:grid; grid-template-columns:1fr; gap:.5em; }
+  .pair + .pair{ margin-top:1.15em; }
+  .pair .zh{
+    font-family:var(--font-zh); line-height:1.85; font-size:.95em;
+    border-left:2px solid var(--brand); padding-left:14px;
+  }
+  .pair .en{ font-family:var(--font-en); }
+  @media (min-width:860px){
+    .pair{ grid-template-columns:1fr 1fr; gap:clamp(24px,3.4vw,48px); align-items:start; }
+    .pair .zh{ border-left:1px solid var(--line); padding-left:clamp(24px,3.4vw,48px); }
+  }
+  /* language filter */
+  html[data-lang="en"] .zh{ display:none; }
+  html[data-lang="zh"] .en{ display:none; }
+  html[data-lang="en"] .pair, html[data-lang="zh"] .pair{ grid-template-columns:1fr; }
+  html[data-lang="en"] .pair .zh, html[data-lang="zh"] .pair .zh{ border-left:0; padding-left:0; }
+
+  /* ---------- sticky header ---------- */
+  header.top{
+    position:sticky; top:0; z-index:50; background:rgba(251,250,247,.94);
+    backdrop-filter:saturate(150%) blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .top-in{ max-width:var(--maxw); margin:0 auto; padding:12px clamp(20px,5vw,48px);
+           display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .brandbar{ display:flex; align-items:center; gap:14px; }
+  .brandbar img.bni{ height:22px; width:auto; }
+  .brandbar img.ctk{ height:17px; width:auto; }
+  .brandbar .sep{ width:1px; height:20px; background:var(--line); }
+  .langsw{ display:flex; flex:none; border:1px solid var(--line); border-radius:999px; overflow:hidden; background:#fff; }
+  .langsw button{
+    font:inherit; font-size:13px; font-weight:600; cursor:pointer; border:0; background:transparent;
+    color:var(--muted); padding:9px 14px; min-height:38px; line-height:1;
+  }
+  .langsw button[aria-pressed="true"]{ background:var(--brand); color:#fff; }
+
+  /* ---------- hero ---------- */
+  .hero{ padding:clamp(44px,7vw,84px) 0 clamp(30px,4vw,48px); border-bottom:1px solid var(--line); }
+  .eyebrow{ font-size:13px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--brand); }
+  .hero h1{ font-size:clamp(30px,4.4vw,50px); font-weight:800; line-height:1.14; letter-spacing:-.02em; margin-top:14px; }
+  .hero h1 .zhname{ font-family:var(--font-zh); font-weight:700; color:var(--muted); font-size:.6em; margin-left:.35em; letter-spacing:0; }
+  .hero .role{ color:var(--muted); font-size:clamp(16px,2vw,19px); margin-top:10px; }
+  .beat{ margin-top:clamp(26px,3.6vw,40px); padding:clamp(20px,3vw,30px); border:1px solid var(--line);
+         border-left:5px solid var(--brand); border-radius:14px; background:#fff; }
+  .beat .en-line{ font-size:clamp(19px,2.5vw,27px); font-weight:700; line-height:1.35; letter-spacing:-.01em; }
+  .beat .en-line b{ color:var(--brand); }
+  .beat .zh-line{ font-family:var(--font-zh); font-size:clamp(17px,2.2vw,23px); font-weight:700; line-height:1.6; margin-top:12px; }
+  .beat .zh-line b{ color:var(--brand); }
+  .beat .sub{ margin-top:16px; padding-top:14px; border-top:1px dashed var(--line); color:var(--muted); font-size:15px; }
+  .beat .sub .z{ font-family:var(--font-zh); display:block; margin-top:5px; }
+  .quickfacts{ display:flex; flex-wrap:wrap; gap:8px; margin-top:22px; }
+  .qf{ font-size:13px; font-weight:600; color:var(--brand-700); background:var(--brand-50);
+       border:1px solid #f4d4d9; border-radius:999px; padding:7px 13px; }
+
+  /* ---------- sections ---------- */
+  section{ padding:clamp(40px,5.5vw,66px) 0; border-bottom:1px solid var(--line); }
+  section:last-of-type{ border-bottom:0; }
+  .sec-no{ font-size:12px; font-weight:800; letter-spacing:.16em; color:var(--brand); text-transform:uppercase; }
+  h2{ font-size:clamp(22px,3vw,31px); font-weight:800; line-height:1.25; letter-spacing:-.015em; margin-top:9px; }
+  h2 .z{ font-family:var(--font-zh); font-weight:700; color:var(--muted); font-size:.62em; display:block; margin-top:6px; letter-spacing:0; }
+  .lead{ margin-top:20px; }
+
+  /* cards */
+  .cards{ display:grid; gap:16px; margin-top:26px; }
+  @media (min-width:760px){ .cards.c2{ grid-template-columns:1fr 1fr; } .cards.c3{ grid-template-columns:repeat(3,1fr); } }
+  .card{ border:1px solid var(--line); border-radius:16px; padding:22px 22px 24px; background:#fff; }
+  .card h3{ font-size:18px; font-weight:750; line-height:1.35; }
+  .card h3 .z{ font-family:var(--font-zh); display:block; font-size:.86em; color:var(--muted); font-weight:700; margin-top:4px; }
+  .card p{ font-size:15px; color:var(--muted); margin-top:10px; }
+  .card p.z{ font-family:var(--font-zh); line-height:1.8; }
+  .card .tagline{ font-size:12px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--brand); }
+
+  /* collaboration blocks */
+  .collab{ border:1px solid var(--line); border-radius:18px; padding:clamp(20px,3vw,30px); background:#fff; margin-top:20px; }
+  .collab .num{ display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px;
+                border-radius:10px; background:var(--brand); color:#fff; font-weight:800; font-size:16px; }
+  .collab h3{ font-size:clamp(18px,2.3vw,23px); font-weight:800; margin-top:14px; line-height:1.3; }
+  .collab h3 .z{ font-family:var(--font-zh); display:block; font-size:.78em; color:var(--muted); margin-top:5px; }
+  .collab .body{ margin-top:16px; }
+  .who{ margin-top:18px; padding-top:16px; border-top:1px dashed var(--line); }
+  .who .lbl{ font-size:12px; font-weight:800; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); }
+  .who ul{ list-style:none; margin-top:10px; display:flex; flex-wrap:wrap; gap:7px; }
+  .who li{ font-size:14px; font-weight:600; border:1px solid var(--line); border-radius:8px; padding:6px 11px; background:var(--bg); }
+  .who li .z{ font-family:var(--font-zh); }
+  .who li a{ color:var(--ink); text-decoration:none; border-bottom:1.5px solid var(--brand); }
+  .who li a:hover{ color:var(--brand); }
+  .who li a::after{ content:"↗"; font-size:.72em; color:var(--brand); margin-left:.25em; vertical-align:super; }
+  .who li small{ display:block; font-size:11.5px; font-weight:500; color:var(--muted); margin-top:2px; }
+
+  /* quote cards (trigger phrases) */
+  .quote{ border:1px solid var(--line); border-left:5px solid var(--brand); border-radius:14px;
+          padding:20px 22px; background:#fff; }
+  .quote .q-en{ font-size:17px; font-weight:650; line-height:1.5; }
+  .quote .q-zh{ font-family:var(--font-zh); font-size:16px; font-weight:600; line-height:1.8; color:var(--ink); margin-top:10px;
+                padding-top:10px; border-top:1px dashed var(--line); }
+  .quote .why{ font-size:13.5px; color:var(--muted); margin-top:12px; }
+  .quote .why .z{ font-family:var(--font-zh); display:block; margin-top:3px; }
+
+  /* fit / not-yet — equal weight, no filled column */
+  .fit{ display:grid; gap:16px; margin-top:24px; }
+  @media (min-width:760px){ .fit{ grid-template-columns:1fr 1fr; } }
+  .fitbox{ border:1px solid var(--line); border-radius:16px; padding:22px; background:var(--brand-50); border-left:4px solid var(--brand); }
+  .fitbox.no{ background:var(--bg); border-left:4px solid #c9c2c0; }
+  .fitbox .h{ font-size:13px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--brand); }
+  .fitbox.no .h{ color:var(--muted); }
+  .fitbox p{ font-size:16px; font-weight:600; margin-top:12px; line-height:1.5; }
+  .fitbox p.z{ font-family:var(--font-zh); font-weight:600; font-size:15px; color:var(--muted); line-height:1.8; margin-top:8px; }
+
+  /* misconception table */
+  .miscon{ margin-top:24px; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#fff; }
+  .miscon .row{ display:grid; grid-template-columns:1fr; border-top:1px solid var(--line); }
+  .miscon .row:first-child{ border-top:0; }
+  @media (min-width:860px){ .miscon .row{ grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); } }
+  .miscon .they{ padding:20px 22px; background:var(--paper); }
+  .miscon .say{ padding:20px 22px; border-top:1px solid var(--line); }
+  @media (min-width:860px){ .miscon .say{ border-top:0; border-left:1px solid var(--line); } }
+  .miscon .lbl{ font-size:11.5px; font-weight:800; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); }
+  .miscon .they .lbl{ color:var(--brand-700); }
+  .miscon .t{ font-size:16px; font-weight:650; margin-top:8px; line-height:1.45; }
+  .miscon .t.z, .miscon .s.z{ font-family:var(--font-zh); line-height:1.8; }
+  .miscon .t.z{ font-size:15px; color:var(--muted); font-weight:600; margin-top:6px; }
+  .miscon .s{ font-size:15px; margin-top:8px; color:var(--ink); line-height:1.6; }
+  .miscon .s.z{ font-size:14.5px; color:var(--muted); margin-top:6px; }
+
+  /* copy blurb */
+  .blurb{ border:1px solid var(--line); border-radius:16px; background:#fff; padding:20px 22px; margin-top:16px; }
+  .blurb .txt{ font-size:15px; line-height:1.65; }
+  .blurb .txt.z{ font-family:var(--font-zh); line-height:1.85; }
+  .copybtn{ margin-top:14px; font:inherit; font-size:14px; font-weight:700; cursor:pointer;
+            background:var(--brand); color:#fff; border:0; border-radius:10px; padding:11px 18px; min-height:44px; }
+  .copybtn:hover{ background:var(--brand-700); }
+
+  /* list */
+  .plainlist{ list-style:none; margin-top:16px; display:flex; flex-wrap:wrap; gap:8px; }
+  .plainlist li{ font-size:14.5px; border:1px solid var(--line); border-radius:9px; padding:8px 12px; background:#fff; }
+  .plainlist li .z{ font-family:var(--font-zh); color:var(--muted); font-size:13.5px; display:block; margin-top:2px; }
+  .top3{ display:grid; gap:14px; margin-top:20px; }
+  @media (min-width:760px){ .top3{ grid-template-columns:repeat(3,1fr); } }
+  .top3 .t3{ border:1px solid var(--line); border-top:4px solid var(--brand); border-radius:14px; padding:18px; background:#fff; }
+  .top3 .t3 .n{ font-size:12px; font-weight:800; color:var(--brand); letter-spacing:.12em; }
+  .top3 .t3 .en{ font-size:16.5px; font-weight:700; margin-top:8px; line-height:1.35; }
+  .top3 .t3 .z{ font-family:var(--font-zh); font-size:14.5px; color:var(--muted); margin-top:5px; }
+
+  /* contact */
+  .contact{ display:grid; gap:14px; margin-top:24px; }
+  @media (min-width:760px){ .contact{ grid-template-columns:repeat(3,1fr); } }
+  .ct{ border:1px solid var(--line); border-radius:14px; padding:18px; background:#fff; }
+  .ct .l{ font-size:12px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .ct a{ display:inline-block; margin-top:7px; font-size:16px; font-weight:650; text-decoration:none; word-break:break-word; min-height:24px; }
+  .ct a:hover{ text-decoration:underline; }
+  .qrbox{ display:flex; align-items:center; gap:18px; margin-top:26px; padding:20px; border:1px solid var(--line); border-radius:16px; background:#fff; }
+  .qrbox img{ width:104px; height:104px; border:1px solid var(--line); border-radius:10px; padding:5px; background:#fff; }
+  .qrbox .qt{ font-size:15px; font-weight:650; }
+  .qrbox .qs{ font-size:13.5px; color:var(--muted); margin-top:4px; }
+  .qrbox .qs .z{ font-family:var(--font-zh); display:block; margin-top:2px; }
+
+  footer{ padding:36px 0 60px; color:var(--muted); font-size:13.5px; }
+  footer .z{ font-family:var(--font-zh); }
+  .note{ font-size:13px; color:var(--muted); margin-top:14px; }
+  .note .z{ font-family:var(--font-zh); display:block; margin-top:3px; }
+
+  @media (max-width:560px){
+    .top-in{ gap:10px; padding-left:16px; padding-right:16px; }
+    .brandbar{ gap:10px; }
+    .brandbar img.bni{ height:18px; }
+    .brandbar img.ctk{ height:14px; }
+    .brandbar .sep{ height:16px; }
+    .langsw button{ padding:9px 11px; font-size:12.5px; }
+  }
+
+  @media print{
+    header.top,.langsw,.copybtn{ display:none !important; }
+    .en,.zh{ display:block !important; }
+    section{ break-inside:avoid; border-bottom:1px solid #ddd; }
+    body{ font-size:11pt; }
+    a[href^="http"]::after{ content:" (" attr(href) ")"; font-size:.8em; color:#666; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brandbar">
+      <img class="bni" src="images/bni-logo-onwhite.svg" alt="BNI">
+      <span class="sep"></span>
+      <img class="ctk" src="images/ctkpro-logo.png" alt="CTK Pro">
+    </div>
+    <div class="langsw" role="group" aria-label="Language">
+      <button type="button" data-set="en"   aria-pressed="false">EN</button>
+      <button type="button" data-set="zh"   aria-pressed="false" lang="zh-Hant">中</button>
+      <button type="button" data-set="both" aria-pressed="true">Both</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ============ HERO ============ -->
+  <div class="hero">
+    <p class="eyebrow">BNI 1-to-1 · Taipei, Taiwan</p>
+    <h1>Alfred Kang<span class="zhname" lang="zh-Hant">康程泰</span></h1>
+    <p class="role">General Manager, CTK Pro <span lang="zh-Hant" style="font-family:var(--font-zh)">竑盛科技</span> · Taipei · BNI <span lang="zh-Hant" style="font-family:var(--font-zh)">創智分會</span></p>
+
+    <div class="beat">
+      <p class="en-line">Enterprise websites that <b>go live</b>, <b>stay alive</b>, and have <b>someone accountable</b> when things break.</p>
+      <p class="zh-line" lang="zh-Hant">企業網站——<b>上得去・活得久・出事有人扛</b></p>
+      <p class="sub">For a client, that means outsourcing the risk of running a website — turning it into someone's responsibility.
+        <span class="z" lang="zh-Hant">對客戶來說，就是把網站的風險外包——變成有人負責。</span></p>
+    </div>
+
+    <div class="quickfacts">
+      <span class="qf">21 years in the industry</span>
+      <span class="qf">CTK Pro since 2011</span>
+      <span class="qf">70+ sites under long-term maintenance</span>
+      <span class="qf">ISO 27001:2022</span>
+      <span class="qf">UTC+8 — same clock as Singapore</span>
+    </div>
+  </div>
+
+  <!-- ============ 1. THE ONE SENTENCE ============ -->
+  <section>
+    <p class="sec-no">01 — Refer me in 20 seconds</p>
+    <h2>If you remember one thing about me<span class="z" lang="zh-Hant">幫我記住一句話就好</span></h2>
+    <div class="lead">
+      <div class="pair">
+        <div class="en">Remember that one sentence above. Next time someone mentions a website — a redesign, a site nobody is looking after, a launch that's stuck — <strong>lend that sentence to me</strong>. That's the whole ask.</div>
+        <div class="zh" lang="zh-Hant">記住上面那一句就好。下次有人提到網站——要改版、沒人在顧、卡住上不了線——<strong>請把那句話借給我用</strong>。這就是我全部的請求。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. WHAT I ACTUALLY DO ============ -->
+  <section>
+    <p class="sec-no">02 — What I actually do</p>
+    <h2>I build corporate websites — and then keep them running<span class="z" lang="zh-Hant">我做企業網站，然後一直顧下去</span></h2>
+    <div class="lead">
+      <div class="pair">
+        <div class="en">Most vendors stop at launch. That is where the real work starts: hosting, backups, security updates, content changes, new requirements from a client's IT department. The build is maybe a third of the job.</div>
+        <div class="zh" lang="zh-Hant">多數廠商做到上線就結束。真正的工作是從那裡開始的：主機、備份、安全更新、內容修改、客戶資訊部門新的要求。建置大概只佔三分之一。</div>
+      </div>
+    </div>
+    <div class="cards c3">
+      <div class="card">
+        <p class="tagline">Plan</p>
+        <h3>Structure before pixels<span class="z" lang="zh-Hant">規劃清楚</span></h3>
+        <p>Information architecture, content inventory, user flow, SEO fundamentals.</p>
+        <p class="z" lang="zh-Hant">網站架構、頁面與內容盤點、使用者動線、SEO 基礎結構。</p>
+      </div>
+      <div class="card">
+        <p class="tagline">Build</p>
+        <h3>Built to be managed<span class="z" lang="zh-Hant">建置穩定</span></h3>
+        <p>Responsive front-end, a CMS your own staff can actually use, forms and content modules.</p>
+        <p class="z" lang="zh-Hant">RWD、前端實作、同事真的會用的 CMS 後台、表單與內容模組。</p>
+      </div>
+      <div class="card">
+        <p class="tagline">Operate</p>
+        <h3>Someone is still there<span class="z" lang="zh-Hant">維護有人</span></h3>
+        <p>Domain, DNS, SSL, hosting, backups, security updates, and later extensions.</p>
+        <p class="z" lang="zh-Hant">網域、DNS、SSL、主機、備份、安全更新，以及後續擴充。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3. THREE WAYS WE ALREADY WORK ============ -->
+  <section>
+    <p class="sec-no">03 — Three ways we already work</p>
+    <h2>Not a proposal — this is what we already do<span class="z" lang="zh-Hant">這不是構想——我們已經在做</span></h2>
+
+    <div class="collab">
+      <span class="num">1</span>
+      <h3>A relay with design agencies<span class="z" lang="zh-Hant">跟設計公司接力</span></h3>
+      <div class="body">
+        <div class="pair">
+          <div class="en">Design leads the look. I take it live and keep it running. What usually stalls a project isn't the design — it's the client's IT questionnaire, accessibility compliance, or a legacy CMS. <strong>I fill in that questionnaire every day.</strong></div>
+          <div class="zh" lang="zh-Hant">設計歸你，落地歸我們。卡住的通常不是設計的問題——是客戶資訊部門那份問卷、無障礙合規、或既有的 CMS。<strong>那份問卷，我們天天在填。</strong></div>
+        </div>
+        <div class="pair">
+          <div class="en"><strong>Your client stays your client — I don't go around you.</strong> And what I maintain isn't just a website; it's your portfolio. Three months of design work deserves to last three years.</div>
+          <div class="zh" lang="zh-Hant"><strong>客戶是你們的，我們不繞過你們。</strong>而且我們維護的不只是網站，是設計公司的作品集——你花三個月做的設計，值得撐三年。</div>
+        </div>
+      </div>
+      <div class="who">
+        <p class="lbl">Design teams we work with</p>
+        <ul>
+          <li><a href="https://happdesign.com/" target="_blank" rel="noopener">Happ Design</a> <small>MoNTUE museum site — partnered since 2020, still maintained</small></li>
+          <li><a href="https://jl.design/en/" target="_blank" rel="noopener">JL DESIGN</a> <small>Taiwan's first motion-graphics design house</small></li>
+          <li><a href="https://mounts-studio.com/" target="_blank" rel="noopener">Mounts Studio</a> <small><span class="z" lang="zh-Hant">良艮創意</span> · brand identity &amp; web design studio</small></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="collab">
+      <span class="num">2</span>
+      <h3>The DMZ inside a company<span class="z" lang="zh-Hant">在企業裡當 DMZ</span></h3>
+      <div class="body">
+        <div class="pair">
+          <div class="en">A company puts its public-facing systems — the corporate site, campaign sites, public services — into an isolated zone. Think of it as a <strong>front yard</strong>: the front yard is designed so it can be hit, and the vault behind it stays untouched. That zone is called a <strong>DMZ</strong> (demilitarized zone).</div>
+          <div class="zh" lang="zh-Hant">企業把「對外」的系統——官網、活動網站、對外服務——放進一個隔離區，像<strong>前院</strong>：前院設計成可以被砸，放貴重東西的<strong>金庫</strong>在後面好好的。這個隔離區叫 <strong>DMZ</strong>（Demilitarized Zone，非軍事區）。</div>
+        </div>
+        <div class="pair">
+          <div class="en">I'm the vendor companies put in that position: build the public-facing system, run it, and be the one accountable when something happens. Inside the client's organisation I sit between <strong>marketing</strong> (brand, speed) and <strong>IT</strong> (compliance, responsibility) — I speak both languages.</div>
+          <div class="zh" lang="zh-Hant">我們就是被企業放在那個位置的廠商：對外系統的建置、維運，出事有人扛。在客戶的組織裡，我們同時對接<strong>行銷部門</strong>（講品牌、講速度）和<strong>資訊部門</strong>（講合規、講責任）——兩邊的語言，我們都會講。</div>
+        </div>
+      </div>
+      <div class="who">
+        <p class="lbl">Companies we've done this for</p>
+        <ul>
+          <li><a href="https://www.asus.com/" target="_blank" rel="noopener">ASUS</a> <small>global consumer-tech brand</small></li>
+          <li><a href="https://www.ememory.com.tw/" target="_blank" rel="noopener">eMemory Technology</a> <small><span class="z" lang="zh-Hant">力旺電子</span> · listed semiconductor IP licensing</small></li>
+          <li><a href="https://www.pufsecurity.com/" target="_blank" rel="noopener">PUFsecurity</a> <small><span class="z" lang="zh-Hant">熵碼科技</span> · chip-security IP, an eMemory company</small></li>
+          <li><a href="https://www.gbc.com.tw/" target="_blank" rel="noopener">General Biologicals (GBC)</a> <small><span class="z" lang="zh-Hant">普生</span> · listed IVD diagnostics · current engagement</small></li>
+          <li><a href="https://www.inpsy.com/" target="_blank" rel="noopener">InPsytech</a> <small><span class="z" lang="zh-Hant">乾瞻科技</span> · semiconductor interface IP · current engagement</small></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="collab">
+      <span class="num">3</span>
+      <h3>The last mile for AI-built sites<span class="z" lang="zh-Hant">AI 網站的最後一哩</span></h3>
+      <div class="body">
+        <div class="pair">
+          <div class="en">Plenty of owners now build a website with AI in three minutes — and it genuinely works. But <strong>"looks right"</strong> and <strong>"can go live and stay live"</strong> are two different things. What's missing is depth, and accountability.</div>
+          <div class="zh" lang="zh-Hant">現在很多老闆自己用 AI，三分鐘就做出一個網站——真的能做出來。但<strong>「看起來都對」</strong>跟<strong>「能上線營運」</strong>之間，差的是深度，跟責任。</div>
+        </div>
+        <div class="pair">
+          <div class="en">The last mile I pick up: domain and CDN setup · version control, so a bad change can be rolled back · choosing hosting and whether you need a database · how security is managed · backups, and how you debug when something goes wrong.</div>
+          <div class="zh" lang="zh-Hant">最後一哩我們接：網域與 CDN 設定・版本管理（改壞了隨時退回上一版）・挑主機、要不要資料庫・資安怎麼管理・怎麼備份、出錯怎麼查。</div>
+        </div>
+      </div>
+      <div class="who">
+        <p class="lbl">Recent work</p>
+        <ul>
+          <li><a href="https://www.kuansliving.com/en/" target="_blank" rel="noopener">Kuan's Living</a> <small><span class="z" lang="zh-Hant">寬庭</span> · premium bedding &amp; home textiles — built their site with AI; we deployed and now host it</small></li>
+          <li><a href="https://www.cip.com.tw/" target="_blank" rel="noopener">CIP</a> <small><span class="z" lang="zh-Hant">西北影像</span> · digital imaging &amp; large-format printing — a chat-based quoting bot, taken from idea to actually live</small></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. TRIGGER PHRASES ============ -->
+  <section>
+    <p class="sec-no">04 — When you hear this, think of me</p>
+    <h2>Three sentences that mean it's my kind of job<span class="z" lang="zh-Hant">聽到這些話——請想到我</span></h2>
+    <div class="cards">
+      <div class="quote">
+        <p class="q-en">"The designs are all done — is there a dev shop we can trust to build them pixel-perfect, exactly as designed?"</p>
+        <p class="q-zh" lang="zh-Hant">「設計稿都做好了，有沒有可靠的開發廠商，可以幫我們 100% 實現 pixel perfect、讓設計在網站上呈現？」</p>
+        <p class="why">That's the relay in ①. <span class="z" lang="zh-Hant">這是合作①的接力。</span></p>
+      </div>
+      <div class="quote">
+        <p class="q-en">"We're building a new corporate site, but IT keeps handing us requirements — which company actually knows all this ISO stuff?"</p>
+        <p class="q-zh" lang="zh-Hant">「要做官網了，可是資訊部門的要求一大堆——到底哪間公司會這些什麼 ISO 的東西？」</p>
+        <p class="why">That's ② — I sit exactly there. <span class="z" lang="zh-Hant">這是合作②，我就站在那個位置。</span></p>
+      </div>
+      <div class="quote">
+        <p class="q-en">"I built a website with AI, but it only lives on my own machine — and it's telling me to go buy a pile of things I don't understand. Is that right?"</p>
+        <p class="q-zh" lang="zh-Hant">「我用 AI 做了個網站，但它只能活在我的主機裡，AI 還叫我去買一堆看不懂的東西——這是對的嗎？」</p>
+        <p class="why">That's ③, the last mile. <span class="z" lang="zh-Hant">這是合作③的最後一哩。</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. SAY THIS FOR ME ============ -->
+  <section>
+    <p class="sec-no">05 — Say this for me</p>
+    <h2>An opener anyone can use<span class="z" lang="zh-Hant">幫我開口</span></h2>
+    <div class="lead">
+      <div class="pair">
+        <div class="en">The easiest question to ask on my behalf — it needs no technical knowledge, and if they can't answer it, the problem surfaces on its own:<br><strong>"Who looks after your website after it goes live?"</strong></div>
+        <div class="zh" lang="zh-Hant">最容易替我問出口的一句，不需要任何技術背景；如果對方答不出來，痛點自己就浮出來了：<br><strong>「你們網站上線之後，是誰在顧？」</strong></div>
+      </div>
+    </div>
+
+    <div class="blurb">
+      <p class="lbl" style="font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);">Ready-made introduction</p>
+      <p class="txt en" id="blurb-en" style="margin-top:10px;">Hi — you mentioned your website has been hard to keep up. I know Alfred Kang in Taipei. His company, CTK Pro, builds corporate websites and then maintains them long term — 70+ sites, ISO 27001 certified, and same UTC+8 timezone as us. alfred@ctkpro.com · ctkpro.com</p>
+      <p class="txt z zh" id="blurb-zh" lang="zh-Hant" style="margin-top:10px;">跟你介紹一個人：台北的 Alfred Kang，他們公司 CTK Pro 做企業網站，而且做完會一直顧下去——長期維運 70 幾個網站，有 ISO 27001，跟我們同一個時區。alfred@ctkpro.com · ctkpro.com</p>
+      <button class="copybtn" type="button" id="copyBtn" data-idle="Copy this introduction" data-done="Copied ✓">Copy this introduction</button>
+    </div>
+  </section>
+
+  <!-- ============ 6. GOOD FIT ============ -->
+  <section>
+    <p class="sec-no">06 — Who's a good fit</p>
+    <h2>A good referral, and one that isn't ready yet<span class="z" lang="zh-Hant">好的引薦，跟先不用的引薦</span></h2>
+    <div class="fit">
+      <div class="fitbox">
+        <p class="h">A good one</p>
+        <p>A team that genuinely wants to run their website well — someone who owns the decision, has a budget, and has a date.</p>
+        <p class="z" lang="zh-Hant">想要好好經營網站的業務單位——有決策權、有預算、有時程。</p>
+      </div>
+      <div class="fitbox no">
+        <p class="h">Not yet</p>
+        <p>A marketing contact who isn't sure what they want and can't make the call. It's not a bad person — it's just too early, and I'd rather not waste their time or yours.</p>
+        <p class="z" lang="zh-Hant">不確定自己要什麼、沒有決策權的行銷窗口。不是對方不好，是時候還沒到——我不想浪費他跟你的時間。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7. TRUST ============ -->
+  <section>
+    <p class="sec-no">07 — What we get graded on</p>
+    <h2>The four papers we sit every day<span class="z" lang="zh-Hant">這四張考卷，我們天天在寫</span></h2>
+    <div class="lead">
+      <div class="pair">
+        <div class="en">When a mid-to-large or listed company picks a web vendor, these four things decide it — not the visuals.</div>
+        <div class="zh" lang="zh-Hant">中大型、上市櫃企業挑網站廠商，決勝的是這四件事，不是畫面好不好看。</div>
+      </div>
+    </div>
+    <div class="cards c2">
+      <div class="card"><h3>Investor relations pages<span class="z" lang="zh-Hant">IR 投資人專區</span></h3><p>A listed company's lifeline page — accurate, flexible, updated in real time.</p><p class="z" lang="zh-Hant">上市櫃的命脈頁面——要準確、自由度高、即時更新。</p></div>
+      <div class="card"><h3>GDPR<span class="z" lang="zh-Hant">GDPR 歐盟個資合規</span></h3><p>If there's any business outside the region, there's no way around it.</p><p class="z" lang="zh-Hant">有海外業務就躲不掉。</p></div>
+      <div class="card"><h3>Accessibility (WCAG)<span class="z" lang="zh-Hant">無障礙（WCAG）</span></h3><p>Requirements are tightening, and increasingly written into contracts.</p><p class="z" lang="zh-Hant">要求持續收緊，也越來越常寫進合約。</p></div>
+      <div class="card"><h3>ISO 27001<span class="z" lang="zh-Hant">ISO 27001</span></h3><p>Whether the vendor's own way of working meets the standard. We're certified to ISO 27001:2022.</p><p class="z" lang="zh-Hant">外包廠商的管理方式符不符合標準。我們持有 ISO 27001:2022 驗證。</p></div>
+    </div>
+    <div class="who" style="border-top:1px dashed var(--line);">
+      <p class="lbl">Proof that "we keep it running" is not just a phrase</p>
+      <ul>
+        <li><a href="https://montue.ntue.edu.tw/en/" target="_blank" rel="noopener">MoNTUE</a> <small>museum of National Taipei University of Education — with Happ Design, partnered since 2020, still maintained</small></li>
+        <li><a href="https://www.fayaque.com.tw/" target="_blank" rel="noopener">Fayaque</a> <small><span class="z" lang="zh-Hant">法雅客</span> · nationwide specialty retail — built 2019, maintained 2020–2025 incl. payments &amp; member reconciliation</small></li>
+        <li>ISO 27001:2022 <small>cert. no. ARES／TW／I2502021I</small></li>
+        <li>Accessibility Level A <small>audited</small></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 8. FROM SINGAPORE ============ -->
+  <section>
+    <p class="sec-no">08 — Working with me from Singapore</p>
+    <h2>I'm in Taipei — here's what that actually means<span class="z" lang="zh-Hant">我人在台北，這代表什麼</span></h2>
+    <div class="lead">
+      <div class="pair">
+        <div class="en"><strong>Same clock.</strong> Singapore and Taipei are both UTC+8. No overnight lag, no waiting until tomorrow for an answer.</div>
+        <div class="zh" lang="zh-Hant"><strong>同一個時區。</strong>新加坡跟台北都是 UTC+8，沒有隔夜時差，不用等到明天才有回覆。</div>
+      </div>
+      <div class="pair">
+        <div class="en"><strong>Three kinds of referral that work from here:</strong> a Taiwan or Greater China site for your company or your client · a Traditional Chinese version of something you already run · or a Singapore design agency that needs a build-and-maintain partner.</div>
+        <div class="zh" lang="zh-Hant"><strong>從這裡出發，三種行得通的引薦：</strong>你們公司或客戶的台灣／大中華網站・現有網站要出繁體中文版・或新加坡的設計公司需要一個負責落地與維運的夥伴。</div>
+      </div>
+      <div class="pair">
+        <div class="en"><strong>Most of my clients found me online or were introduced by another client.</strong> So starting work with someone I haven't met in person is normal for me — not the exception.</div>
+        <div class="zh" lang="zh-Hant"><strong>我的客戶大多是網路上找來，或是客戶介紹過來的。</strong>所以沒見過面就開始合作，對我來說是常態，不是例外。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 9. MISCONCEPTIONS ============ -->
+  <section>
+    <p class="sec-no">09 — What people get wrong</p>
+    <h2>Three things people assume about this work<span class="z" lang="zh-Hant">常被誤會的三件事</span></h2>
+    <div class="miscon">
+      <div class="row">
+        <div class="they">
+          <p class="lbl">They think</p>
+          <p class="t">"A website is a one-off project."</p>
+          <p class="t z" lang="zh-Hant">「網站是一次性的專案。」</p>
+        </div>
+        <div class="say">
+          <p class="lbl">What I'd say</p>
+          <p class="s">Building it is maybe a third of the work. Backups, security updates, hosting, content changes and new features are what decide whether the site is still useful in year three. We've been looking after one museum's site since 2020.</p>
+          <p class="s z" lang="zh-Hant">建置大概只佔三分之一。備份、安全更新、主機、內容修改、功能擴充，才決定它第三年還能不能用。我們有一個美術館的網站，從 2020 年顧到現在。</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="they">
+          <p class="lbl">They think</p>
+          <p class="t">"With AI, a website is cheap and fast now."</p>
+          <p class="t z" lang="zh-Hant">「現在有 AI，網站又快又便宜。」</p>
+        </div>
+        <div class="say">
+          <p class="lbl">What I'd say</p>
+          <p class="s">Making something <em>look</em> right is faster than ever — that part is true. Getting it <em>live and safe</em> hasn't changed: domain, hosting, SSL, backups, security updates, accessibility, and a CMS your staff can actually use. Being able to build it isn't the same as being able to launch it.</p>
+          <p class="s z" lang="zh-Hant">做出一個「看起來對」的東西確實越來越快，這是真的。但「上得了線而且安全」沒有變簡單：網域、主機、SSL、備份、安全更新、無障礙，還有同事真的會用的後台。<strong>做得出來，不等於上得了線。</strong></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="they">
+          <p class="lbl">They think</p>
+          <p class="t">"A website is a design problem — just hire a design agency."</p>
+          <p class="t z" lang="zh-Hant">「網站是設計問題，找設計公司就好。」</p>
+        </div>
+        <div class="say">
+          <p class="lbl">What I'd say</p>
+          <p class="s">Design decides the first impression; structure and operations decide whether it still works in year three. I don't compete with design agencies — I work with them. They lead the look, I take it live and keep it running.</p>
+          <p class="s z" lang="zh-Hant">設計決定第一印象，架構跟維運決定它第三年還能不能用。我不是跟設計公司搶案子，我是跟他們一起做——他們定方向，我負責落地跟長期維運。</p>
+        </div>
+      </div>
+    </div>
+    <div class="lead" style="margin-top:22px;">
+      <div class="pair">
+        <div class="en"><strong>All three collaborations sell the same thing: entrustment, and a transfer of responsibility. Technology depreciates. Accountability doesn't.</strong></div>
+        <div class="zh" lang="zh-Hant"><strong>三種合作，賣的是同一件事：託付，與責任轉移。技術會貶值，責任不會。</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 10. WHO I'D LOVE TO MEET ============ -->
+  <section>
+    <p class="sec-no">10 — Who I'd love to meet</p>
+    <h2>My top three<span class="z" lang="zh-Hant">業務人脈圈前三名</span></h2>
+    <div class="top3">
+      <div class="t3"><p class="n">01</p><p class="en">Corporate marketing leads</p><p class="z" lang="zh-Hant">企業行銷窗口</p></div>
+      <div class="t3"><p class="n">02</p><p class="en">Design agencies</p><p class="z" lang="zh-Hant">設計公司</p></div>
+      <div class="t3"><p class="n">03</p><p class="en">Owners of bricks-and-mortar businesses</p><p class="z" lang="zh-Hant">實體產業老闆</p></div>
+    </div>
+    <p class="note" style="margin-top:22px;">Also useful, in roughly this order:
+      <span class="z" lang="zh-Hant">其他也很有幫助的，大致依序：</span></p>
+    <ul class="plainlist">
+      <li>Corporate IT teams <span class="z" lang="zh-Hant">企業資訊團隊</span></li>
+      <li>In-house design teams <span class="z" lang="zh-Hant">企業設計團隊</span></li>
+      <li>E-commerce teams <span class="z" lang="zh-Hant">電子商務團隊</span></li>
+      <li>Public-sector IT units <span class="z" lang="zh-Hant">公部門資訊單位</span></li>
+      <li>School administration <span class="z" lang="zh-Hant">學校行政單位</span></li>
+      <li>Foundation marketing leads <span class="z" lang="zh-Hant">基金會行銷窗口</span></li>
+      <li>Academic associations <span class="z" lang="zh-Hant">學會單位</span></li>
+    </ul>
+  </section>
+
+  <!-- ============ 11. ABOUT ============ -->
+  <section>
+    <p class="sec-no">11 — About Alfred</p>
+    <h2>The person, not just the company<span class="z" lang="zh-Hant">關於我這個人</span></h2>
+    <div class="lead">
+      <div class="pair">
+        <div class="en">21 years in the industry, previously a Lead Developer — I still read the code. I'm General Manager of CTK Pro, which has been running since 2011.</div>
+        <div class="zh" lang="zh-Hant">入行 21 年，之前是 Lead Developer——我到現在還看得懂程式。我是 CTK Pro 竑盛科技的總經理，公司從 2011 年做到現在。</div>
+      </div>
+      <div class="pair">
+        <div class="en">From my earlier years building interactive work: a <strong>Cannes Lions Bronze in 2010</strong> (Puma, "The Museum of Power") and <strong>FWA Site of the Day</strong> in 2008–09.</div>
+        <div class="zh" lang="zh-Hant">早年做互動作品的時期：<strong>2010 坎城銅獅</strong>（Puma – The Museum of Power）、<strong>2008–09 FWA 全球當日最佳網站</strong>。</div>
+      </div>
+      <div class="pair">
+        <div class="en">Part of my network is still in New York — classmates from my time there, and former colleagues from an internship. Working in English, across a timezone, isn't new to me.</div>
+        <div class="zh" lang="zh-Hant">我有一部分人脈到現在還在紐約——當年的同學，還有實習時的前同事。用英文、跨時區工作，對我不是新鮮事。</div>
+      </div>
+      <div class="pair">
+        <div class="en">Every week I brief my BNI chapter on what actually happened in AI — no hype, with sources. All the decks are public: <a href="https://alfredctkpro.github.io/bni-ai-news/" target="_blank" rel="noopener">alfredctkpro.github.io/bni-ai-news</a></div>
+        <div class="zh" lang="zh-Hant">我每週在分會分享 AI 這禮拜真正發生了什麼，不吹捧、附出處。投影片全部公開。</div>
+      </div>
+      <div class="pair">
+        <div class="en">Outside work: snowboarding, skateboarding, and two kids who need a park. What I want is simple — <strong>to still be carving comfortably at 80.</strong> If there's one thing behind whatever I've got right so far, it's <strong>learning, then doing</strong>.</div>
+        <div class="zh" lang="zh-Hant">工作以外：單板滑雪、滑板，還有兩個需要去公園的小孩。我的願望很簡單——<strong>80 歲時仍然愜意滑雪。</strong>如果說有什麼是我做對的關鍵，大概就是<strong>學習＋行動</strong>。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 12. HOW I CAN HELP YOU ============ -->
+  <section>
+    <p class="sec-no">12 — How I can help you</p>
+    <h2>This goes both ways<span class="z" lang="zh-Hant">我可以怎麼幫你</span></h2>
+    <div class="cards c2">
+      <div class="card">
+        <h3>A second opinion on a quote<span class="z" lang="zh-Hant">技術報價的第二意見</span></h3>
+        <p>If someone has quoted you for a website or a system and you're unsure whether the number or the scope makes sense, ask me. After 21 years I can usually tell you what you're actually paying for.</p>
+        <p class="z" lang="zh-Hant">有人報價給你做網站或系統，你不確定金額或範圍合不合理，可以問我。做了 21 年，我大致講得出那個價錢實際上買到什麼。</p>
+      </div>
+      <div class="card">
+        <h3>Your Taiwan person<span class="z" lang="zh-Hant">你的台灣窗口</span></h3>
+        <p>If you or a client needs something to land in Taiwan — a Traditional Chinese site, local hosting, or simply a vendor who can sign a contract locally — I'm in Taipei.</p>
+        <p class="z" lang="zh-Hant">你或你的客戶要在台灣落地——繁體中文網站、本地主機，或只是需要一個能在台灣簽約的廠商——我人在台北。</p>
+      </div>
+      <div class="card">
+        <h3>Take the AI briefing<span class="z" lang="zh-Hant">每週 AI 新知，拿去用</span></h3>
+        <p>The weekly AI decks are public. If they're useful, take them and run the same session in your own chapter.</p>
+        <p class="z" lang="zh-Hant">每週的 AI 投影片全部公開，覺得有用就拿去，在你們分會講同一套也可以。</p>
+      </div>
+    </div>
+    <div class="lead" style="margin-top:24px;">
+      <div class="pair">
+        <div class="en">And if you're putting AI into a real workflow — not a demo, an actual process people use every day — I'd genuinely like to hear about it.</div>
+        <div class="zh" lang="zh-Hant">另外，如果你手上有把 AI 接進真實流程的東西——不是 demo，是每天真的有人在用的那種——我很想聽。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section>
+    <p class="sec-no">Let's talk</p>
+    <h2>Reach me directly<span class="z" lang="zh-Hant">直接找我</span></h2>
+    <div class="contact">
+      <div class="ct"><p class="l">Website</p><a href="https://ctkpro.com" target="_blank" rel="noopener">ctkpro.com</a></div>
+      <div class="ct"><p class="l">Email</p><a href="mailto:alfred@ctkpro.com">alfred@ctkpro.com</a></div>
+      <div class="ct"><p class="l">LinkedIn</p><a href="https://www.linkedin.com/in/alfredkang/" target="_blank" rel="noopener">linkedin.com/in/alfredkang</a></div>
+    </div>
+    <div class="qrbox">
+      <img src="images/qr-ctkpro.png" alt="QR code to ctkpro.com">
+      <div>
+        <p class="qt">Scan for ctkpro.com</p>
+        <p class="qs">No rush, and no pitch — if any of this is useful, just say hello.
+          <span class="z" lang="zh-Hant">不急，也不推銷——覺得有用，打個招呼就好。</span></p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Alfred Kang</strong> · CTK Pro <span class="z" lang="zh-Hant">竑盛科技</span> · Taipei, Taiwan · UTC+8</p>
+    <p style="margin-top:6px;">BNI <span class="z" lang="zh-Hant">創智分會</span> · Prepared for a 1-to-1 with BNI Singapore</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var btns = Array.prototype.slice.call(document.querySelectorAll('.langsw button'));
+
+  function apply(v){
+    if(v !== 'en' && v !== 'zh') v = 'both';
+    root.setAttribute('data-lang', v);
+    btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.set === v)); });
+    try{ localStorage.setItem('a121-lang', v); }catch(e){}
+  }
+
+  var param = new URLSearchParams(location.search).get('lang');
+  var stored = null;
+  try{ stored = localStorage.getItem('a121-lang'); }catch(e){}
+  apply(param || stored || 'both');
+
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){ apply(b.dataset.set); });
+  });
+
+  // copy the ready-made introduction (matches current language mode)
+  var btn = document.getElementById('copyBtn');
+  btn.addEventListener('click', function(){
+    var mode = root.getAttribute('data-lang');
+    var en = document.getElementById('blurb-en').textContent.trim();
+    var zh = document.getElementById('blurb-zh').textContent.trim();
+    var text = mode === 'zh' ? zh : (mode === 'en' ? en : en + '\n\n' + zh);
+    function done(){
+      btn.textContent = btn.dataset.done;
+      setTimeout(function(){ btn.textContent = btn.dataset.idle; }, 2000);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(fallback);
+    } else { fallback(); }
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly','');
+      ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); done(); }catch(e){}
+      document.body.removeChild(ta);
+    }
+  });
+})();
+</script>
+</body>
+</html>
