@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>答案卷要在你手上 · BNI 創智分會 2026-10-16</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211d1b; --muted:#6b6b6b; --soft:#9a9a9a;
+    --line:#e8dcdc; --line2:#f0e8e8;
+    /* BNI 主色＝紅（變數名沿用 --blue 以相容元件） */
+    --blue:#CF0A2C; --blue-700:#A00820; --blue-300:#E8677E; --blue-50:#FDECEE;
+    --bg:#FBFAF7; --paper:#FBF1EF;
+    --dark:#2b2724; --night:#16130f;
+    --ok:#2f7d4f; --ok-50:#e8f3ec;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;width:100%;overflow:hidden;background:#ece7e6;}
+  body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;
+       color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+  /* ---- 1280×720 縮放舞台 ---- */
+  #stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;background:var(--bg);}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
+         background:var(--bg);padding:60px 92px 66px;}
+  .slide.active{display:flex;}
+  .slide.center{align-items:center;text-align:center;}
+
+  .logo-tr{position:absolute;top:40px;right:56px;height:24px;opacity:.9;}
+  .logo-tl{position:absolute;top:38px;left:56px;height:25px;opacity:.95;}
+
+  .em{color:var(--blue);}
+  b{color:var(--ink);}
+
+  /* ---- 冷開場（黑底） ---- */
+  .slide.dark{background:var(--night);color:#f4efe9;}
+  .slide.dark b{color:#fff;}
+  .cold-big{font-size:96px;font-weight:900;letter-spacing:-1px;line-height:1.1;color:#fff;}
+  .cold-lines{margin-top:40px;font-size:30px;line-height:1.8;color:#c9c1b8;font-weight:500;}
+  .cold-lines b{color:#fff;font-weight:800;}
+  .cold-red{color:#ff4a63;}
+  .cold-quote{margin-top:44px;font-size:40px;font-weight:800;color:#fff;font-style:italic;letter-spacing:.01em;}
+  .cold-quote-zh{margin-top:10px;font-size:24px;color:#c9c1b8;}
+  .cold-src{position:absolute;left:0;right:0;bottom:44px;font-size:16px;color:#8a8178;letter-spacing:.04em;}
+
+  /* ---- 封面 ---- */
+  .cover-bni{height:54px;width:auto;margin-bottom:26px;}
+  .cover-kicker{font-size:19px;font-weight:800;letter-spacing:.14em;color:var(--blue);margin-bottom:24px;}
+  .cover-title{font-size:108px;font-weight:900;letter-spacing:-2px;line-height:1.05;color:var(--ink);}
+  .cover-sub{font-size:30px;font-weight:500;color:var(--muted);margin-top:28px;}
+  .cover-foot{font-size:19px;color:var(--soft);margin-top:48px;letter-spacing:.02em;}
+
+  /* ---- 謝謝頁 ---- */
+  .thanks-bni{height:48px;width:auto;margin-bottom:30px;}
+  .thanks{font-size:150px;font-weight:900;letter-spacing:.06em;color:var(--ink);line-height:1;}
+  .thanks-meta{font-size:24px;color:var(--muted);margin-top:38px;letter-spacing:.02em;}
+  .thanks-meta b{color:var(--ink);}
+  .thanks-org{font-size:19px;font-weight:800;color:var(--blue);letter-spacing:.1em;margin-top:16px;}
+
+  /* ---- 通用 ---- */
+  .kicker{font-size:18px;font-weight:800;letter-spacing:.14em;color:var(--blue);margin-bottom:18px;}
+  .head{font-size:58px;font-weight:900;line-height:1.16;letter-spacing:-1px;color:var(--ink);}
+  .head.sm{font-size:48px;}
+  .head .em{color:var(--blue);}
+  .head-sub{font-size:23px;font-weight:600;color:var(--muted);margin-top:16px;line-height:1.55;}
+  .head-sub b{color:var(--ink);}
+  .src-line{margin-top:22px;font-size:15px;color:var(--soft);line-height:1.5;}
+  .slide.center .src-line{max-width:1060px;}
+  .cue{margin-top:26px;font-size:28px;font-weight:800;color:var(--blue);line-height:1.45;}
+  .case-line{margin-top:22px;font-size:21px;line-height:1.6;color:var(--ink);background:var(--blue-50);
+             border-radius:12px;padding:14px 22px;max-width:1060px;}
+  .case-line b{color:var(--blue);}
+
+  /* ---- 大數字對照 ---- */
+  .vs{display:flex;align-items:stretch;justify-content:center;gap:60px;margin-top:34px;}
+  .vs .col{display:flex;flex-direction:column;align-items:center;min-width:330px;}
+  .vs .lbl{font-size:26px;font-weight:800;color:var(--muted);margin-bottom:8px;}
+  .vs .num{font-size:140px;font-weight:900;line-height:1;letter-spacing:-3px;}
+  .vs .num.big{color:var(--blue);}
+  .vs .num.small{color:var(--soft);}
+  .vs .bar{width:2px;background:var(--line);}
+
+  /* ---- 金句 ---- */
+  .quote{font-size:60px;font-weight:900;line-height:1.35;color:var(--ink);letter-spacing:-.5px;}
+  .quote.md{font-size:46px;}
+  .quote .em{color:var(--blue);}
+  .quote-by{margin-top:26px;font-size:22px;color:var(--muted);font-weight:600;}
+  .quote-tie{font-size:24px;font-weight:600;color:var(--muted);line-height:1.6;margin-top:30px;max-width:1000px;}
+  .quote-tie b{color:var(--ink);}
+
+  /* ---- 三症狀 ---- */
+  .trio{display:flex;gap:26px;margin-top:40px;width:100%;}
+  .trio .c{flex:1;background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px 26px;text-align:left;}
+  .trio .t{font-size:34px;font-weight:900;color:var(--blue);margin-bottom:12px;}
+  .trio .d{font-size:25px;line-height:1.55;color:var(--ink);}
+  .trio .n{font-size:16px;font-weight:800;letter-spacing:.12em;color:var(--soft);margin-bottom:6px;}
+
+  /* ---- 引言卡（吳恩達） ---- */
+  .say{max-width:980px;background:#fff;border-left:8px solid var(--blue);border-radius:6px 18px 18px 6px;
+       padding:34px 40px;text-align:left;margin-top:30px;}
+  .say p{font-size:38px;font-weight:800;line-height:1.45;color:var(--ink);}
+  .say .by{margin-top:18px;font-size:21px;font-weight:600;color:var(--muted);}
+
+  /* ---- 猜數字 ---- */
+  .guess-q{font-size:30px;font-weight:700;color:var(--muted);line-height:1.6;}
+  .guess-q b{color:var(--ink);}
+  .guess-big{font-size:64px;font-weight:900;margin-top:22px;line-height:1.2;}
+  .chips{display:flex;gap:22px;justify-content:center;margin-top:40px;}
+  .chip{font-size:34px;font-weight:900;padding:16px 34px;border-radius:999px;border:3px solid var(--line);color:var(--ink);background:#fff;}
+
+  /* ---- 長條 ---- */
+  .bars{display:flex;flex-direction:column;gap:20px;width:100%;max-width:1000px;margin-top:30px;text-align:left;}
+  .brow{display:flex;align-items:center;gap:20px;}
+  .brow .bl{flex:none;width:270px;font-size:24px;font-weight:800;color:var(--ink);line-height:1.25;}
+  .brow .bl small{display:block;font-size:16px;font-weight:600;color:var(--muted);}
+  .brow .track{flex:1;height:46px;background:var(--line2);border-radius:10px;position:relative;}
+  .brow .fill{height:100%;border-radius:10px;background:var(--soft);display:flex;align-items:center;justify-content:flex-end;
+              padding-right:14px;font-size:24px;font-weight:900;color:#fff;}
+  .brow .fill.red{background:var(--blue);}
+  .bgroup{font-size:18px;font-weight:800;letter-spacing:.1em;color:var(--muted);margin-top:8px;}
+
+  /* ---- 卡片 ---- */
+  .cards{display:flex;gap:30px;margin-top:36px;width:100%;}
+  .card{flex:1;background:#fff;border:1px solid var(--line);border-radius:20px;padding:32px 32px;text-align:left;}
+  .card .who{font-size:20px;font-weight:800;color:var(--muted);letter-spacing:.06em;}
+  .card .big{font-size:58px;font-weight:900;color:var(--blue);margin:12px 0 10px;line-height:1.1;letter-spacing:-1px;}
+  .card .big.ink{color:var(--ink);font-size:46px;}
+  .card .d{font-size:23px;line-height:1.6;color:var(--ink);}
+  .card .d .mu{color:var(--muted);}
+
+  /* ---- 步驟 ---- */
+  .steps{list-style:none;margin-top:30px;display:flex;flex-direction:column;gap:16px;text-align:left;max-width:1040px;}
+  .steps li{display:flex;gap:20px;align-items:baseline;font-size:27px;line-height:1.45;color:var(--ink);}
+  .steps .sn{flex:none;width:44px;height:44px;border-radius:12px;background:var(--blue-50);color:var(--blue);
+             font-weight:900;font-size:22px;display:flex;align-items:center;justify-content:center;transform:translateY(6px);}
+  .steps li.hl{font-weight:800;}
+  .steps li.hl .sn{background:var(--blue);color:#fff;}
+
+  /* ---- 找錯測驗 ---- */
+  .quiz{display:flex;gap:20px;width:100%;margin-top:22px;}
+  .qcard{flex:1;background:#fff;border:2px solid var(--line);border-radius:16px;padding:18px 20px 16px;text-align:left;}
+  .qcard .qt{font-size:19px;font-weight:900;letter-spacing:.1em;color:var(--blue);margin-bottom:12px;}
+  .qcard .qb{font-size:23px;line-height:1.62;color:var(--ink);}
+  .qcard .row{display:flex;justify-content:space-between;gap:10px;}
+  .qcard .row.tot{border-top:2px solid var(--ink);margin-top:4px;padding-top:4px;font-weight:900;}
+  .qcard mark{background:none;color:inherit;}
+  .reveal .qcard mark{background:#ffd9df;color:var(--blue-700);font-weight:900;border-radius:4px;padding:0 3px;}
+  .qcard .why{display:none;margin-top:14px;font-size:20px;line-height:1.5;color:var(--blue-700);font-weight:700;
+              border-top:1px dashed var(--blue-300);padding-top:10px;}
+  .reveal .qcard .why{display:block;}
+  .reveal .qcard{border-color:var(--blue-300);}
+  .quiz-foot{margin-top:18px;font-size:15px;color:var(--soft);}
+  .timer{width:100%;max-width:1096px;margin-top:20px;display:flex;align-items:center;gap:16px;}
+  .timer .tt{flex:1;height:12px;background:var(--line2);border-radius:999px;overflow:hidden;}
+  .timer .tf{height:100%;width:100%;background:var(--blue);border-radius:999px;}
+  .timer .tn{font-size:26px;font-weight:900;color:var(--blue);min-width:70px;text-align:right;}
+  .timer button{border:2px solid var(--blue);background:#fff;color:var(--blue);font:inherit;font-size:17px;font-weight:800;
+                padding:8px 18px;border-radius:999px;cursor:pointer;}
+
+  /* ---- 兩欄對照 ---- */
+  .duo{display:flex;gap:30px;width:100%;margin-top:30px;}
+  .duo .side{flex:1;border-radius:20px;padding:30px 32px;text-align:left;}
+  .duo .side.good{background:var(--ok-50);border:2px solid #b9dcc6;}
+  .duo .side.bad{background:#fff;border:2px solid var(--line);}
+  .duo .tag{font-size:17px;font-weight:900;letter-spacing:.12em;margin-bottom:12px;}
+  .duo .good .tag{color:var(--ok);}
+  .duo .bad .tag{color:var(--soft);}
+  .duo .ttl{font-size:32px;font-weight:900;line-height:1.3;margin-bottom:14px;}
+  .duo .d{font-size:22px;line-height:1.6;color:var(--ink);}
+  .duo .res{margin-top:16px;font-size:24px;font-weight:900;}
+  .duo .good .res{color:var(--ok);}
+  .duo .bad .res{color:var(--blue);}
+
+  /* ---- 原則表 ---- */
+  .rule{width:100%;max-width:1060px;margin-top:34px;display:flex;flex-direction:column;gap:16px;}
+  .rule .r{display:flex;align-items:center;gap:24px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 28px;text-align:left;}
+  .rule .k{flex:none;width:330px;font-size:28px;font-weight:900;}
+  .rule .arrow{font-size:30px;color:var(--soft);}
+  .rule .v{font-size:28px;font-weight:800;}
+  .rule .r.yes .k,.rule .r.yes .v{color:var(--ok);}
+  .rule .r.no .k{color:var(--ink);}
+  .rule .r.no .v{color:var(--blue);}
+
+  /* ---- 品管 ---- */
+  .qa{display:flex;align-items:center;justify-content:center;gap:40px;margin-top:36px;}
+  .qa .box{width:400px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;text-align:center;}
+  .qa .box .n{font-size:22px;font-weight:800;color:var(--muted);}
+  .qa .box .big{font-size:64px;font-weight:900;margin:8px 0;}
+  .qa .box .job{font-size:26px;font-weight:900;}
+  .qa .box.after{border:2px solid var(--blue);}
+  .qa .box.after .big,.qa .box.after .job{color:var(--blue);}
+  .qa .go{font-size:54px;color:var(--blue);font-weight:900;}
+
+  /* ---- 報價單答案卷 ---- */
+  .sheet{display:flex;gap:28px;width:100%;margin-top:26px;align-items:stretch;}
+  .sheet .vague{flex:0 0 330px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column;justify-content:center;text-align:left;}
+  .sheet .vague .tag{font-size:16px;font-weight:900;letter-spacing:.12em;color:var(--soft);margin-bottom:14px;}
+  .sheet .vague .say1{font-size:32px;font-weight:900;line-height:1.35;}
+  .sheet .vague .foot{margin-top:18px;font-size:19px;color:var(--muted);line-height:1.5;}
+  .sheet .good{flex:1;background:#fff;border:2px solid var(--blue);border-radius:18px;padding:22px 28px;text-align:left;}
+  .sheet .good .tag{font-size:16px;font-weight:900;letter-spacing:.12em;color:var(--blue);margin-bottom:10px;}
+  .sheet ul{list-style:none;display:flex;flex-direction:column;gap:12px;}
+  .sheet li{display:flex;gap:16px;align-items:baseline;font-size:23px;line-height:1.5;}
+  .sheet li b{flex:none;width:140px;color:var(--blue);font-weight:900;}
+
+  /* ---- 新聞快打 ---- */
+  .agenda{list-style:none;margin-top:34px;display:flex;flex-direction:column;gap:14px;text-align:left;}
+  .agenda li{display:flex;align-items:center;gap:20px;font-size:32px;font-weight:800;color:var(--ink);}
+  .agenda .an{flex:none;width:50px;height:50px;border-radius:14px;background:var(--blue-50);color:var(--blue);
+              font-weight:900;font-size:25px;display:flex;align-items:center;justify-content:center;}
+  .news-head{display:flex;align-items:center;gap:16px;margin-bottom:22px;}
+  .news-tag{font-size:16px;font-weight:800;letter-spacing:.12em;color:#fff;background:var(--blue);
+            padding:7px 16px;border-radius:999px;}
+  .news-topic{font-size:27px;font-weight:800;color:var(--ink);}
+  .hero-line{font-size:74px;font-weight:900;color:var(--ink);line-height:1.15;letter-spacing:-1px;}
+  .hero-line.sm{font-size:60px;}
+  .hero-line .em{color:var(--blue);}
+  .sublines{margin-top:24px;font-size:23px;line-height:1.75;color:var(--muted);max-width:1040px;}
+  .sublines b{color:var(--ink);}
+  .datemark{margin-top:18px;font-size:16px;font-weight:700;letter-spacing:.05em;color:var(--soft);}
+  .tri{display:flex;gap:22px;margin-top:30px;width:100%;}
+  .tri .c{flex:1;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 24px;text-align:left;}
+  .tri .who{font-size:16px;font-weight:800;color:var(--muted);letter-spacing:.08em;}
+  .tri .nm{font-size:36px;font-weight:900;margin:6px 0 8px;}
+  .tri .d{font-size:22px;line-height:1.55;color:var(--ink);}
+  .tri .dt{font-size:17px;font-weight:700;color:var(--blue);margin-top:10px;}
+
+  /* ---- 自己打分 ---- */
+  .self{width:100%;max-width:1000px;margin-top:32px;display:flex;flex-direction:column;gap:14px;}
+  .self .r{display:flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 26px;text-align:left;}
+  .self .claim{flex:1;font-size:27px;font-weight:800;}
+  .self .who{font-size:23px;font-weight:800;color:var(--blue);}
+
+  /* ---- 三道檢驗 ---- */
+  .checks{display:flex;gap:24px;margin-top:36px;width:100%;}
+  .checks .c{flex:1;background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px 26px;text-align:left;}
+  .checks .n{font-size:16px;font-weight:800;letter-spacing:.14em;color:var(--soft);}
+  .checks .t{font-size:42px;font-weight:900;color:var(--blue);margin:6px 0 14px;}
+  .checks .d{font-size:25px;line-height:1.55;}
+  .checks .eg{margin-top:14px;font-size:20px;line-height:1.5;color:var(--muted);border-top:1px dashed var(--line);padding-top:12px;}
+
+  .two{display:flex;flex-direction:column;gap:22px;margin-top:36px;width:100%;max-width:1040px;}
+  .two .r{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 32px;text-align:left;}
+  .two .when{font-size:20px;font-weight:800;color:var(--muted);letter-spacing:.06em;}
+  .two .ask{font-size:44px;font-weight:900;color:var(--ink);margin-top:6px;}
+  .two .ask .em{color:var(--blue);}
+
+  /* ---- 出處頁 ---- */
+  .src-title{font-size:29px;font-weight:900;color:var(--ink);margin-bottom:20px;text-align:left;width:100%;}
+  .src-cols{display:flex;gap:40px;width:100%;text-align:left;}
+  .src-list{list-style:none;flex:1;display:flex;flex-direction:column;gap:9px;}
+  .src-list li{font-size:15px;line-height:1.4;color:var(--ink);}
+  .src-list .lbl{font-weight:800;}
+  .src-list a{color:var(--blue);text-decoration:none;word-break:break-all;}
+  .src-list a:hover{text-decoration:underline;}
+  .src-foot{margin-top:20px;font-size:16px;color:var(--soft);text-align:left;width:100%;}
+
+  /* ---- 導覽 / 進度 ---- */
+  .navbar{position:fixed;right:24px;bottom:16px;display:flex;align-items:center;gap:10px;z-index:40;user-select:none;}
+  .navbar .nav-arrow{border:none;background:none;cursor:pointer;line-height:1;font-size:26px;color:var(--soft);
+                     padding:2px 9px;border-radius:8px;transition:color .2s,background .2s;}
+  .navbar .nav-arrow:hover{color:var(--blue);background:var(--blue-50);}
+  .navbar .nav-count{font-size:15px;font-weight:700;letter-spacing:.12em;min-width:64px;text-align:center;color:var(--muted);}
+  .navbar .nav-count b{color:var(--ink);}
+  .progress{position:fixed;left:0;bottom:0;height:3px;background:var(--blue);width:0;transition:width .35s ease;z-index:40;}
+  #help{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;background:rgba(160,8,32,.94);
+        color:#fff;font-size:13px;padding:8px 16px;border-radius:999px;transition:opacity .6s;}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- ===== 0 · 冷開場（不打招呼，直接講） ===== -->
+
+  <!-- P1 -->
+  <section class="slide center dark">
+    <h1 class="cold-big">今年春天，中東。</h1>
+    <p class="cold-lines">美軍武裝人員準備登上一艘<b>中國貨船</b>，<b>軍機已經升空</b>。<br>理由：一份情報說，這艘船載著<b>核武計畫的零件</b>。</p>
+  </section>
+
+  <!-- P2 -->
+  <section class="slide center dark">
+    <h1 class="cold-big">這份情報是 <span class="cold-red">AI</span> 寫的。<br>而且，完全是錯的。</h1>
+    <p class="cold-quote">“It almost started a war.”</p>
+    <p class="cold-quote-zh">——消息來源：它差點開啟一場戰爭</p>
+    <p class="cold-src">CNN 獨家報導　·　2026-09-18</p>
+  </section>
+
+  <!-- P3 封面 -->
+  <section class="slide center">
+    <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <img class="cover-bni" src="images/bni-logo-onwhite.svg" alt="BNI 新竹B區">
+    <p class="cover-kicker">BNI 創智分會　·　2026-10-16</p>
+    <h1 class="cover-title">答案卷<br>要在你手上</h1>
+    <p class="cover-sub">為什麼一份錯的東西，可以一路走到軍機升空？</p>
+    <p class="cover-foot">Alfred Kang　·　CTK Pro</p>
+  </section>
+
+  <!-- ===== 1 · 產出暴增、成果沒跟上 ===== -->
+
+  <!-- P4 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="kicker">先看這兩個月發生了什麼</p>
+    <h2 class="head sm">三位經濟學家，追蹤 <span class="em">10 萬名</span>工程師</h2>
+    <div class="vs">
+      <div class="col"><span class="lbl">寫出來的程式</span><span class="num big">+741%</span></div>
+      <span class="bar"></span>
+      <div class="col"><span class="lbl">真的交出去的</span><span class="num small">+30%</span></div>
+    </div>
+    <p class="cue">寫得多了七倍，交得出去的只多三成。</p>
+    <p class="src-line">用了 AI 代理的工程師 vs 沒用的　·　出處：Arize〈The Death of the Code Review〉引述之研究</p>
+  </section>
+
+  <!-- P5 cURL（可砍） -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="kicker">一位老牌軟體作者的信箱</p>
+    <h2 class="head sm">漏洞報告，以前 <span class="em">6 份</span>有 1 份是真的<br>現在 <span class="em">20～30 份</span>才 1 份</h2>
+    <p class="head-sub">cURL（全世界幾十億台裝置都在用的網路工具）作者，最後乾脆<b>關掉漏洞賞金</b></p>
+    <p class="quote md" style="margin-top:34px;">「問題不在 AI，<span class="em">在中間那個人</span>。」</p>
+    <p class="src-line">Daniel Stenberg（cURL 作者）演講　·　瓶頸從「做」，移到了「判斷它對不對」</p>
+  </section>
+
+  <!-- ===== 2 · 判斷力在退化 ===== -->
+
+  <!-- P6 先說我自己 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="kicker">先說我自己</p>
+    <h2 class="head">做得越來越快，<span class="em">想得越來越淺</span></h2>
+    <div class="trio">
+      <div class="c"><p class="n">①</p><p class="t">似懂非懂</p><p class="d">看起來都對，<br>但說不清楚為什麼對。</p></div>
+      <div class="c"><p class="n">②</p><p class="t">判斷變虛</p><p class="d">決定下了，<br>理由是「AI 說的」。</p></div>
+      <div class="c"><p class="n">③</p><p class="t">能力在退</p><p class="d">以前自己想得出來的，<br>現在不問 AI 就卡住。</p></div>
+    </div>
+  </section>
+
+  <!-- P7 吳恩達 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="kicker">不只我這樣</p>
+    <h2 class="head sm">連吳恩達都說，他也是</h2>
+    <div class="say">
+      <p>「我問 AI 前後端的問題，<span class="em">六個月後忘光</span>，要用的時候，又去問一次。」</p>
+      <p class="by">—— 吳恩達（Andrew Ng，史丹佛教授、Coursera 共同創辦人）</p>
+    </div>
+    <p class="src-line">Andrew Ng × Silicon Valley Girl podcast，2026-08-28（意譯）</p>
+  </section>
+
+  <!-- P8 猜數字（題目） -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="kicker">🙋 猜猜看</p>
+    <p class="guess-q"><b>資深</b>放射科醫師，判讀乳房攝影。<br>旁邊的 AI 給<b>正確</b>建議時，他判對 <b class="em">82%</b>。</p>
+    <p class="guess-big">AI 給了<span class="em">錯的</span>建議，<br>他還剩多少？</p>
+    <div class="chips"><span class="chip">70%？</span><span class="chip">60%？</span><span class="chip">50% 以下？</span></div>
+  </section>
+
+  <!-- P9 猜數字（揭曉） -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <h2 class="head sm">AI 一給錯，<span class="em">資深也只剩一半</span></h2>
+    <div class="bars">
+      <p class="bgroup">資深醫師</p>
+      <div class="brow"><span class="bl">AI 建議正確</span><div class="track"><div class="fill" style="width:82%">82%</div></div></div>
+      <div class="brow"><span class="bl">AI 建議錯誤</span><div class="track"><div class="fill red" style="width:46%">46%</div></div></div>
+      <p class="bgroup">新手醫師</p>
+      <div class="brow"><span class="bl">AI 建議正確</span><div class="track"><div class="fill" style="width:80%">80%</div></div></div>
+      <div class="brow"><span class="bl">AI 建議錯誤</span><div class="track"><div class="fill red" style="width:20%">20%</div></div></div>
+    </div>
+    <p class="src-line">50 張乳房攝影，AI 刻意在其中 12 張給錯建議　·　Dratsch et al., Radiology 2023</p>
+  </section>
+
+  <!-- P10 不只醫生 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <h2 class="head">拿掉工具，<span class="em">就不會了</span></h2>
+    <div class="cards">
+      <div class="card">
+        <p class="who">內視鏡醫師</p>
+        <p class="big">28.4% → 22.4%</p>
+        <p class="d">長期用 AI 找息肉之後，<b>不用 AI 時</b>自己的偵測率。<br><span class="mu">不是 AI 出錯，是醫師自己的眼力退了。</span></p>
+      </div>
+      <div class="card">
+        <p class="who">芬蘭一家會計公司</p>
+        <p class="big ink">用了 7 年的系統<br>一停用……</p>
+        <p class="d">員工<b>不會做</b>，<b>也抓不到錯</b>。</p>
+      </div>
+    </div>
+    <p class="src-line">Budzyń et al., Lancet Gastroenterol Hepatol 2025　·　Rinta-Kahila et al., JAIS 2023</p>
+  </section>
+
+  <!-- P11 BCG（可砍） -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="kicker">BCG 顧問實驗：一題超出 AI 能力的任務</p>
+    <h2 class="head sm">越相信 AI，<span class="em">錯越多</span></h2>
+    <div class="bars">
+      <div class="brow"><span class="bl">不用 AI</span><div class="track"><div class="fill" style="width:84.5%">84.5%</div></div></div>
+      <div class="brow"><span class="bl">用 AI</span><div class="track"><div class="fill" style="width:70.6%">70.6%</div></div></div>
+      <div class="brow"><span class="bl">用 AI<small>＋上過提示詞課</small></span><div class="track"><div class="fill red" style="width:60%">60%</div></div></div>
+    </div>
+    <p class="cue">學會「怎麼用」，不等於知道「什麼時候不能信」。</p>
+    <p class="src-line">758 位 BCG 顧問，答對率　·　Dell'Acqua et al., HBS／BCG 2023</p>
+  </section>
+
+  <!-- ===== 3 · 揭曉美軍答案 ===== -->
+
+  <!-- P12 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="kicker">回到開場</p>
+    <h2 class="head">為什麼<span class="em">沒人攔下來</span>？</h2>
+    <ol class="steps">
+      <li><span class="sn">1</span>一位分析師，問 AI 這艘船的資料</li>
+      <li><span class="sn">2</span>AI 把公開資料和機密情報混在一起，<b>認錯了貨物</b></li>
+      <li class="hl"><span class="sn">3</span>結果被放進「軍方官員信任的那種標準情報報告」</li>
+      <li><span class="sn">4</span>一路傳到軍機升空，才有人回頭細看</li>
+    </ol>
+    <p class="src-line">CNN 獨家報導，2026-09-18（依匿名消息來源）</p>
+  </section>
+
+  <!-- P13 不只軍方 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <h2 class="head sm">同一種錯，<span class="em">不只軍方</span></h2>
+    <div class="cards">
+      <div class="card">
+        <p class="who">顧問公司 Deloitte（澳洲）</p>
+        <p class="big">退款約 29 萬澳幣</p>
+        <p class="d">給政府的報告，出現 AI 捏造的論文與判決。<br><span class="mu">237 頁，是外部學者讀出問題的。</span></p>
+      </div>
+      <div class="card">
+        <p class="who">律師</p>
+        <p class="big">2,000+ 件</p>
+        <p class="d">在法庭引用 AI 捏造的判例。<br><span class="mu">從 2023 年的一件，累積到現在。</span></p>
+      </div>
+    </div>
+    <p class="src-line">Fortune 2025-10-07　·　Charlotin, AI Hallucination Cases Database（2026-09）</p>
+  </section>
+
+  <!-- P14 金句 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="quote">AI 最危險的不是錯，<br>是<span class="em">錯得很專業</span>。</p>
+  </section>
+
+  <!-- ===== 4 · 多請人審？ ===== -->
+
+  <!-- P15 找錯測驗（題目）：講者說明後按「開始」或 T 鍵計時 -->
+  <section class="slide center" id="quizQ">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <h2 class="head sm">🧪 那就多請人審？<span class="em">先試試看</span></h2>
+    <div class="quiz" data-quiz></div>
+    <div class="timer">
+      <div class="tt"><div class="tf" id="tFill"></div></div>
+      <span class="tn" id="tNum">20</span>
+      <button id="tBtn" type="button">開始 20 秒</button>
+    </div>
+    <p class="quiz-foot">照 AI 最常犯的錯設計的虛構範例　·　找找看哪裡有問題</p>
+  </section>
+
+  <!-- P16 找錯測驗（揭曉） -->
+  <section class="slide center reveal">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <h2 class="head sm"><span class="em">三份都有。</span></h2>
+    <div class="quiz" data-quiz></div>
+    <p class="cue" style="font-size:25px;margin-top:20px;">每一份都很通順、很專業。AI 錯的從來不是文法，是這種一個字、一個數字。</p>
+  </section>
+
+  <!-- P17 人審不住 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="kicker">而且你們只看三份，還事先知道要找錯</p>
+    <h2 class="head sm">1,053 人的對照實驗：<span class="em">人審不住</span></h2>
+    <div class="vs">
+      <div class="col"><span class="lbl">人工按「同意」前攔下</span><span class="num small">13.6%</span></div>
+      <span class="bar"></span>
+      <div class="col"><span class="lbl">自動檢查攔下</span><span class="num big">89%</span></div>
+    </div>
+    <p class="case-line"><b>而且越審越鈍：</b>剛開始能攔下約 17%，審過 50 次之後，只剩約 5%。</p>
+    <p class="src-line">Anthropic 對 AI 寫程式工具的「危險指令」對照測試（二手報導）</p>
+  </section>
+
+  <!-- P18 沒人在讀 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="quote md">「<span class="em">沒有人在讀任何東西。</span>」</p>
+    <p class="quote-tie">「從最資淺到最資深，大家每天工作 12 小時，<br>都在做同一件事：<b>跟 AI 講話。</b>」</p>
+    <p class="quote-by">—— 一位大型科技公司工程師</p>
+    <p class="cue">不是大家不認真，是這條路本來就走不通。</p>
+    <p class="src-line">Simon Willison 引用，2026-09-20</p>
+  </section>
+
+  <!-- ===== 5 · 答案卷 ===== -->
+
+  <!-- P19 PS1 vs Adobe -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="kicker">同一個月，兩組人都叫 AI 重做一套老軟體</p>
+    <div class="duo">
+      <div class="side good">
+        <p class="tag">A 組</p>
+        <p class="ttl">一款 1998 年的 PlayStation 遊戲</p>
+        <p class="d">AI 花了大約一個月整個重寫。重新編譯出來，跟當年的光碟<b>一模一樣，一個位元都不差</b>。</p>
+        <p class="res">✔ 完全重現</p>
+      </div>
+      <div class="side bad">
+        <p class="tag">B 組</p>
+        <p class="ttl">七套 Adobe 繪圖、剪輯軟體</p>
+        <p class="d">進度報告看起來很漂亮——<br>但那個分數，<b>是寫功能的 AI 自己打的</b>。</p>
+        <p class="res">？ 實際能用多少，說不準</p>
+      </div>
+    </div>
+    <p class="cue">差在哪？</p>
+  </section>
+
+  <!-- P20 差在答案卷 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <h2 class="head">差的不是 AI，是<span class="em">答案卷</span></h2>
+    <div class="duo">
+      <div class="side good">
+        <p class="tag">A 組</p>
+        <p class="ttl">每一輪都拿「原版光碟」來比對</p>
+        <p class="d">AI 自己說「成功了」<b>不算數</b>，<br>對得上，才算。</p>
+      </div>
+      <div class="side bad">
+        <p class="tag">B 組</p>
+        <p class="ttl">沒有原版可以對</p>
+        <p class="d">只能 AI 自己說自己做得好。</p>
+      </div>
+    </div>
+    <p class="src-line">A：GitHub lsddecomp（以零售版執行檔指紋比對）、TechSpot 2026-10　·　B：PetaPixel、Phoronix 2026-10</p>
+  </section>
+
+  <!-- P21 答案卷原則 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="kicker">今天唯一一個要記的概念</p>
+    <h2 class="head sm">這件事，<span class="em">有沒有一張答案卷？</span></h2>
+    <div class="rule">
+      <div class="r yes"><span class="k">有標準答案，能逐項對</span><span class="arrow">→</span><span class="v">可以整段交給 AI</span></div>
+      <div class="r no"><span class="k">沒有</span><span class="arrow">→</span><span class="v">只能交一半，或<b class="em">先做一張</b></span></div>
+    </div>
+    <p class="case-line"><b>台灣例：</b>玉山金 AI 徵信，7 分鐘出初稿、一年省 8.4 萬人時<br><b>算得出原本花幾小時，就是一張答案卷。</b></p>
+    <p class="src-line">iThome 報導</p>
+  </section>
+
+  <!-- P22 人往上退一格 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <h2 class="head sm">人要<span class="em">往上退一格</span></h2>
+    <div class="qa">
+      <div class="box"><p class="n">以前，一天</p><p class="big">10 件</p><p class="job">每一件都看</p></div>
+      <span class="go">→</span>
+      <div class="box after"><p class="n">AI 之後，一天</p><p class="big">1,000 件</p><p class="job">定義什麼叫「合格」</p></div>
+    </div>
+    <p class="case-line"><b>就像出納不兼會計：</b>做事的和檢查的要分開——別叫同一個 AI 檢查它自己。</p>
+  </section>
+
+  <!-- P23 報價單答案卷 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <h2 class="head sm">一張報價單的<span class="em">答案卷</span></h2>
+    <div class="sheet">
+      <div class="vague">
+        <p class="tag">平常的交辦</p>
+        <p class="say1">「幫我做一份報價單。」</p>
+        <p class="foot">→ 它只能猜；做完你還是要整份重看。</p>
+      </div>
+      <div class="good">
+        <p class="tag">寫成答案卷</p>
+        <ul>
+          <li><b>要什麼</b><span>給立遠精密的尾牙活動報價，含稅。</span></li>
+          <li><b>怎樣算合格</b><span>毛利不低於 25%；附運費與取消條款；客戶名稱、統編跟合約一致；加總要對。</span></li>
+          <li><b>不准動什麼</b><span>不准改牌價、不准自己給折扣。</span></li>
+          <li><b>做到哪停</b><span>出草稿給我，<b style="color:var(--blue)">不准直接寄給客戶</b>。</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- P24 金句 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="quote">你可以把工作交給 AI，<br>但<span class="em">答案卷要在你手上</span>。</p>
+  </section>
+
+  <!-- ===== 6 · 快打 ===== -->
+
+  <!-- P25 快打目錄 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <h2 class="head">換個節奏：<span class="em">這兩週的 AI 新聞</span></h2>
+    <ul class="agenda">
+      <li><span class="an">①</span>ChatGPT 的回答，可以點了</li>
+      <li><span class="an">②</span>個人 AI 助理，三國開打</li>
+      <li><span class="an">③</span>Amazon：AI 不准進來買</li>
+      <li><span class="an">④</span>AI 可能住進你家冰箱</li>
+      <li><span class="an">⑤</span>這週又兩家說自己最強</li>
+    </ul>
+  </section>
+
+  <!-- P26 快打① GPT-6 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">新聞 ①</span><span class="news-topic">OpenAI GPT-6</span></div>
+    <div class="hero-line">回答不只是字，<br><span class="em">是能點的東西</span></div>
+    <p class="sublines">回答裡直接出現<b>圖表、表單、按鈕、計算機</b>，讓你點、讓你調<br>下次問它報價怎麼算，它可能直接丟一台計算機給你</p>
+    <p class="datemark">10/7 付費版、10/8 免費版 · OpenAI GPT-6</p>
+  </section>
+
+  <!-- P27 快打② 三國 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">新聞 ②</span><span class="news-topic">個人 AI 助理，兩個月三家</span></div>
+    <div class="tri">
+      <div class="c"><p class="who">Meta</p><p class="nm">Muse</p><p class="d">替你上網、購物、處理雜事</p><p class="dt">9/8 上線</p></div>
+      <div class="c"><p class="who">OpenAI</p><p class="nm">Dots</p><p class="d">每個都有自己的雲端電腦，接 4,000 多個 App，台灣 Pro 用戶可用</p><p class="dt">9/29 上線</p></div>
+      <div class="c"><p class="who">馬斯克陣營</p><p class="nm">Grok Bot</p><p class="d">有了<b>自己的 email</b>：能註冊服務、替你聯絡商家、跟人約時間</p><p class="dt">10/9 新增</p></div>
+    </div>
+    <p class="cue" style="font-size:26px;">共同點：自己的電腦、拿著你的帳號、不等你開口就先做事</p>
+  </section>
+
+  <!-- P28 快打③ Amazon -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">新聞 ③</span><span class="news-topic">Amazon 封鎖 Meta 的 AI 助理</span></div>
+    <div class="hero-line sm">「你是 AI，<span class="em">為什麼不說？</span>」</div>
+    <p class="sublines">Muse 替使用者上 Amazon 買東西——Amazon 說：它<b>沒先講</b>、逛的時候<b>也沒表明自己是 AI</b><br>先要求下架，Meta 不肯，Amazon 直接封鎖</p>
+    <p class="case-line"><b>對做生意的人：</b>AI 代理要進你的店幫客人買東西，<b>你讓不讓它進？</b>平台已經開始選邊了。</p>
+    <p class="datemark">9/20 · Amazon vs Meta Muse</p>
+  </section>
+
+  <!-- P29 快打④ 自我複製 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">新聞 ④</span><span class="news-topic">Anthropic 的安全報告</span></div>
+    <div class="hero-line sm">AI 可能<span class="em">幾個月內</span><br>就能在家電上複製自己</div>
+    <p class="sublines">智慧電視、冰箱、割草機——這類聯網裝置「向來幾乎沒有防護」</p>
+    <p class="case-line"><b>但先別緊張：</b>目前測試中，<b>還沒有任何模型做得到</b>。專家說法：「今天不是生存威脅，但走向令人擔心。」</p>
+    <p class="datemark">10/13 · Anthropic 紅隊報告（Al Jazeera 報導）</p>
+  </section>
+
+  <!-- P30 快打⑤ 兩家新旗艦 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">新聞 ⑤</span><span class="news-topic">這週，又兩家說自己最強</span></div>
+    <div class="cards">
+      <div class="card">
+        <p class="who">Meta　·　10/12</p>
+        <p class="big ink">Muse Wonder</p>
+        <p class="d">Meta 第一個頂級模型，Muse 助理的新大腦。主打<b>「記性」</b>：記住你說過的事並整理。</p>
+      </div>
+      <div class="card">
+        <p class="who">Google　·　10/13</p>
+        <p class="big ink">Gemini 4 Argon</p>
+        <p class="d">之前<b>只給資安防禦者用</b>，怕太強被濫用；這週開放。自己說：回答<b>更直接、少廢話</b>。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7 · 串回主線 ===== -->
+
+  <!-- P31 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <h2 class="head sm">每一家都說自己最強，但……</h2>
+    <div class="self">
+      <div class="r"><span class="claim">Gemini 4 Argon 排名第一</span><span class="who">Google 自己說的</span></div>
+      <div class="r"><span class="claim">Muse Wonder 的跑分</span><span class="who">Meta 自己測的</span></div>
+      <div class="r"><span class="claim">GPT-6 回答快 44%</span><span class="who">OpenAI 自己的數字</span></div>
+    </div>
+    <p class="cue">誰說了算？——答案卷要在你手上。</p>
+  </section>
+
+  <!-- ===== 8 · 明天能用的 ===== -->
+
+  <!-- P32 三道檢驗 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="kicker">每次用 AI 做決定前，問自己</p>
+    <h2 class="head sm">三道<span class="em">自我檢驗</span></h2>
+    <div class="checks">
+      <div class="c"><p class="n">第一道</p><p class="t">講得出來</p><p class="d">拿掉 AI，我能用一句話講清楚：要什麼、怎樣算做到？</p><p class="eg">例：這份報價為什麼是這個數字？</p></div>
+      <div class="c"><p class="n">第二道</p><p class="t">看得懂</p><p class="d">AI 給的東西，我是真的看懂，還是模模糊糊、用猜的？</p><p class="eg">例：合約這條，我知道它在保護誰嗎？</p></div>
+      <div class="c"><p class="n">第三道</p><p class="t">打得了槍</p><p class="d">它錯的時候，我有沒有推翻它的理由？</p><p class="eg">例：員工用 AI 交上來的提案，我挑得出毛病嗎？</p></div>
+    </div>
+  </section>
+
+  <!-- P33 兩招 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <h2 class="head sm">明天就能用的<span class="em">兩句話</span></h2>
+    <div class="two">
+      <div class="r"><p class="when">交辦之前，問自己</p><p class="ask">「這件事，<span class="em">有沒有答案卷？</span>」</p></div>
+      <div class="r"><p class="when">看不懂的時候，對 AI 說</p><p class="ask">「先別給答案，<span class="em">出 3 題考我</span>。」</p></div>
+    </div>
+  </section>
+
+  <!-- ===== 9 · 收尾 ===== -->
+
+  <!-- P34 豐田（可砍） -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="kicker">最後一個，是給老闆的</p>
+    <p class="quote md">豐田推「改善」時的老規矩：<br><span class="em">省下來的人手，不拿去裁員。</span></p>
+    <p class="quote-tie">不然第一線再也不會主動想，怎麼把事做得更好。<br><b>AI 也一樣——這不是員工的題目，是老闆的制度題。</b></p>
+  </section>
+
+  <!-- P35 回扣開場 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="quote md">那位分析師不是笨，<br>他只是<span class="em">沒有答案卷</span>。</p>
+    <p class="quote-tie" style="font-size:30px;margin-top:40px;"><b>你可以把工作交給 AI，但答案卷要在你手上。</b></p>
+  </section>
+
+  <!-- P36 出處 -->
+  <section class="slide center">
+    <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <div class="src-title">出處（都能點，想拍的可以拍）</div>
+    <div class="src-cols">
+      <ul class="src-list">
+        <li><span class="lbl">美軍 AI 情報 · CNN</span><br><a href="https://www.cnn.com/2026/09/18/politics/us-military-ai-false-intelligence-china-ship" target="_blank" rel="noopener">cnn.com/2026/09/18/politics/us-military-ai-false-intelligence-china-ship</a></li>
+        <li><span class="lbl">+741%／+30% · Arize</span><br><a href="https://www.youtube.com/watch?v=_mi3alkqy4s" target="_blank" rel="noopener">youtube.com/watch?v=_mi3alkqy4s</a></li>
+        <li><span class="lbl">cURL 作者演講</span><br><a href="https://www.youtube.com/watch?v=1YhJh9Lb9tA" target="_blank" rel="noopener">youtube.com/watch?v=1YhJh9Lb9tA</a></li>
+        <li><span class="lbl">放射科</span>　Dratsch et al., Radiology 2023, DOI 10.1148/radiol.222176</li>
+        <li><span class="lbl">內視鏡</span>　Budzyń et al., Lancet Gastroenterol Hepatol 2025</li>
+        <li><span class="lbl">芬蘭會計</span>　Rinta-Kahila et al., JAIS 2023, DOI 10.17705/1jais.00829</li>
+        <li><span class="lbl">BCG 顧問</span>　Dell'Acqua et al., HBS Working Paper 2023</li>
+        <li><span class="lbl">律師捏造判例</span><br><a href="https://www.damiencharlotin.com/hallucinations/" target="_blank" rel="noopener">damiencharlotin.com/hallucinations</a></li>
+        <li><span class="lbl">人審 13.6% vs 89%</span><br><a href="https://cybersecuritynews.com/claude-code-shifts-agent-security/" target="_blank" rel="noopener">cybersecuritynews.com/claude-code-shifts-agent-security</a></li>
+      </ul>
+      <ul class="src-list">
+        <li><span class="lbl">沒有人在讀 · Simon Willison</span><br><a href="https://simonwillison.net/2026/Sep/20/voxium/" target="_blank" rel="noopener">simonwillison.net/2026/Sep/20/voxium</a></li>
+        <li><span class="lbl">1998 遊戲重寫</span><br><a href="https://github.com/brian-oblivion/lsddecomp" target="_blank" rel="noopener">github.com/brian-oblivion/lsddecomp</a>　·　<a href="https://www.techspot.com/article/3184-decompilation-on-steroids/" target="_blank" rel="noopener">techspot.com</a></li>
+        <li><span class="lbl">Adobe 重做 · PetaPixel</span><br><a href="https://petapixel.com/2026/10/07/someone-rebuilt-free-open-source-versions-of-photoshop-premiere-and-lightroom-using-ai/" target="_blank" rel="noopener">petapixel.com/2026/10/07/…using-ai</a></li>
+        <li><span class="lbl">玉山金 AI 徵信 · iThome</span><br><a href="https://www.ithome.com.tw/news/178722" target="_blank" rel="noopener">ithome.com.tw/news/178722</a></li>
+        <li><span class="lbl">GPT-6</span>　<a href="https://letsdatascience.com/news/openai-brings-gpt-6-and-intelligent-ui-to-chatgpt-4f0d797c" target="_blank" rel="noopener">letsdatascience.com</a>　<span class="lbl">Dots</span>　<a href="https://techcrunch.com/2026/09/29/openai-launches-dots-its-bubbly-agentic-avatar/" target="_blank" rel="noopener">techcrunch.com</a></li>
+        <li><span class="lbl">Grok Bot email</span>　<a href="https://9to5mac.com/2026/10/09/grok-bot-just-got-its-own-email-address-heres-how-to-claim-yours/" target="_blank" rel="noopener">9to5mac.com</a>　<span class="lbl">Amazon 封 Muse</span>　<a href="https://techrepublic.com/article/news-amazon-blocks-meta-muse" target="_blank" rel="noopener">techrepublic.com</a></li>
+        <li><span class="lbl">AI 自我複製</span>　<a href="https://www.aljazeera.com/economy/2026/10/13/ai-could-self-replicate-on-home-devices-within-months-anthropic-says" target="_blank" rel="noopener">aljazeera.com</a></li>
+        <li><span class="lbl">Muse Wonder</span>　<a href="https://techcrunch.com/2026/10/12/meta-releases-its-first-frontier-model-muse-wonder/" target="_blank" rel="noopener">techcrunch.com</a>　<span class="lbl">Gemini 4 Argon</span>　<a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/" target="_blank" rel="noopener">blog.google</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- P37 謝謝 -->
+  <section class="slide center">
+    <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <img class="thanks-bni" src="images/bni-logo-onwhite.svg" alt="BNI 新竹B區">
+    <h2 class="thanks">謝謝</h2>
+    <p class="thanks-meta"><b>Alfred Kang</b>　·　CTK Pro</p>
+    <p class="thanks-org">BNI 創智分會　·　2026-10-16</p>
+  </section>
+
+</div>
+
+<div class="navbar" id="navbar">
+  <button class="nav-arrow" id="prevBtn" aria-label="上一頁">‹</button>
+  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">37</span></span><!-- JS 覆寫為實際頁數 -->
+  <button class="nav-arrow" id="nextBtn" aria-label="下一頁">›</button>
+</div>
+<div class="progress" id="progress"></div>
+<div id="help">← → / 點兩側 / 右下箭頭 翻頁　·　F 全螢幕　·　T 找錯計時　·　Home／End 首尾</div>
+
+<script>
+  // ---- 找錯測驗：題目與揭曉共用同一份內容 ----
+  const QUIZ=`
+    <div class="qcard"><p class="qt">① 報價單</p><div class="qb">
+      <div>客戶：立遠精密｜尾牙活動</div>
+      <div class="row"><span>餐費 60 人 × 1,200</span><span>72,000</span></div>
+      <div class="row"><span>主持＋音響</span><span>15,000</span></div>
+      <div class="row"><span>未稅合計</span><span>87,000</span></div>
+      <div class="row"><span>營業稅 5%</span><span>4,350</span></div>
+      <div class="row tot"><span>含稅總計</span><span><mark>92,350</mark></span></div>
+    </div><p class="why">87,000＋4,350＝91,350<br>→ 多收客戶 1,000 元，整份報價沒了信用</p></div>
+    <div class="qcard"><p class="qt">② 合約條款</p><div class="qb">
+      第 7 條　保固<br>乙方自驗收合格日起，提供一年免費保固。保固期間內，因甲方自行修改所致之問題，乙方<mark>仍負</mark>免費修復之責。保固期滿後之維護，費用另議。
+    </div><p class="why">應為「不負」——一個字，<br>客戶自己改壞的，你要免費修一整年</p></div>
+    <div class="qcard"><p class="qt">③ 公司簡介</p><div class="qb">
+      立遠精密成立於 1998 年，深耕精密零件加工<mark>逾 30 年</mark>，服務客戶遍及台灣、日本與東南亞，並通過 ISO 9001 品質管理認證。
+    </div><p class="why">1998 到今年是 28 年<br>→ 客戶看到這句，後面的數字都不信了</p></div>`;
+  document.querySelectorAll('[data-quiz]').forEach(el=>el.innerHTML=QUIZ);
+
+  // ---- 20 秒計時 ----
+  let tTimer=null;
+  const tFill=document.getElementById('tFill'), tNum=document.getElementById('tNum'), tBtn=document.getElementById('tBtn');
+  function resetTimer(){clearInterval(tTimer);tTimer=null;tFill.style.transition='none';tFill.style.width='100%';tNum.textContent='20';tBtn.textContent='開始 20 秒';}
+  function startTimer(){
+    resetTimer(); let left=20; tBtn.textContent='重來';
+    requestAnimationFrame(()=>{tFill.style.transition='width 20s linear';tFill.style.width='0%';});
+    tTimer=setInterval(()=>{left--;tNum.textContent=left>0?left:'⏰';if(left<=0){clearInterval(tTimer);tTimer=null;}},1000);
+  }
+  tBtn.addEventListener('click',e=>{e.stopPropagation();startTimer();});
+
+  const slides=[...document.querySelectorAll('.slide')];
+  const total=slides.length;
+  let cur=0;
+  const stage=document.getElementById('stage');
+  const progress=document.getElementById('progress');
+  const curNo=document.getElementById('curNo');
+  const totNo=document.getElementById('totNo');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  const quizIdx=slides.indexOf(document.getElementById('quizQ'));
+  totNo.textContent=total;
+
+  function clampHash(){const h=parseInt(location.hash.replace('#',''),10);return (h>=1&&h<=total)?h-1:0;}
+  function show(i){
+    cur=Math.max(0,Math.min(total-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    curNo.textContent=cur+1;
+    progress.style.width=(cur/(total-1))*100+'%';
+    history.replaceState(null,'','#'+(cur+1));
+    if(cur!==quizIdx) resetTimer();
+  }
+  const next=()=>show(cur+1), prev=()=>show(cur-1);
+
+  function fit(){const s=Math.min(window.innerWidth/1280,window.innerHeight/720);
+    stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+  window.addEventListener('resize',fit);
+
+  document.addEventListener('keydown',e=>{
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': next();e.preventDefault();break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': prev();e.preventDefault();break;
+      case 'Home': show(0);e.preventDefault();break;
+      case 'End': show(total-1);e.preventDefault();break;
+      case 't': case 'T': if(cur===quizIdx){startTimer();e.preventDefault();} break;
+      case 'f': case 'F':
+        if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.(); e.preventDefault();break;
+    }
+  });
+
+  prevBtn.addEventListener('click',e=>{e.stopPropagation();prev();});
+  nextBtn.addEventListener('click',e=>{e.stopPropagation();next();});
+
+  // 點畫面左右各 1/6 才翻頁；中間 2/3 留給雷射筆／選字，不誤翻
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#navbar')||e.target.closest('a')||e.target.closest('button'))return;
+    const w=window.innerWidth;
+    if(e.clientX < w/6) prev();
+    else if(e.clientX > w*5/6) next();
+  });
+
+  let tx=0,ty=0;
+  document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;ty=e.changedTouches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)){dx<0?next():prev();}
+  },{passive:true});
+
+  fit(); show(clampHash());
+  setTimeout(()=>{document.getElementById('help').style.opacity='0';},5000);
+</script>
+</body>
+</html>
