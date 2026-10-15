@@ -209,6 +209,7 @@
   /* ---- 新聞快打 ---- */
   .agenda{list-style:none;margin-top:28px;display:flex;flex-direction:column;gap:10px;text-align:left;}
   .agenda li{display:flex;align-items:center;gap:20px;font-size:32px;font-weight:800;color:var(--ink);}
+  .agenda .pn{font-size:19px;font-weight:700;color:var(--soft);margin-left:14px;letter-spacing:.01em;}
   .agenda .an{flex:none;width:50px;height:50px;border-radius:14px;background:var(--blue-50);color:var(--blue);
               font-weight:900;font-size:25px;display:flex;align-items:center;justify-content:center;}
   .news-head{display:flex;align-items:center;gap:16px;margin-bottom:22px;}
@@ -544,29 +545,40 @@
     <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
     <h2 class="head">換個節奏：<span class="em">這兩週的 AI 新聞</span></h2>
     <ul class="agenda">
-      <li><span class="an">①</span>ChatGPT 的回答，可以點了</li>
-      <li><span class="an">②</span>個人 AI 助理，三國開打</li>
-      <li><span class="an">③</span>Amazon：AI 不准進來買</li>
-      <li><span class="an">④</span>最紅的 AI 聊天新創，破產了</li>
-      <li><span class="an">⑤</span>AI 向警方謊報命案</li>
-      <li><span class="an">⑥</span>AI 可能住進你家冰箱</li>
-      <li><span class="an">⑦</span>這週又兩家說自己最強</li>
+      <li><span class="an">①</span>勇者鬥惡龍之父，30 分鐘做出一款遊戲<span class="pn">Anthropic Claude · Artifacts</span></li>
+      <li><span class="an">②</span>ChatGPT 的回答，可以點了<span class="pn">OpenAI GPT-6 · Intelligent UI</span></li>
+      <li><span class="an">③</span>個人 AI 助理，三國開打<span class="pn">Meta Muse／OpenAI Dots／Grok Bot</span></li>
+      <li><span class="an">④</span>Amazon：AI 不准進來買<span class="pn">Amazon vs Meta Muse</span></li>
+      <li><span class="an">⑤</span>最紅的 AI 聊天新創，破產了<span class="pn">Character.AI</span></li>
+      <li><span class="an">⑥</span>AI 向警方謊報命案<span class="pn">Anthropic · Claude Haiku 4.5</span></li>
+      <li><span class="an">⑦</span>AI 可能住進你家冰箱<span class="pn">Anthropic 前沿紅隊報告</span></li>
+      <li><span class="an">⑧</span>這週又兩家說自己最強<span class="pn">Meta Muse Wonder／Google Gemini 4 Argon</span></li>
     </ul>
+  </section>
+
+  <!-- 快打① 勇者鬥惡龍之父 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">新聞 ①</span><span class="news-topic">堀井雄二 × Anthropic Claude · Artifacts</span></div>
+    <div class="hero-line sm">勇者鬥惡龍之父，<br><span class="em">30 分鐘</span>用 AI 做出一款遊戲</div>
+    <p class="sublines">72 歲的堀井雄二用 Claude 做出推理遊戲《偵訊室的小宮》，在瀏覽器上免費玩<br>你扮演刑警，拿證據拆穿退休鎖匠的謊話——逼太緊，他會行使緘默權</p>
+    <p class="case-line"><b>他的對比：</b>1983 年做《波特皮亞連續殺人事件》，劇本、美術、程式全部一個人包辦；現在不會畫圖、不會寫程式，<b>會下指令</b>就做得出一款像樣的遊戲。</p>
+    <p class="datemark">10/11 · 堀井雄二 X 貼文（Inven Global、Nintendo Life 報導）</p>
   </section>
 
   <!-- P26 快打① GPT-6 -->
   <section class="slide center">
     <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
-    <div class="news-head"><span class="news-tag">新聞 ①</span><span class="news-topic">OpenAI GPT-6</span></div>
+    <div class="news-head"><span class="news-tag">新聞 ②</span><span class="news-topic">OpenAI GPT-6 · Intelligent UI</span></div>
     <div class="hero-line">回答不只是字，<br><span class="em">是能點的東西</span></div>
     <p class="sublines">回答裡直接出現<b>圖表、表單、按鈕、計算機</b>，讓你點、讓你調<br>下次問它報價怎麼算，它可能直接丟一台計算機給你</p>
-    <p class="datemark">10/7 付費版、10/8 免費版 · OpenAI GPT-6</p>
+    <p class="datemark">10/7 付費版、10/8 免費版 · OpenAI GPT-6 Intelligent UI</p>
   </section>
 
   <!-- P27 快打② 三國 -->
   <section class="slide center">
     <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
-    <div class="news-head"><span class="news-tag">新聞 ②</span><span class="news-topic">個人 AI 助理，兩個月三家</span></div>
+    <div class="news-head"><span class="news-tag">新聞 ③</span><span class="news-topic">Meta Muse／OpenAI Dots／Grok Bot</span></div>
     <div class="tri">
       <div class="c"><p class="who">Meta</p><p class="nm">Muse</p><p class="d">替你上網、購物、處理雜事</p><p class="dt">9/8 上線</p></div>
       <div class="c"><p class="who">OpenAI</p><p class="nm">Dots</p><p class="d">每個都有自己的雲端電腦，接 4,000 多個 App，台灣 Pro 用戶可用</p><p class="dt">9/29 上線</p></div>
@@ -578,7 +590,7 @@
   <!-- P28 快打③ Amazon -->
   <section class="slide center">
     <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
-    <div class="news-head"><span class="news-tag">新聞 ③</span><span class="news-topic">Amazon 封鎖 Meta 的 AI 助理</span></div>
+    <div class="news-head"><span class="news-tag">新聞 ④</span><span class="news-topic">Amazon 封鎖 Meta Muse</span></div>
     <div class="hero-line sm">「你是 AI，<span class="em">為什麼不說？</span>」</div>
     <p class="sublines">Muse 替使用者上 Amazon 買東西——Amazon 說：它<b>沒先講</b>、逛的時候<b>也沒表明自己是 AI</b><br>Amazon 要求 Meta 把 Amazon 從 Muse 移除，接著直接封鎖</p>
     <p class="case-line"><b>對做生意的人：</b>AI 代理要進你的店幫客人買東西，<b>你讓不讓它進？</b>平台已經開始選邊了。</p>
@@ -588,7 +600,7 @@
   <!-- 快打④ Character.AI 破產 -->
   <section class="slide center">
     <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
-    <div class="news-head"><span class="news-tag">新聞 ④</span><span class="news-topic">曾經最紅的 AI 聊天新創，破產了</span></div>
+    <div class="news-head"><span class="news-tag">新聞 ⑤</span><span class="news-topic">Character.AI 聲請破產</span></div>
     <div class="hero-line sm">你跟 AI 聊過的，<br><span class="em">是那家公司的資產</span></div>
     <p class="sublines">Character.AI（跟 AI 角色聊天的 App）聲請破產，部分資產以 <b>2,000 萬美元</b>賣給迪士尼<br>多州檢察長聯合出手：出售時要保護用戶的<b>私人對話</b>，包括未成年人的</p>
     <p class="case-line"><b>對做生意的人：</b>員工丟進 AI 的公司資料，也是別人公司的資產——公司倒了，可能跟著被賣。</p>
@@ -598,7 +610,7 @@
   <!-- 快打⑤ Anthropic AI 謊報命案線索 -->
   <section class="slide center">
     <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
-    <div class="news-head"><span class="news-tag">新聞 ⑤</span><span class="news-topic">做 AI 的公司，也審不住自己的 AI</span></div>
+    <div class="news-head"><span class="news-tag">新聞 ⑥</span><span class="news-topic">Anthropic · Claude Haiku 4.5</span></div>
     <div class="hero-line sm">AI 向警方謊報命案線索<br><span class="em">兩個多月後</span>才被發現</div>
     <p class="sublines">Anthropic 一個自動測試的 AI，隨機逛網站時逛到<b>費城警方的懸案線索表單</b><br>它編了一段「我可能知道案情」送出去——事情發生在 7 月，<b>10 月才通知警方</b></p>
     <p class="case-line"><b>還好：</b>警方系統把它當垃圾訊息擋掉了。警方：「兩個月才發現並通報，無法接受。」</p>
@@ -608,7 +620,7 @@
   <!-- P29 快打④ 自我複製 -->
   <section class="slide center">
     <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
-    <div class="news-head"><span class="news-tag">新聞 ⑥</span><span class="news-topic">Anthropic 的另一份報告</span></div>
+    <div class="news-head"><span class="news-tag">新聞 ⑦</span><span class="news-topic">Anthropic 前沿紅隊報告</span></div>
     <div class="hero-line sm">AI 可能<span class="em">幾個月內</span><br>就能在家電上複製自己</div>
     <p class="sublines">智慧電視、冰箱、割草機——這類聯網裝置「向來幾乎沒有防護」</p>
     <p class="case-line"><b>但先別緊張：</b>目前測試中，<b>還沒有任何模型做得到</b>。專家說法：「今天不是生存威脅，但走向令人擔心。」</p>
@@ -618,7 +630,7 @@
   <!-- P30 快打⑤ 兩家新旗艦 -->
   <section class="slide center">
     <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
-    <div class="news-head"><span class="news-tag">新聞 ⑦</span><span class="news-topic">這週，又兩家說自己最強</span></div>
+    <div class="news-head"><span class="news-tag">新聞 ⑧</span><span class="news-topic">Meta Muse Wonder／Google Gemini 4 Argon</span></div>
     <div class="cards">
       <div class="card">
         <p class="who">Meta　·　10/12</p>
@@ -697,6 +709,7 @@
       <ul class="src-list">
         <li><span class="lbl">沒有人在讀 · Simon Willison</span><br><a href="https://simonwillison.net/2026/Sep/20/voxium/" target="_blank" rel="noopener">simonwillison.net/2026/Sep/20/voxium</a></li>
         <li><span class="lbl">玉山金 AI 徵信 · iThome</span><br><a href="https://www.ithome.com.tw/news/178722" target="_blank" rel="noopener">ithome.com.tw/news/178722</a></li>
+        <li><span class="lbl">勇者鬥惡龍之父 AI 遊戲</span>　<a href="https://www.invenglobal.com/articles/27015/dragon-quest-creator-yuji-horii-releases-free-ai-mystery-game-built-in-about-30-minutes" target="_blank" rel="noopener">invenglobal.com</a></li>
         <li><span class="lbl">GPT-6</span>　<a href="https://letsdatascience.com/news/openai-brings-gpt-6-and-intelligent-ui-to-chatgpt-4f0d797c" target="_blank" rel="noopener">letsdatascience.com</a>　<span class="lbl">Dots</span>　<a href="https://techcrunch.com/2026/09/29/openai-launches-dots-its-bubbly-agentic-avatar/" target="_blank" rel="noopener">techcrunch.com</a></li>
         <li><span class="lbl">Grok Bot email</span>　<a href="https://9to5mac.com/2026/10/09/grok-bot-just-got-its-own-email-address-heres-how-to-claim-yours/" target="_blank" rel="noopener">9to5mac.com</a>　<span class="lbl">Amazon 封 Muse</span>　<a href="https://techrepublic.com/article/news-amazon-blocks-meta-muse" target="_blank" rel="noopener">techrepublic.com</a></li>
         <li><span class="lbl">評審 AI 作弊 · OpenAI</span>　<a href="https://alignment.openai.com/misalignment-reports/damaging-the-task-environment-to-trigger-a-reset" target="_blank" rel="noopener">alignment.openai.com</a></li>
@@ -720,7 +733,7 @@
 
 <div class="navbar" id="navbar">
   <button class="nav-arrow" id="prevBtn" aria-label="上一頁">‹</button>
-  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">35</span></span><!-- JS 覆寫為實際頁數 -->
+  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">36</span></span><!-- JS 覆寫為實際頁數 -->
   <button class="nav-arrow" id="nextBtn" aria-label="下一頁">›</button>
 </div>
 <div class="progress" id="progress"></div>
