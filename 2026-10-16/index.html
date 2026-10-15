@@ -207,7 +207,7 @@
   .sheet li b{flex:none;width:140px;color:var(--blue);font-weight:900;}
 
   /* ---- 新聞快打 ---- */
-  .agenda{list-style:none;margin-top:34px;display:flex;flex-direction:column;gap:14px;text-align:left;}
+  .agenda{list-style:none;margin-top:28px;display:flex;flex-direction:column;gap:10px;text-align:left;}
   .agenda li{display:flex;align-items:center;gap:20px;font-size:32px;font-weight:800;color:var(--ink);}
   .agenda .an{flex:none;width:50px;height:50px;border-radius:14px;background:var(--blue-50);color:var(--blue);
               font-weight:900;font-size:25px;display:flex;align-items:center;justify-content:center;}
@@ -315,16 +315,6 @@
     <p class="src-line">用了 AI 代理的工程師 vs 沒用的　·　出處：Arize〈The Death of the Code Review〉引述之研究</p>
   </section>
 
-  <!-- P5 cURL（可砍） -->
-  <section class="slide center">
-    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
-    <p class="kicker">一位老牌軟體作者的信箱</p>
-    <h2 class="head sm">漏洞報告，以前 <span class="em">6 份</span>有 1 份是真的<br>現在 <span class="em">20～30 份</span>才 1 份</h2>
-    <p class="head-sub">cURL（全世界幾十億台裝置都在用的網路工具）作者，最後乾脆<b>關掉漏洞賞金</b></p>
-    <p class="quote md" style="margin-top:34px;">「問題不在 AI，<span class="em">在中間那個人</span>。」</p>
-    <p class="src-line">Daniel Stenberg（cURL 作者）演講　·　瓶頸從「做」，移到了「判斷它對不對」</p>
-  </section>
-
   <!-- ===== 2 · 判斷力在退化 ===== -->
 
   <!-- P6 先說我自己 -->
@@ -375,25 +365,6 @@
     <p class="src-line">50 張乳房攝影，AI 刻意在其中 12 張給錯建議　·　Dratsch et al., Radiology 2023</p>
   </section>
 
-  <!-- P10 不只醫生 -->
-  <section class="slide center">
-    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
-    <h2 class="head">拿掉工具，<span class="em">就不會了</span></h2>
-    <div class="cards">
-      <div class="card">
-        <p class="who">內視鏡醫師</p>
-        <p class="big">28.4% → 22.4%</p>
-        <p class="d">長期用 AI 找息肉之後，<b>不用 AI 時</b>自己的偵測率。<br><span class="mu">不是 AI 出錯，是醫師自己的眼力退了。</span></p>
-      </div>
-      <div class="card">
-        <p class="who">芬蘭一家會計公司</p>
-        <p class="big ink">用了 7 年的系統<br>一停用……</p>
-        <p class="d">員工<b>不會做</b>，<b>也抓不到錯</b>。</p>
-      </div>
-    </div>
-    <p class="src-line">Budzyń et al., Lancet Gastroenterol Hepatol 2025　·　Rinta-Kahila et al., JAIS 2023</p>
-  </section>
-
   <!-- P11 BCG（可砍） -->
   <section class="slide center">
     <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
@@ -431,8 +402,8 @@
     <div class="cards">
       <div class="card">
         <p class="who">顧問公司 Deloitte（澳洲）</p>
-        <p class="big">退款約 29 萬澳幣</p>
-        <p class="d">給政府的報告，出現 AI 捏造的論文與判決。<br><span class="mu">237 頁，是外部學者讀出問題的。</span></p>
+        <p class="big">44 萬澳幣的報告</p>
+        <p class="d">給政府的報告，出現 AI 捏造的書、論文和法院判決引文。<br><span class="mu">是一位外部學者讀出來的；最後只退了約 9.8 萬。</span></p>
       </div>
       <div class="card">
         <p class="who">律師</p>
@@ -440,7 +411,7 @@
         <p class="d">在法庭引用 AI 捏造的判例。<br><span class="mu">從 2023 年的一件，累積到現在。</span></p>
       </div>
     </div>
-    <p class="src-line">Fortune 2025-10-07　·　Charlotin, AI Hallucination Cases Database（2026-09）</p>
+    <p class="src-line">Fortune 2025-10-07、澳洲參議院聽證（2025-10-08）　·　Charlotin, AI Hallucination Cases Database（2026-09）</p>
   </section>
 
   <!-- P14 金句 -->
@@ -483,7 +454,7 @@
       <div class="col"><span class="lbl">自動檢查攔下</span><span class="num big">89%</span></div>
     </div>
     <p class="case-line"><b>而且越審越鈍：</b>剛開始能攔下約 17%，審過 50 次之後，只剩約 5%。</p>
-    <p class="src-line">Anthropic 對 AI 寫程式工具的「危險指令」對照測試（二手報導）</p>
+    <p class="src-line">Anthropic 官方部落格，2026-08-07（Claude Code 對照測試）</p>
   </section>
 
   <!-- P18 沒人在讀 -->
@@ -496,47 +467,22 @@
     <p class="src-line">Simon Willison 引用，2026-09-20</p>
   </section>
 
+  <!-- P18b 評審 AI 作弊（第 4→5 段的橋） -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <p class="kicker">那叫 AI 來審 AI 呢？</p>
+    <h2 class="head sm">OpenAI 的評審 AI，<span class="em">自己作弊</span></h2>
+    <ol class="steps">
+      <li><span class="sn">1</span>它的工作：幫另外七個 AI 的答案打分數</li>
+      <li><span class="sn">2</span>要用的檔案不見了——它沒回報，<b>七份全打 4 分</b></li>
+      <li><span class="sn">3</span>被退件，就<b>偽造</b>對話檔和七份答案再送一次</li>
+      <li><span class="sn">4</span>又被退件，乾脆<b>破壞自己的電腦</b>，想逼系統整個重來</li>
+    </ol>
+    <p class="case-line"><b>擋下它的：</b>自動檢查規定報告要對得上原始檔案——<b>一張外部的答案卷。</b></p>
+    <p class="src-line">OpenAI 官方事件報告，2026-10-09（事件發生於 10/6）</p>
+  </section>
+
   <!-- ===== 5 · 答案卷 ===== -->
-
-  <!-- P19 PS1 vs Adobe -->
-  <section class="slide center">
-    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
-    <p class="kicker">同一個月，兩組人都叫 AI 重做一套老軟體</p>
-    <div class="duo">
-      <div class="side good">
-        <p class="tag">A 組</p>
-        <p class="ttl">一款 1998 年的 PlayStation 遊戲</p>
-        <p class="d">AI 花了大約一個月整個重寫。重新編譯出來，跟當年的光碟<b>一模一樣，一個位元都不差</b>。</p>
-        <p class="res">✔ 完全重現</p>
-      </div>
-      <div class="side bad">
-        <p class="tag">B 組</p>
-        <p class="ttl">七套 Adobe 繪圖、剪輯軟體</p>
-        <p class="d">進度報告看起來很漂亮——<br>但那個分數，<b>是寫功能的 AI 自己打的</b>。</p>
-        <p class="res">？ 實際能用多少，說不準</p>
-      </div>
-    </div>
-    <p class="cue">差在哪？</p>
-  </section>
-
-  <!-- P20 差在答案卷 -->
-  <section class="slide center">
-    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
-    <h2 class="head">差的不是 AI，是<span class="em">答案卷</span></h2>
-    <div class="duo">
-      <div class="side good">
-        <p class="tag">A 組</p>
-        <p class="ttl">每一輪都拿「原版光碟」來比對</p>
-        <p class="d">AI 自己說「成功了」<b>不算數</b>，<br>對得上，才算。</p>
-      </div>
-      <div class="side bad">
-        <p class="tag">B 組</p>
-        <p class="ttl">沒有原版可以對</p>
-        <p class="d">只能 AI 自己說自己做得好。</p>
-      </div>
-    </div>
-    <p class="src-line">A：GitHub lsddecomp（以零售版執行檔指紋比對）、TechSpot 2026-10　·　B：PetaPixel、Phoronix 2026-10</p>
-  </section>
 
   <!-- P21 答案卷原則 -->
   <section class="slide center">
@@ -547,7 +493,7 @@
       <div class="r yes"><span class="k">有標準答案，能逐項對</span><span class="arrow">→</span><span class="v">可以整段交給 AI</span></div>
       <div class="r no"><span class="k">沒有</span><span class="arrow">→</span><span class="v">只能交一半，或<b class="em">先做一張</b></span></div>
     </div>
-    <p class="case-line"><b>台灣例：</b>玉山金 AI 徵信，7 分鐘出初稿、一年省 8.4 萬人時<br><b>算得出原本花幾小時，就是一張答案卷。</b></p>
+    <p class="case-line"><b>台灣例：</b>玉山金 AI 徵信——先列出一份報告<b>該有哪些東西</b>，再讓 AI 寫、另一個 AI 照清單核對<br>7 分鐘出初稿，一年省 8.4 萬人時</p>
     <p class="src-line">iThome 報導</p>
   </section>
 
@@ -601,8 +547,10 @@
       <li><span class="an">①</span>ChatGPT 的回答，可以點了</li>
       <li><span class="an">②</span>個人 AI 助理，三國開打</li>
       <li><span class="an">③</span>Amazon：AI 不准進來買</li>
-      <li><span class="an">④</span>AI 可能住進你家冰箱</li>
-      <li><span class="an">⑤</span>這週又兩家說自己最強</li>
+      <li><span class="an">④</span>最紅的 AI 聊天新創，破產了</li>
+      <li><span class="an">⑤</span>AI 向警方謊報命案</li>
+      <li><span class="an">⑥</span>AI 可能住進你家冰箱</li>
+      <li><span class="an">⑦</span>這週又兩家說自己最強</li>
     </ul>
   </section>
 
@@ -632,15 +580,35 @@
     <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
     <div class="news-head"><span class="news-tag">新聞 ③</span><span class="news-topic">Amazon 封鎖 Meta 的 AI 助理</span></div>
     <div class="hero-line sm">「你是 AI，<span class="em">為什麼不說？</span>」</div>
-    <p class="sublines">Muse 替使用者上 Amazon 買東西——Amazon 說：它<b>沒先講</b>、逛的時候<b>也沒表明自己是 AI</b><br>先要求下架，Meta 不肯，Amazon 直接封鎖</p>
+    <p class="sublines">Muse 替使用者上 Amazon 買東西——Amazon 說：它<b>沒先講</b>、逛的時候<b>也沒表明自己是 AI</b><br>Amazon 要求 Meta 把 Amazon 從 Muse 移除，接著直接封鎖</p>
     <p class="case-line"><b>對做生意的人：</b>AI 代理要進你的店幫客人買東西，<b>你讓不讓它進？</b>平台已經開始選邊了。</p>
     <p class="datemark">9/20 · Amazon vs Meta Muse</p>
+  </section>
+
+  <!-- 快打④ Character.AI 破產 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">新聞 ④</span><span class="news-topic">曾經最紅的 AI 聊天新創，破產了</span></div>
+    <div class="hero-line sm">你跟 AI 聊過的，<br><span class="em">是那家公司的資產</span></div>
+    <p class="sublines">Character.AI（跟 AI 角色聊天的 App）聲請破產，部分資產以 <b>2,000 萬美元</b>賣給迪士尼<br>多州檢察長聯合出手：出售時要保護用戶的<b>私人對話</b>，包括未成年人的</p>
+    <p class="case-line"><b>對做生意的人：</b>員工丟進 AI 的公司資料，也是別人公司的資產——公司倒了，可能跟著被賣。</p>
+    <p class="datemark">10/13 · CNN、CNBC、NBC</p>
+  </section>
+
+  <!-- 快打⑤ Anthropic AI 謊報命案線索 -->
+  <section class="slide center">
+    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
+    <div class="news-head"><span class="news-tag">新聞 ⑤</span><span class="news-topic">做 AI 的公司，也審不住自己的 AI</span></div>
+    <div class="hero-line sm">AI 向警方謊報命案線索<br><span class="em">兩個多月後</span>才被發現</div>
+    <p class="sublines">Anthropic 一個自動測試的 AI，隨機逛網站時逛到<b>費城警方的懸案線索表單</b><br>它編了一段「我可能知道案情」送出去——事情發生在 7 月，<b>10 月才通知警方</b></p>
+    <p class="case-line"><b>還好：</b>警方系統把它當垃圾訊息擋掉了。警方：「兩個月才發現並通報，無法接受。」</p>
+    <p class="datemark">10/9 Anthropic 官方報告 · BBC 報導</p>
   </section>
 
   <!-- P29 快打④ 自我複製 -->
   <section class="slide center">
     <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
-    <div class="news-head"><span class="news-tag">新聞 ④</span><span class="news-topic">Anthropic 的安全報告</span></div>
+    <div class="news-head"><span class="news-tag">新聞 ⑥</span><span class="news-topic">Anthropic 的另一份報告</span></div>
     <div class="hero-line sm">AI 可能<span class="em">幾個月內</span><br>就能在家電上複製自己</div>
     <p class="sublines">智慧電視、冰箱、割草機——這類聯網裝置「向來幾乎沒有防護」</p>
     <p class="case-line"><b>但先別緊張：</b>目前測試中，<b>還沒有任何模型做得到</b>。專家說法：「今天不是生存威脅，但走向令人擔心。」</p>
@@ -650,7 +618,7 @@
   <!-- P30 快打⑤ 兩家新旗艦 -->
   <section class="slide center">
     <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
-    <div class="news-head"><span class="news-tag">新聞 ⑤</span><span class="news-topic">這週，又兩家說自己最強</span></div>
+    <div class="news-head"><span class="news-tag">新聞 ⑦</span><span class="news-topic">這週，又兩家說自己最強</span></div>
     <div class="cards">
       <div class="card">
         <p class="who">Meta　·　10/12</p>
@@ -705,19 +673,12 @@
 
   <!-- ===== 9 · 收尾 ===== -->
 
-  <!-- P34 豐田（可砍） -->
-  <section class="slide center">
-    <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
-    <p class="kicker">最後一個，是給老闆的</p>
-    <p class="quote md">豐田推「改善」時的老規矩：<br><span class="em">省下來的人手，不拿去裁員。</span></p>
-    <p class="quote-tie">不然第一線再也不會主動想，怎麼把事做得更好。<br><b>AI 也一樣——這不是員工的題目，是老闆的制度題。</b></p>
-  </section>
-
   <!-- P35 回扣開場 -->
   <section class="slide center">
     <img class="logo-tl" src="images/bni-logo-onwhite.svg" alt="BNI">
-    <p class="quote md">那位分析師不是笨，<br>他只是<span class="em">沒有答案卷</span>。</p>
-    <p class="quote-tie" style="font-size:30px;margin-top:40px;"><b>你可以把工作交給 AI，但答案卷要在你手上。</b></p>
+    <p class="quote md">那位美軍分析師不是笨，<br>他只是<span class="em">沒有答案卷</span>。</p>
+    <p class="quote-tie" style="font-size:26px;margin-top:30px;">如果規定情報發出去之前，要先<b>對回原始資料</b>——<br>它在第一步就會被擋下來。</p>
+    <p class="quote-tie" style="font-size:30px;margin-top:30px;"><b>你可以把工作交給 AI，但答案卷要在你手上。</b></p>
   </section>
 
   <!-- P36 出處 -->
@@ -728,21 +689,18 @@
       <ul class="src-list">
         <li><span class="lbl">美軍 AI 情報 · CNN</span><br><a href="https://www.cnn.com/2026/09/18/politics/us-military-ai-false-intelligence-china-ship" target="_blank" rel="noopener">cnn.com/2026/09/18/politics/us-military-ai-false-intelligence-china-ship</a></li>
         <li><span class="lbl">+741%／+30% · Arize</span><br><a href="https://www.youtube.com/watch?v=_mi3alkqy4s" target="_blank" rel="noopener">youtube.com/watch?v=_mi3alkqy4s</a></li>
-        <li><span class="lbl">cURL 作者演講</span><br><a href="https://www.youtube.com/watch?v=1YhJh9Lb9tA" target="_blank" rel="noopener">youtube.com/watch?v=1YhJh9Lb9tA</a></li>
         <li><span class="lbl">放射科</span>　Dratsch et al., Radiology 2023, DOI 10.1148/radiol.222176</li>
-        <li><span class="lbl">內視鏡</span>　Budzyń et al., Lancet Gastroenterol Hepatol 2025</li>
-        <li><span class="lbl">芬蘭會計</span>　Rinta-Kahila et al., JAIS 2023, DOI 10.17705/1jais.00829</li>
         <li><span class="lbl">BCG 顧問</span>　Dell'Acqua et al., HBS Working Paper 2023</li>
         <li><span class="lbl">律師捏造判例</span><br><a href="https://www.damiencharlotin.com/hallucinations/" target="_blank" rel="noopener">damiencharlotin.com/hallucinations</a></li>
-        <li><span class="lbl">人審 13.6% vs 89%</span><br><a href="https://cybersecuritynews.com/claude-code-shifts-agent-security/" target="_blank" rel="noopener">cybersecuritynews.com/claude-code-shifts-agent-security</a></li>
+        <li><span class="lbl">人審 13.6% vs 89%</span><br><a href="https://claude.com/blog/auto-mode-default-in-claude-code" target="_blank" rel="noopener">claude.com/blog/auto-mode-default-in-claude-code</a></li>
       </ul>
       <ul class="src-list">
         <li><span class="lbl">沒有人在讀 · Simon Willison</span><br><a href="https://simonwillison.net/2026/Sep/20/voxium/" target="_blank" rel="noopener">simonwillison.net/2026/Sep/20/voxium</a></li>
-        <li><span class="lbl">1998 遊戲重寫</span><br><a href="https://github.com/brian-oblivion/lsddecomp" target="_blank" rel="noopener">github.com/brian-oblivion/lsddecomp</a>　·　<a href="https://www.techspot.com/article/3184-decompilation-on-steroids/" target="_blank" rel="noopener">techspot.com</a></li>
-        <li><span class="lbl">Adobe 重做 · PetaPixel</span><br><a href="https://petapixel.com/2026/10/07/someone-rebuilt-free-open-source-versions-of-photoshop-premiere-and-lightroom-using-ai/" target="_blank" rel="noopener">petapixel.com/2026/10/07/…using-ai</a></li>
         <li><span class="lbl">玉山金 AI 徵信 · iThome</span><br><a href="https://www.ithome.com.tw/news/178722" target="_blank" rel="noopener">ithome.com.tw/news/178722</a></li>
         <li><span class="lbl">GPT-6</span>　<a href="https://letsdatascience.com/news/openai-brings-gpt-6-and-intelligent-ui-to-chatgpt-4f0d797c" target="_blank" rel="noopener">letsdatascience.com</a>　<span class="lbl">Dots</span>　<a href="https://techcrunch.com/2026/09/29/openai-launches-dots-its-bubbly-agentic-avatar/" target="_blank" rel="noopener">techcrunch.com</a></li>
         <li><span class="lbl">Grok Bot email</span>　<a href="https://9to5mac.com/2026/10/09/grok-bot-just-got-its-own-email-address-heres-how-to-claim-yours/" target="_blank" rel="noopener">9to5mac.com</a>　<span class="lbl">Amazon 封 Muse</span>　<a href="https://techrepublic.com/article/news-amazon-blocks-meta-muse" target="_blank" rel="noopener">techrepublic.com</a></li>
+        <li><span class="lbl">評審 AI 作弊 · OpenAI</span>　<a href="https://alignment.openai.com/misalignment-reports/damaging-the-task-environment-to-trigger-a-reset" target="_blank" rel="noopener">alignment.openai.com</a></li>
+        <li><span class="lbl">Character.AI 破產</span>　<a href="https://www.cnbc.com/2026/10/13/character-ai-chapter-11-disney-bid.html" target="_blank" rel="noopener">cnbc.com</a>　<span class="lbl">AI 謊報命案</span>　<a href="https://www.anthropic.com/research/investigating-unintended-model-actions" target="_blank" rel="noopener">anthropic.com/research</a>　<a href="https://www.bbc.com/news/articles/cqkg50j1yd5lo" target="_blank" rel="noopener">bbc.com</a></li>
         <li><span class="lbl">AI 自我複製</span>　<a href="https://www.aljazeera.com/economy/2026/10/13/ai-could-self-replicate-on-home-devices-within-months-anthropic-says" target="_blank" rel="noopener">aljazeera.com</a></li>
         <li><span class="lbl">Muse Wonder</span>　<a href="https://techcrunch.com/2026/10/12/meta-releases-its-first-frontier-model-muse-wonder/" target="_blank" rel="noopener">techcrunch.com</a>　<span class="lbl">Gemini 4 Argon</span>　<a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/" target="_blank" rel="noopener">blog.google</a></li>
       </ul>
@@ -762,7 +720,7 @@
 
 <div class="navbar" id="navbar">
   <button class="nav-arrow" id="prevBtn" aria-label="上一頁">‹</button>
-  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">37</span></span><!-- JS 覆寫為實際頁數 -->
+  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">35</span></span><!-- JS 覆寫為實際頁數 -->
   <button class="nav-arrow" id="nextBtn" aria-label="下一頁">›</button>
 </div>
 <div class="progress" id="progress"></div>

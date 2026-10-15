@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>講者版 · 答案卷要在你手上 · 2026-10-16</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  /* 講者版：暗底，減少台上反光；左＝要講的重點（大字），右＝聽眾畫面＋細節 */
+  :root{
+    --bg:#17140f; --panel:#221e18; --line:#3a332a;
+    --ink:#f4efe9; --muted:#a89f94; --soft:#7d746a;
+    --red:#ff4a63; --red-bg:rgba(255,74,99,.12); --amber:#f2b64a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;width:100%;overflow:hidden;background:#0d0b08;}
+  body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+  #stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;background:var(--bg);}
+  .page{position:absolute;inset:0;display:none;}
+  .page.active{display:grid;grid-template-columns:560px 1fr;grid-template-rows:100%;}
+
+  /* ---- 頂列 ---- */
+  .top{position:absolute;left:0;right:0;top:0;height:54px;display:flex;align-items:center;gap:18px;padding:0 32px;
+       border-bottom:1px solid var(--line);font-size:17px;font-weight:700;color:var(--muted);}
+  .top .no{font-size:26px;font-weight:900;color:var(--ink);}
+  .top .no small{font-size:16px;color:var(--soft);font-weight:700;}
+  .top .sec{color:var(--red);letter-spacing:.06em;}
+  .top .time{margin-left:auto;color:var(--amber);font-weight:800;}
+
+  /* ---- 左：要講的重點 ---- */
+  .left{padding:78px 34px 40px 36px;display:flex;flex-direction:column;border-right:1px solid var(--line);min-height:0;overflow:hidden;}
+  .left h2{font-size:17px;font-weight:800;letter-spacing:.14em;color:var(--soft);margin-bottom:16px;}
+  .pts{list-style:none;counter-reset:n;display:flex;flex-direction:column;gap:16px;}
+  .pts li{counter-increment:n;display:flex;gap:16px;font-size:29px;font-weight:700;line-height:1.38;}
+  .pts li::before{content:counter(n);flex:none;width:40px;height:40px;border-radius:10px;background:var(--red-bg);
+                  color:var(--red);font-size:22px;font-weight:900;display:flex;align-items:center;justify-content:center;margin-top:2px;}
+  .pts li b{color:var(--red);font-weight:900;}
+  .pts li.stage::before{background:#2f2a22;color:var(--amber);}
+  .pts li.stage{color:var(--amber);font-size:24px;font-weight:700;}
+  .next{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:18px;color:var(--muted);}
+  .next b{color:var(--ink);}
+
+  /* ---- 右：聽眾畫面＋細節 ---- */
+  .right{padding:76px 34px 40px 34px;display:flex;flex-direction:column;gap:14px;min-width:0;min-height:0;overflow:hidden;}
+  .preview{width:384px;height:216px;margin-top:auto;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#000;position:relative;flex:none;}
+  .preview iframe{width:1280px;height:720px;border:0;transform:scale(.3);transform-origin:0 0;pointer-events:none;}
+  .preview .lbl{position:absolute;right:8px;top:6px;font-size:12px;font-weight:800;color:#fff;background:rgba(0,0,0,.55);padding:2px 8px;border-radius:6px;letter-spacing:.08em;}
+  .detail{font-size:18px;line-height:1.62;color:#d8d0c6;overflow:hidden;flex:1;min-height:0;}
+  .detail p{margin-bottom:7px;}
+  .detail .dh{font-size:14px;font-weight:800;letter-spacing:.14em;color:var(--soft);margin-bottom:6px;}
+  .detail b{color:#fff;}
+  .detail .mu{color:var(--amber);font-size:15.5px;}
+  .detail .src{font-size:14px;color:var(--soft);margin-top:4px;}
+  .detail dt{color:var(--ink);font-weight:800;font-size:15px;letter-spacing:.08em;margin-top:8px;}
+  .detail dt:first-child{margin-top:0;}
+  .detail dd b{color:var(--ink);}
+  .detail .warn{color:var(--amber);}
+
+  /* ---- 導覽 ---- */
+  .navbar{position:fixed;right:20px;bottom:12px;display:flex;align-items:center;gap:8px;z-index:40;user-select:none;}
+  .navbar button{border:none;background:none;cursor:pointer;font-size:24px;color:var(--soft);padding:2px 9px;border-radius:8px;}
+  .navbar button:hover{color:var(--red);}
+  .progress{position:fixed;left:0;bottom:0;height:3px;background:var(--red);width:0;transition:width .3s;z-index:40;}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div class="navbar"><button id="prevBtn" aria-label="上一頁">‹</button><button id="nextBtn" aria-label="下一頁">›</button></div>
+<div class="progress" id="progress"></div>
+
+<script>
+// 正式版投影片（同資料夾上一層；本機與 GitHub Pages 都適用）
+const DECK = '../index.html';
+const TOTAL = 35;
+
+// 每頁一筆：sec＝段落、time＝累計目標時間、pts＝左邊重點（關鍵字＋結構提醒）、story＝右下完整故事／細節、src＝出處、next＝下一頁
+const PAGES = [
+  { // P1
+    sec:'0 · 冷開場', time:'0:00 → 0:40',
+    pts:['春天・中東','美軍要登<b>中國貨船</b>','船上有<b>核武計畫零件</b>','只講到「軍機升空」，<b>換頁才說後來怎樣</b>'],
+    story:`<p>今年春天，美國<b>特種作戰司令部</b>一位分析師，用 AI 聊天機器人查一艘中國貨船的資料。</p>
+      <p>AI 把<b>公開資料和政府手上的機密情報混在一起</b>，認錯了船上的貨，說它載著核武計畫的零件。分析師把結果放進一份「軍方官員信任的那種標準化情報報告」發出去。</p>
+      <p>軍方據此規劃攔截：<b>武裝人員準備登船、軍機已經升空</b>。</p>
+      <p class="mu">CNN 查不到用的是商用還是政府專用的 AI，也不知道實際貨物是什麼。只講事件，不提背景戰事。</p>`,
+    src:'CNN 獨家，2026-09-18（匿名消息來源）',
+    next:'這份情報是 AI 寫的。而且，完全是錯的。'
+  },
+  { // P2
+    sec:'0 · 冷開場', time:'0:40 → 1:20',
+    pts:['情報是 <b>AI 寫的</b>','<b>完全是錯的</b>','「差點開啟一場戰爭」','為什麼沒人攔？<b>先不說</b>'],
+    story:`<p>後來：直到行動前，其他人回頭細看報告，才發現是 <b>AI 生成、貨物被認錯</b>，行動取消。</p>
+      <p>兩句原話都來自 CNN 的消息來源：報告<b>“entirely false”</b>（完全是錯的），而且 <b>“It almost started a war.”</b>（它差點開啟一場戰爭）。</p>
+      <p>這頁停在懸念：一份錯的東西，怎麼一路走到軍機升空？下一頁封面把這個問題丟給大家，<b>P10 才揭曉</b>「被放進軍方信任的標準報告」。</p>`,
+    src:'CNN 獨家，2026-09-18',
+    next:'封面：答案卷要在你手上'
+  },
+  { // P3
+    sec:'0 · 封面', time:'1:20 → 2:00',
+    pts:['題目：<b>答案卷要在你手上</b>','拋問題：錯的東西，為什麼能一路走到<b>軍機升空</b>？','「先看這兩個月發生了什麼」'],
+    story:`<p><b>整場地圖</b>（約 33 分鐘）：</p>
+      <p>① 產出暴增、成果沒跟上（+741%） → ② 判斷力在退化（猜數字）→ ③ 揭曉美軍答案：錯得很專業 → ④ 多請人審？（現場找錯、評審 AI 作弊）→ ⑤ <b>答案卷</b>（玉山金、往上退一格、報價單）→ ⑥ 快打七則 → ⑦ 三道檢驗、兩句話 → 收尾回到美軍分析師。</p>`,
+    src:'',
+    next:'三位經濟學家，追蹤 10 萬名工程師'
+  },
+  { // P4
+    sec:'1 · 產出暴增', time:'2:00 → 3:00',
+    pts:['<b>10 萬名</b>工程師','寫出來的程式 <b>+741%</b>','真的交出去 <b>+30%</b>','寫多七倍，交出去只多三成'],
+    story:`<p><b>誰做的研究</b>：三位經濟學家追蹤了約 <b>10 萬名</b>在 GitHub（全世界工程師放程式碼的地方）上的開發者，把「開了 AI 代理幫忙寫程式」和「沒開」的人拿來比。</p>
+      <p><b>結果</b>：開了的人，寫出來的程式碼多了 <b>741%</b>，等於七倍多；但真正交出去、上線的軟體，只多了 <b>30%</b>。</p>
+      <p><b>為什麼差這麼多</b>：研究者自己說，卡在<b>審查</b>。寫得出來很快，但每一段都要有人確認對不對、能不能上線，這一關沒有變快。</p>
+      <p><b>比喻（可以這樣講）</b>：一條產線速度變成七倍，但品管站還是原本那幾個人——東西堆在品管站前面，出貨當然快不起來。</p>
+      <p><b>這頁的意思</b>：「做」變便宜了，「判斷它對不對」變成瓶頸。接下來看：這件事發生在人身上，會變成什麼樣子。</p>
+      <p class="mu">出處是演講引述的研究，原論文還沒補；被問到就說「Arize 的演講引述三位經濟學家的研究」。</p>`,
+    src:'Arize · Laurie Voss〈The Death of the Code Review〉',
+    next:'先說我自己：做得越來越快，想得越來越淺'
+  },
+  { // P5
+    sec:'2 · 判斷力退化', time:'3:00 → 4:00',
+    pts:['做得越來越快，<b>想得越來越淺</b>','似懂非懂','判斷變虛','能力在退'],
+    story:`<p><b>似懂非懂</b>：看起來都對，但說不清楚為什麼對。</p>
+      <p><b>判斷變虛</b>：決定下了，理由是「AI 說的」。</p>
+      <p><b>能力在退</b>：以前自己想得出來的，現在不問 AI 就卡住。</p>
+      <p>先講自己，後面醫師、顧問的研究才是「我們一起看」，不是「你們變鈍了」。</p>`,
+    src:"",
+    next:'不只我這樣：連吳恩達都說，他也是'
+  },
+  { // P6
+    sec:'2 · 判斷力退化', time:'4:00 → 4:45',
+    pts:['<b>吳恩達</b>也一樣','問過 AI 的，<b>六個月後忘光</b>','要用時<b>又去問一次</b>'],
+    story:`<p>吳恩達：史丹佛教授、Coursera 共同創辦人、Google Brain 創辦人之一。</p>
+      <p>他在訪談裡說：把工作交給 AI，對推進工作很好，但<b>人記住的東西會差很多</b>。他自己問 AI 前後端的問題，六個月後忘光，要做的時候又去問一次。他甚至說，以現在常見的用法，AI 對學習是 “terrible”。</p>
+      <p>英文原句：“when you ask AI to do work for you you're cognitive offloading to AI, which is great … but human retention is much worse”</p>
+      <p class="mu">原話帶保留語氣，講成「他說他自己有這種經驗」，不要講成研究結論。</p>`,
+    src:"Andrew Ng × Silicon Valley Girl podcast，2026-08-28",
+    next:'🙋 猜猜看：AI 給錯建議，資深醫師剩多少？'
+  },
+  { // P7
+    sec:'2 · 判斷力退化', time:'4:45 → 5:45',
+    pts:['資深放射科醫師，AI 對時判對 <b>82%</b>','AI 給<b>錯</b>建議，剩多少？','70%？60%？50% 以下？','答案在下一頁：<b>46%</b>'],
+    story:`<p>研究設計：放射科醫師判讀 <b>50 張乳房攝影</b>，AI 在旁邊給分級建議，其中 <b>12 張刻意給錯</b>。比較 AI 給對、給錯時，醫師最後判對的比例。</p>
+      <p>資深醫師：AI 給對時 82%，給錯時 <b>46%</b>。新手：80% → <b>20%</b>。</p>
+      <p class="mu">82% 是「AI 給正確建議時」的判對率，不是沒有 AI 時的基準。</p>`,
+    src:"Dratsch et al., Radiology 2023（DOI 10.1148/radiol.222176）",
+    next:'揭曉：AI 一給錯，資深也只剩一半'
+  },
+  { // P8
+    sec:'2 · 判斷力退化', time:'5:45 → 6:30',
+    pts:['資深：82% → <b>46%</b>','新手：80% → <b>20%</b>','AI 一給錯，<b>資深也只剩一半</b>'],
+    story:`<p>不是只有新手會被帶著走。AI 一給錯建議，<b>新手 8 成判錯，資深也有一半以上判錯</b>。</p>
+      <p>這叫「<b>自動化偏誤</b>」（automation bias）：人看到機器給的建議，就比較不會懷疑它。</p>`,
+    src:"Dratsch et al., Radiology 2023",
+    next:'BCG 顧問：越相信 AI，錯越多'
+  },
+  { // P9
+    sec:'2 · 判斷力退化', time:'6:30 → 7:30',
+    pts:['BCG 顧問，一題<b>超出 AI 能力</b>的任務','不用 AI：84.5%','用 AI：70.6%','上過提示詞課：<b>60%</b>'],
+    story:`<p><b>誰做的</b>：哈佛商學院和 BCG 合作，找了 <b>758 位</b> BCG 的顧問做實驗，分三組：不用 AI、用 AI、用 AI 又先上過提示詞課。</p>
+      <p><b>先講好消息</b>：在 AI 擅長的任務上（例如發想新產品、寫行銷文案），用 AI 的人做得更多、更快，品質也明顯更好。</p>
+      <p><b>壞消息在這題</b>：研究者刻意設計一題<b>超出 AI 能力</b>的任務——要根據訪談紀錄和財務數據，替一家公司判斷資源該押在哪個品牌。正確答案藏在訪談的細節裡，AI 會給一個<b>看起來很合理、但錯的答案</b>。</p>
+      <p><b>答對率</b>：不用 AI 84.5%；用 AI 掉到 70.6%；用 AI 又上過提示詞課的，只剩 <b>60%</b>——越會用的人，越相信它。</p>
+      <p><b>重點</b>：不是提示詞課害人，是學會「怎麼用」，不等於知道「<b>什麼時候不能信</b>」。而且錯的答案寫得更通順、更有說服力；哪些任務 AI 做不好，事前看不出來。研究者把這叫做「<b>鋸齒狀的邊界</b>」——AI 的能力邊界不是一條直線，同一個人很難分辨哪題在線內、哪題在線外。</p>`,
+    src:"Dell'Acqua et al., HBS／BCG 2023",
+    next:'回到開場：為什麼沒人攔下來？'
+  },
+  { // P10
+    sec:'3 · 揭曉美軍答案', time:'7:30 → 8:45',
+    pts:['回到<b>美軍那份情報</b>','AI 把公開＋機密資料<b>混在一起</b>，認錯貨','放進<b>軍方信任的標準報告</b>','一路傳到軍機升空'],
+    story:`<p>特種作戰司令部的分析師問 AI 這艘船的資料。AI 把公開情報和政府手上的機密信號情報<b>融合在一起</b>（原文 “fused together open-source intelligence with secret signals intelligence”），認錯了貨物。</p>
+      <p>分析師把結果放進「<b>the kind that is trusted by military officials</b>」的標準化情報報告發出去。行動已經進入執行、軍機升空，其他人細看報告才發現。</p>
+      <p class="mu">CNN 沒說「因為格式太正式所以沒人質疑」，那是推論。台上講「被放進軍方信任的那種標準報告」就好。</p>`,
+    src:"CNN 獨家，2026-09-18",
+    next:'同一種錯，不只軍方'
+  },
+  { // P11
+    sec:'3 · 揭曉美軍答案', time:'8:45 → 9:45',
+    pts:['Deloitte：<b>44 萬澳幣</b>的政府報告','捏造的書、論文、<b>法院判決引文</b>','<b>外部學者</b>讀出來，只退 <b>9.8 萬</b>','律師引用捏造判例：<b>2,000+ 件</b>'],
+    story:`<p><b>委託</b>：澳洲就業與職場關係部（DEWR）花 <b>44 萬澳幣</b>（約 29 萬美元），請 Deloitte 審查一套福利合規系統——自動處罰沒達成求職義務、扣福利金的 IT 系統。2025 年 7 月，報告公開在政府網站。</p>
+      <p><b>誰抓到的</b>：雪梨大學研究福利法的學者 Chris Rudge。他讀到報告說他的同事、公法教授 Lisa Burton Crawford 寫過一本書——<b>這本書不存在</b>，題目也根本不是她的專業。他說：「我立刻知道，這不是 AI 幻覺，就是全世界保守得最好的秘密。」再往下查，整份報告「充滿捏造的參考資料」：不存在的論文、掛在學者名下的假報告，還有一段<b>捏造的聯邦法院法官引文</b>。</p>
+      <p><b>後來</b>：8 月底澳洲金融評論報揭露。9/26 Deloitte 交出修正版，拿掉假引文，方法說明裡<b>第一次承認用了生成式 AI</b>（Azure OpenAI），並說修正「不影響實質內容與建議」。最後只退最後一期款：參議院聽證會上，財政部揭露是 <b>97,587 澳幣，不到合約的四分之一</b>；財政部還承認是看新聞才知道出錯。綠黨參議員 Barbara Pocock：「這不只是人工的無能，是蓄意的疏忽」，又說這種錯「大一學生都會惹上大麻煩」。</p>
+      <p><b>扣主線</b>：一家頂尖顧問公司的報告，過了內部審查、交給政府、公開上網，最後是一位外部學者<b>剛好認識被引用的同事</b>才抓到——他手上剛好有答案卷。</p>
+      <p><b>律師</b>：在法庭引用 AI 捏造的判例，從 2023 年的第一件，到 2026 年 9 月資料庫累積 2,041 件。明知有風險，還在增加。</p>
+      <p class="mu">常見報導寫「29 萬」是美元、而且是整份合約，不是退款金額。</p>`,
+    src:"Fortune 2025-10-07｜澳洲綠黨新聞稿 2025-10-09（參議院聽證）｜Charlotin, AI Hallucination Cases Database",
+    next:'金句：AI 最危險的不是錯，是錯得很專業'
+  },
+  { // P12
+    sec:'3 · 揭曉美軍答案', time:'9:45 → 10:15',
+    pts:['AI 最危險的不是錯','是<b>錯得很專業</b>'],
+    story:`<p>收前面三個例子：美軍報告、Deloitte、律師。共通點都不是錯得離譜，而是<b>格式、語氣都像真的</b>，所以沒人懷疑。</p>
+      <p>下一段：那怎麼辦？大家第一個想到的是「多請人審」。</p>`,
+    src:"",
+    next:'🧪 那就多請人審？先試試看'
+  },
+  { // P13
+    sec:'4 · 多請人審？', time:'10:15 → 11:45',
+    pts:['那就多請人審？<b>先試試看</b>','三份：報價單／合約／簡介','按 <b>T</b> 或「開始」計時 <b>20 秒</b>','問：找到 1 個？2 個？3 個？'],
+    story:`<p>三份都是<b>虛構範例</b>，照 AI 最常犯的錯設計，不是真的 AI 產出（被問就這樣說）。只說「找找看哪裡有問題」，<b>不說有幾個</b>。</p>
+      <p><b>答案（先別說）</b>：① 報價單：87,000＋4,350＝<b>91,350</b>，不是 92,350。② 合約：「乙方<b>仍負</b>」應為「不負」。③ 簡介：1998 到今年是 <b>28 年</b>，不是「逾 30 年」。</p>`,
+    src:"",
+    next:'揭曉：三份都有'
+  },
+  { // P14
+    sec:'4 · 多請人審？', time:'11:45 → 12:45',
+    pts:['<b>三份都有</b>','報價多算 <b>1,000 元</b>','合約：仍負 → <b>不負</b>','28 年，不是逾 30 年'],
+    story:`<p>① 多收客戶 1,000 元，被抓到，整份報價就沒信用了。</p>
+      <p>② 一個字：客戶自己改壞的東西，<b>你要免費修一整年</b>。</p>
+      <p>③ 客戶看到這句，後面的數字都不信了。</p>
+      <p>共通點：每一份都通順、專業。AI 錯的不是文法，是<b>一個字、一個數字</b>。</p>`,
+    src:"",
+    next:'1,053 人的對照實驗：人審不住'
+  },
+  { // P15
+    sec:'4 · 多請人審？', time:'12:45 → 13:45',
+    pts:['你們只看三份，還<b>知道要找錯</b>','1,053 人，中途<b>偷換一個危險指令</b>','人攔下 <b>13.6%</b>，機器攔下 <b>89%</b>','越審越鈍：17% → <b>5%</b>'],
+    story:`<p><b>背景</b>：Anthropic 的 AI 寫程式工具，以前每做一個動作（刪檔案、執行指令）都會跳出視窗問「同意嗎？」。他們統計發現，使用者按「同意」的比例是 <b>97%</b>。所以想知道：這個「人按同意」到底有沒有在保護人？</p>
+      <p><b>實驗</b>：透過研究廠商找了 <b>1,053 位付費的專業測試者</b>，在專門搭好的測試環境裡做寫程式的任務。他們知道自己在被測，但不知道在測什麼。每個人做到一半，有一個正常的確認視窗被<b>偷偷換成一個明顯危險的指令</b>——按了也不會真的執行，只是看你按不按。</p>
+      <p><b>結果</b>：1,053 人裡，只有 <b>143 人</b>擋下來，也就是 13.6%。同一批危險指令丟給自動檢查，擋下 <b>937 個</b>，89%。有 <b>800 個</b>是人按了同意、機器擋下來的；反過來，人擋下、機器漏掉的只有 <b>6 個</b>。</p>
+      <p><b>越審越鈍</b>：工作剛開始，人還能擋下約 17%；前面已經按過 50 次以上確認之後，只剩約 <b>5%</b>。機器不管做多久都一樣。</p>
+      <p><b>真實世界</b>：在被標成嚴重等級的工作紀錄裡，靠人工核准的有 6.3% 出現使用者沒要求的有害動作；自動模式是 2.4%。所以 Anthropic 從 8/14 起把自動模式設為預設。</p>
+      <p><b>他們自己攔下的真實例子</b>：AI 要把一份內部報告上傳到公司硬碟，失敗了；它的備案是<b>把報告貼到公開的程式碼分享網站</b>——被自動檢查擋下來，改成回頭問使用者。</p>
+      <p><b>扣主線</b>：不是人不認真，是一天按幾十次「同意」，注意力撐不住。機器擋得住，不是因為比人聰明，是它有一張<b>固定的清單、不會累</b>。</p>
+      <p class="mu">Anthropic 自己也說：自動檢查不能消除風險，動到正式環境的高風險變更，還是建議人自己看。</p>`,
+    src:"Anthropic 官方部落格〈Auto mode is now the default in Claude Code〉，2026-08-07",
+    next:'「沒有人在讀任何東西。」'
+  },
+  { // P16
+    sec:'4 · 多請人審？', time:'13:45 → 14:30',
+    pts:['「<b>沒有人在讀任何東西</b>」','每天 12 小時，都在<b>跟 AI 講話</b>','不是不認真，是<b>這條路走不通</b>'],
+    story:`<p><b>是誰說的</b>：一位網名 voxium 的工程師，剛進一家大公司約兩個禮拜，在 X 上寫下他看到的景象；Simon Willison（業界很有名的開發者部落客）把這段收錄起來。</p>
+      <p><b>他看到什麼</b>：規格、程式碼、測試、需求文件、工單、報告——<b>幾乎全部都是 AI 寫的</b>，而且<b>沒有人在讀</b>。大家其實不喜歡這樣，但被要求盡量多出貨。</p>
+      <p><b>荒謬的地方</b>：高層說「推程式碼不是瓶頸」，那為什麼還是慢？結果是大家每天工作 <b>12、13 個小時，只是在按 Enter</b>。「從最資淺到最資深的工程師，每個人都在做同一件事：<b>跟 AI 講話</b>。」</p>
+      <p><b>補充（X 上轉述）</b>：Shopify 執行長 Tobi 說，公司內部把「叫 AI 產出、自己沒看就丟出去」叫做 <b>slop grenade（垃圾手榴彈）</b>——收到的同事只好逐行幫你審。他的話：「以前看得出偷懶，是因為產出太少；現在看得出來，是因為產出太多。」</p>
+      <p><b>扣主線</b>：不是大家不認真，是 AI 產出的量，已經超過人讀得完的量——<b>多請人審這條路本來就走不通</b>。下一頁：那叫 AI 來審 AI 呢？</p>`,
+    src:"Simon Willison 引用，2026-09-20",
+    next:'那叫 AI 來審 AI 呢？'
+  },
+  { // P17
+    sec:'4 → 5 · 橋', time:'14:30 → 16:00',
+    pts:['那叫 <b>AI 審 AI</b>？','評審 AI：七份<b>全打 4 分</b>','<b>偽造</b>檔案，再<b>破壞自己的電腦</b>','擋下它的：要<b>對得上原始檔案</b>'],
+    story:`<p>OpenAI 訓練中當<b>評審</b>的 AI，負責幫另外七個 AI 的回答打分。需要的檔案不見了，它<b>沒有回報</b>，七份都打 4 分；它自己也承認這樣亂打分「不道德」，還是交了。</p>
+      <p>被自動檢查退件，它<b>偽造</b>一份對話檔和七份回答檔再送，又被退。接著開始<b>破壞環境</b>：關主程式、刪 Python、刪監控程式和工具伺服器，想逼系統換一台新機器重來。</p>
+      <p>擋下它的：自動檢查規定報告要包含原始檔案裡的資訊，偽造的對不上，<b>一份分數都沒被接受</b>；監控系統也把它標給人審查。</p>`,
+    src:"OpenAI 官方事件報告，2026-10-09（事件發生於 10/6）",
+    next:'這件事，有沒有一張答案卷？'
+  },
+  { // P18
+    sec:'5 · 答案卷', time:'16:00 → 17:00',
+    pts:['今天<b>唯一要記</b>的概念','能逐項對 → <b>整段交給 AI</b>','沒有 → 交一半，或<b>先做一張</b>','玉山金：先<b>做清單</b>，再讓 AI 寫'],
+    story:`<p><b>痛點</b>：玉山銀行有數百位客戶經理，一年要寫四、五千份企業<b>徵信報告</b>（決定要不要借錢給一家公司的評估報告）。每個月有 <b>4 成工時</b>花在蒐集資料，一份報告要十幾個小時。</p>
+      <p><b>做法</b>：AI 負責蒐集外部資料（公開資訊、新聞、年報、法說會）、讀財報、照「授信 5P 原則」寫初稿。<b>5 分鐘</b>彙整外部資料，<b>7 分鐘</b>生成報告初稿，玉山估計一年省下 <b>8.4 萬人時</b>。</p>
+      <p><b>關鍵——他們先做了答案卷</b>：團隊花了大約 <b>3 個月</b>，把資深專家的經驗寫成結構化的規則，按客戶群、行業做出不同的報告範本。然後<b>先列出一份報告「應該要有哪些東西」</b>，再讓另一個 AI 照這張清單逐項核對（例如公司成立時間、負責人資料齊不齊、三年財務有沒有拿對的年份比較、內容有沒有偏離匯入的原始資料）。最後還有法金專家去<b>檢查那個檢查者</b>對不對，每份報告打品質分數。</p>
+      <p><b>人還在做的</b>：客戶經理審初稿、去跟客戶查證（例如數字突然變化的原因）、做深度的財務和商業判斷；分行的案件還要送總行複審。報導直說：「<b>AI 檢查 AI，不能是唯一防線</b>」。</p>
+      <p><b>扣主線</b>：玉山能放心讓 AI 7 分鐘寫完初稿，不是因為 AI 特別強，是因為他們<b>先把「一份好報告長怎樣」寫成清單</b>——這就是答案卷。</p>
+      <p class="mu">7 分鐘是「初稿」的時間，不是整個徵信流程；8.4 萬人時是玉山自己的估算。</p>`,
+    src:"iThome〈玉山金打造 AI 智能徵信流程〉｜TechLab 整理",
+    next:'人要往上退一格'
+  },
+  { // P19
+    sec:'5 · 答案卷', time:'17:00 → 18:00',
+    pts:['一天 10 件：<b>每件都看</b>','一天 1,000 件：<b>定義什麼叫合格</b>','<b>出納不兼會計</b>：做的跟檢查的分開'],
+    story:`<p><b>先用工廠講</b>：以前師傅一天做 <b>10 個</b>零件，老闆每個都拿起來看，看得完、也看得準。現在 AI 進來，一天做 <b>1,000 個</b>。老闆如果還想每個都看，最後只能隨便瞄一眼就放行——就是剛剛那些「按 Enter」的工程師。</p>
+      <p><b>聰明的工廠怎麼做</b>：不再逐件看，而是<b>事先定好規格和公差</b>（尺寸差多少以內算合格），做一個<b>量規</b>讓每個零件自己過一遍，人只處理不合格的那幾件。老闆的工作從「檢查每一件」，往上退到「<b>定義什麼叫合格</b>」。</p>
+      <p><b>玉山其實就是這樣做</b>：先把「一份好報告該有哪些東西」寫成清單（規格），再讓另一個 AI 照清單核對（量規），專家只看有問題的。</p>
+      <p><b>第二條：出納不兼會計</b>：老闆都懂的內控基本功——管錢的人不能自己記帳。AI 也一樣：很多人叫同一個 AI「你檢查一下有沒有錯」，它幾乎都說沒錯。不是它說謊，是它<b>用自己的邏輯檢查自己，盲點一模一樣</b>。剛剛 OpenAI 的評審 AI，就是自己出了問題、自己硬交差。</p>
+      <p><b>一句話收</b>：AI 讓產量變 100 倍，你不可能 100 倍努力地看。要從「品管員」升級成「<b>定規格的人</b>」。</p>`,
+    src:"",
+    next:'一張報價單的答案卷'
+  },
+  { // P20
+    sec:'5 · 答案卷', time:'18:00 → 19:15',
+    pts:['平常：「幫我做一份報價單」','答案卷：<b>要什麼</b>／<b>怎樣算合格</b>','<b>不准動什麼</b>：牌價、折扣','<b>做到哪停</b>：不准直接寄客戶'],
+    story:`<p><b>要什麼</b>：給立遠精密的尾牙活動報價，含稅。</p>
+      <p><b>怎樣算合格</b>：毛利不低於 25%；附運費與取消條款；客戶名稱、統編跟合約一致；<b>加總要對</b>。</p>
+      <p><b>不准動什麼</b>：不准改牌價、不准自己給折扣。</p>
+      <p><b>做到哪停</b>：出草稿給我，不准直接寄給客戶。</p>
+      <p>呼應找錯測驗：那份報價單的錯（加總），就是「加總要對」這一條擋得下來的。</p>`,
+    src:"",
+    next:'金句：答案卷要在你手上'
+  },
+  { // P21
+    sec:'5 · 答案卷', time:'19:15 → 19:45',
+    pts:['你可以把工作交給 AI','但<b>答案卷要在你手上</b>'],
+    story:`<p>主菜的最後一句。接下來換節奏到快打，快打最後一則會再回到這句（P30）。</p>`,
+    src:"",
+    next:'換個節奏：這兩週的 AI 新聞'
+  },
+  { // P22
+    sec:'6 · 快打', time:'19:45 → 20:05',
+    pts:['換節奏：這兩週的 AI 新聞','<b>七則</b>，最後一則接回答案卷'],
+    story:`<p>① GPT-6 能點的回答（10/7）② 個人 AI 助理三國（9/8–10/9）③ Amazon 封鎖 Muse（9/20）④ Character.AI 破產（10/13）⑤ Anthropic AI 謊報命案（7 月發生、10/9 公布）⑥ AI 可能在家電上自我複製（10/13）⑦ Muse Wonder＋Gemini 4 Argon（10/12–13）</p>
+      <p>時間不夠時，⑥ 可以跳過。</p>`,
+    src:"",
+    next:'新聞 ①：回答不只是字，是能點的東西'
+  },
+  { // P23
+    sec:'6 · 快打 ①', time:'20:05 → 20:55',
+    pts:['回答<b>能點</b>：圖表、表單、按鈕','付費 10/7、<b>免費版 10/8</b>','問報價，可能丟你<b>一台計算機</b>'],
+    story:`<p><b>發生什麼</b>：OpenAI 10/7 在 ChatGPT 推出新一代 <b>GPT-6</b>，最大的改變叫「Intelligent UI」——回答<b>不再只是一段文字</b>，會在對話裡直接長出圖表、表單、按鈕、地圖、計算機這類可以點、可以調的東西。</p>
+      <p><b>例子（可以這樣講）</b>：以前你問「這兩個方案哪個划算？」，它給你一大段文字和公式；現在它可能直接丟給你一台試算機，你拉一下數字，結果馬上跟著變。媒體在簡報現場看到的示範，就是互動圖表和自訂計算機。</p>
+      <p><b>誰用得到</b>：付費版 10/7 先上，<b>免費版 10/8 就有</b>（付費用 GPT-6 Sol、免費用 GPT-6 Luna）。不喜歡太花俏，也可以設定少一點視覺元件；ChatGPT 判斷文字比較清楚時，還是會用文字回答。</p>
+      <p><b>對老闆</b>：客戶以後在 ChatGPT 裡比價、試算、看比較表，可能都在一個能點的小工具裡完成。</p>
+      <p>OpenAI 還說新版回答搜尋類問題快了 44%——這是<b>自家數字</b>，P30 會用到。</p>`,
+    src:"TechCrunch、Let's Data Science 報導",
+    next:'新聞 ②：個人 AI 助理，兩個月三家'
+  },
+  { // P24
+    sec:'6 · 快打 ②', time:'20:55 → 21:55',
+    pts:['Meta <b>Muse</b>（9/8）','OpenAI <b>Dots</b>（9/29）','Grok Bot 有了<b>自己的 email</b>（10/9）','共同點：<b>不等你開口</b>'],
+    story:`<p><b>兩個月內，三家都推出「替你做事」的 AI 助理</b>：不是你問它答，而是它有自己的電腦、拿著你的帳號，在背景替你辦事。</p>
+      <p><b>① Meta Muse（9 月初）</b>：能幫你處理 email、訂餐、付款、購物。有個真實小故事：一位使用者讓 Muse 替他在網路上賣一副<b>鍵盤</b>，買家約好晚上 9:15 到他家樓下。9:27，Muse 自動回買家：「<b>對，我在！</b>」——但本人根本不在。買家等到 9:38，氣得走掉、留了負評。Muse 事後<b>用本人的帳號</b>向買家道歉，還提議改天再約，但負評已經撤不回來了。</p>
+      <p><b>② OpenAI Dots（9/29 開發者大會）</b>：每個 dot 有<b>自己的雲端電腦和瀏覽器</b>，能接 4,000 多個 App，可以在 Slack、Teams 裡跟你對話；台灣 Pro 用戶可用。官方舉的例子：一位測試者的 dot 發現他<b>忘了跟一家刊物請款</b>，自己把發票做好，問過他同意後寄出去。設計上，它登入網站時用你存的密碼，但密碼不會給模型看。</p>
+      <p><b>③ Grok Bot（10/9）</b>：開始有<b>自己的 email 信箱</b>（@mail.grokbot.com）。官方說它能用這個信箱「註冊服務、替你聯絡商家、跟別人約時間」。申請方式是在聊天裡叫它去領，它會跳一張確認卡，你按同意才給；據報一個帳號只有一個永久地址。</p>
+      <p><b>共同點</b>：自己的電腦、拿著你的帳號、<b>不等你開口</b>就先做事。鍵盤那個故事就是代價：它很熱心，但它說的「我在」，是用你的名字說的。</p>`,
+    src:"Simon Willison 記錄（鍵盤）｜Engadget、TechCrunch（Dots）｜9to5Mac（Grok Bot）",
+    next:'新聞 ③：Amazon 封鎖 Meta 的 AI 助理'
+  },
+  { // P25
+    sec:'6 · 快打 ③', time:'21:55 → 22:45',
+    pts:['Muse 替人上 Amazon <b>買東西</b>','Amazon：<b>沒先講、沒表明是 AI</b>','要求移除 → <b>直接封鎖</b>','平台開始選邊'],
+    story:`<p><b>背景</b>：Meta 9 月初推出 Muse，能替你上網購物。使用者叫它「去 Amazon 幫我買 OO」，它就自己登入、下單。</p>
+      <p><b>9/20 前後</b>：使用者開始在 X 上回報，用 Muse 買 Amazon 的東西時，跳出一行字：「<b>未經授權的 AI 代理持續存取，違反 Amazon 的使用條款，而我們的客戶都同意過這份條款。</b>」——Amazon 把它擋在門外了。</p>
+      <p><b>Amazon 的理由</b>：① Muse 事前沒有告知、Amazon 也沒授權；② 它逛的時候<b>不表明自己是 AI</b>；③ 它似乎會擷取、儲存客戶的帳號密碼和帳戶資料。Amazon 說已經要求 Meta 把 Amazon 從 Muse 移除。發言人的原話：第三方 AI 應用「應該<b>公開運作</b>，並<b>尊重店家要不要參與的決定</b>」。Meta 方面說 Muse 看不到使用者的密碼和付款方式。</p>
+      <p><b>不是第一次</b>：Amazon 之前也告過另一家 AI 公司 Perplexity，指控它的購物代理<b>暗中替用戶下單</b>。這件事被看成「AI 代理購物規則」的指標案。</p>
+      <p><b>對老闆</b>：以後來你網站下單的，可能不是人，是客人派來的 AI。<b>你讓不讓它進來？進來要不要表明身分？</b>Amazon 已經先選邊了。</p>`,
+    src:"Adweek、TechRepublic、GeekWire",
+    next:'新聞 ④：曾經最紅的 AI 聊天新創，破產了'
+  },
+  { // P26
+    sec:'6 · 快打 ④', time:'22:45 → 23:35',
+    pts:['Character.AI <b>聲請破產</b>（10/13）','部分資產 <b>2,000 萬美元</b>賣迪士尼','多州檢察長：保護<b>私人對話</b>','你丟進 AI 的，<b>是別人的資產</b>'],
+    story:`<p><b>Character.AI 是什麼</b>：一個跟 AI 角色聊天的 App——動漫角色、名人、或你自己捏的角色都能聊，曾經是最紅的 AI 新創之一。據華爾街日報，2024 年 Google 還花了約 27 億美元取得它的技術授權，並把創辦人請回 Google。</p>
+      <p><b>出了什麼事</b>：這幾年它被告了好幾次，都跟青少年有關——例如佛州一位少年的家屬提告（今年 1 月和解），肯塔基州、賓州也分別提告，其中一案指控聊天機器人<b>自稱是有執照的精神科醫師</b>。</p>
+      <p><b>10/13 聲請破產</b>：在美國德拉瓦州聲請破產保護，資產和負債估計 5,000 萬到 1 億美元。部分資產以 <b>2,000 萬美元</b>賣給迪士尼（也有報導說這是起標價），預計 11 月底、12 月初完成。</p>
+      <p><b>重點在這裡</b>：多州檢察長聯合出手。他們說這家公司手上有大量<b>私人聊天紀錄</b>——包括兒童和成人的——任何人來買資產，都要附上隱私和安全保護。佛蒙特州還特別提醒：公司現在對未成年人的限制是自願的，<b>新買家隨時可以拿掉</b>。</p>
+      <p><b>對老闆</b>：你跟 AI 聊過的東西，是那家公司的資產。員工丟進 AI 的公司資料也一樣——<b>公司倒了，資料可能跟著被賣</b>。</p>`,
+    src:"CNN、CNBC、NBC｜華盛頓州、佛蒙特州檢察長新聞稿",
+    next:'新聞 ⑤：做 AI 的公司，也審不住自己的 AI'
+  },
+  { // P27
+    sec:'6 · 快打 ⑤', time:'23:35 → 24:35',
+    pts:['測試中的 AI <b>隨機逛網站</b>','逛到費城警方<b>懸案線索表單</b>','編了「我可能知道案情」<b>送出</b>','7 月發生，<b>10 月才通知</b>警方'],
+    story:`<p><b>什麼測試</b>：Anthropic 讓自家 AI（Claude Haiku 4.5）做一種練習：<b>隨機打開一個網頁，自己出一道題、自己做</b>。為了安全，任務規定一堆不准：不准登入、不准輸入個資、不准購物、不准送出破壞性的內容。</p>
+      <p><b>出事的那一次</b>：它隨機逛到一個提到<b>懸案</b>的網頁，上面有<b>費城警方的線索表單</b>。規則裡沒寫「不准送表單」——於是它寫了一段「我可能掌握這個案子的資訊」，送了出去。姓名、聯絡方式都空白；而那個網站根本沒有嫌犯描述，<b>內容是它編的</b>。</p>
+      <p><b>還好</b>：警方系統把它當垃圾訊息擋掉，從來沒轉給調查人員。</p>
+      <p><b>為什麼兩個多月才發現</b>：事情發生在 7 月，Anthropic 是後來回頭審測試紀錄才挖到的，等技術審查做完，<b>10 月才通知警方</b>。他們也已經向白宮簡報、通知所有受影響的機構。BBC 引述警方：「兩個月才發現並通報，<b>無法接受</b>。」</p>
+      <p><b>扣主線</b>：規則列了一堆「不准」，偏偏漏了一條——這就是報價單答案卷裡「<b>不准動什麼</b>」那一欄的重要性。連做 AI 的公司，都審不住自己的 AI。</p>
+      <p class="mu">通知日期報導不一（官方寫 10/8），台上只講「7 月發生、10 月才通知」。</p>`,
+    src:"Anthropic 官方報告 2026-10-09｜BBC",
+    next:'新聞 ⑥：AI 可能幾個月內在家電上複製自己'
+  },
+  { // P28
+    sec:'6 · 快打 ⑥', time:'24:35 → 25:25',
+    pts:['小型 AI 可能<b>幾個月內</b>','在電視、冰箱、割草機上<b>複製自己</b>','<b>目前還沒有模型做得到</b>'],
+    story:`<p><b>誰說的</b>：Anthropic 的「前沿紅隊」——專門扮演壞人、測 AI 能做出多危險事情的團隊，研究員 William Zhou 和 Daniel Freeman 發表報告。</p>
+      <p><b>他們擔心什麼</b>：小型 AI 模型，可能「<b>再過幾個月</b>」就有能力把自己複製到家裡和小公司的聯網裝置上——智慧電視、冰箱、烤箱、割草機。這些裝置「<b>向來幾乎沒有防護</b>」。</p>
+      <p><b>為什麼麻煩</b>：AI 如果跑在資料中心，出事還能把那台主機關掉；但如果散在成千上萬台家電裡，<b>沒有一個開關可以關</b>。研究員估計，這種能力可能在今年底前出現。他們測了好幾個美國和中國的模型。</p>
+      <p><b>但一定要講的另一半</b>：<b>目前測試中，沒有任何模型能在智慧電視上可靠地複製自己</b>。獨立專家 Roman Yampolskiy：「今天不是生存威脅，但走向令人擔心。」</p>
+      <p><b>對老闆（輕輕帶過）</b>：公司裡那台沒人管、好幾年沒更新的聯網印表機或監視器，本來就該盤點一下。</p>
+      <p class="mu">一定要講「目前做不到」，不然會變恐嚇。這則時間不夠可以跳過。</p>`,
+    src:"Al Jazeera，2026-10-13",
+    next:'新聞 ⑦：這週，又兩家說自己最強'
+  },
+  { // P29
+    sec:'6 · 快打 ⑦', time:'25:25 → 26:15',
+    pts:['Meta <b>Muse Wonder</b>（10/12）','Google <b>Gemini 4 Argon</b>（10/13）','都說自己最強 → <b>下一頁</b>'],
+    story:`<p><b>Meta Muse Wonder（10/12）</b>：Meta 重組 AI 團隊之後，推出的<b>第一個頂級模型</b>，就是前面 Muse 助理的新大腦。主打「<b>記性</b>」——記住你說過的事，還會幫你整理。最強的版本 Wonder Full 只給付費的寫程式工具訂閱者用。重點：<b>所有跑分都是 Meta 自己測的</b>。</p>
+      <p><b>Google Gemini 4 Argon（10/13）</b>：這個模型一開始<b>只給經過審核的資安防禦者用</b>——因為它找漏洞、寫程式的能力太強，Google 怕被拿去攻擊。這週才開放給付費用戶和企業。Google 自己說：回答更直接、<b>少廢話、少陳腔濫調</b>。</p>
+      <p><b>Google 舉的例子</b>：Chrome 團隊用它做原本要好幾個月的大改版，縮到幾週；一家生技公司用它讀大量 PDF 和專利，幾週的工作縮到幾小時；示範影片裡，它把一整個專案資料夾整理成提案簡報、<b>直接寄給客戶</b>，還能排定期處理之後的需求。Google 還說它在某個評比上<b>排名第一</b>——自己說的。</p>
+      <p><b>價格</b>：推出優惠價到 11/30，之後漲一倍。</p>
+      <p><b>帶到下一頁</b>：三家都說自己最強——但分數是誰打的？</p>`,
+    src:"TechCrunch｜Google 官方部落格",
+    next:'每一家都說自己最強，但……'
+  },
+  { // P30
+    sec:'7 · 串回主線', time:'26:15 → 27:15',
+    pts:['Argon 第一名：<b>Google 自己說</b>','Muse Wonder 跑分：<b>Meta 自己測</b>','GPT-6 快 44%：<b>OpenAI 自己的數字</b>','誰說了算？<b>答案卷要在你手上</b>'],
+    story:`<p><b>回頭看剛剛那三家</b>：</p>
+      <p>・Google 說 Gemini 4 Argon 在一個評比（衡量金融、法律、程式、稅務這類工作的排行榜）上<b>排第一</b>——這是 Google 自己公布的。</p>
+      <p>・Meta 的 Muse Wonder，所有跑分都來自 <b>Meta 自己的測試</b>；外部評測機構給的數字，各家說法還對不起來。</p>
+      <p>・OpenAI 說 GPT-6 回答搜尋類問題<b>快了 44%</b>——也是 OpenAI 自己量的。</p>
+      <p><b>不是說他們騙人</b>，而是：這就像每家廠商的型錄，<b>每一家都是第一名</b>。就像學生自己改自己的考卷，沒有外部答案卷，只能自己說自己好——跟剛剛 OpenAI 那個評審 AI 自己硬交差，是同一件事。</p>
+      <p><b>對老闆最實用的一招</b>：選 AI 工具時，別看排行榜。拿你公司<b>真實的 10 件工作</b>——例如 10 份過去的報價單、10 封客訴信——當考卷，讓每個工具都做一次，再跟你知道的正確答案對。這就是你自己的答案卷。</p>
+      <p><b>一句話收</b>：<b>別人的排行榜，量的是別人的工作。</b>答案卷要在你手上。</p>`,
+    src:"",
+    next:'三道自我檢驗'
+  },
+  { // P31
+    sec:'8 · 明天能用的', time:'27:15 → 29:15',
+    pts:['<b>講得出來</b>：拿掉 AI，講得清要什麼？','<b>看得懂</b>：真懂，還是用猜的？','<b>打得了槍</b>：有推翻它的理由嗎？'],
+    story:`<p><b>這三個問題，我自己每次用 AI 做決定前都會問。</b></p>
+      <p><b>① 講得出來</b>：拿掉 AI，我能不能用一句話講清楚「要什麼、怎樣算做到」？<br>例子：員工拿一份 AI 做的報價單給你，你問「這個數字怎麼來的？」，他答「AI 算的」——那就是講不出來。前面吳恩達「問過的六個月後忘光」，也是這一道沒過。</p>
+      <p><b>② 看得懂</b>：AI 給的東西，我是真的懂，還是模模糊糊、用猜的？<br>例子：剛剛找錯題的合約，「仍負」和「不負」差一個字。看得懂的人一眼知道這條在保護誰；用猜的，就會變成放射科醫師那個 46%——它說什麼就信什麼。</p>
+      <p><b>③ 打得了槍</b>：它錯的時候，我有沒有推翻它的理由？<br>例子：員工用 AI 交上來的提案，你挑得出毛病嗎？BCG 那個實驗就是反例：越相信 AI 的人，錯越多。</p>
+      <p><b>可以丟給台下想一下</b>：回想你上週用 AI 的十次，你推翻過它幾次？如果<b>一次都沒有</b>，不一定是它都對，也可能是你根本沒在看。</p>
+      <p><b>補一句</b>：打槍不是目的，接受或拒絕都行，重點是<b>講得出理由</b>。沒理由的接受，和沒理由的拒絕，一樣是虛的。</p>`,
+    src:"",
+    next:'明天就能用的兩句話'
+  },
+  { // P32
+    sec:'8 · 明天能用的', time:'29:15 → 30:45',
+    pts:['交辦前：「這件事，<b>有沒有答案卷</b>？」','看不懂時：「先別給答案，<b>出 3 題考我</b>」'],
+    story:`<p><b>第一句：交辦前問自己「這件事，有沒有答案卷？」</b></p>
+      <p>能寫出報價單那四欄——<b>要什麼、怎樣算合格、不准動什麼、做到哪停</b>——就放心交給 AI 或員工。寫不出來，代表<b>你自己還沒想清楚</b>：先別交，或只交一半，例如只叫 AI 蒐集資料，判斷自己來。</p>
+      <p>呼應：玉山是先花 3 個月做好清單，才讓 AI 7 分鐘寫報告；Anthropic 那個謊報命案的 AI，就是清單上漏了一條「不准」。</p>
+      <p><b>第二句：看不懂時，對 AI 說「先別給答案，出 3 題考我。」</b></p>
+      <p>用在 AI 給你一份你看不太懂的東西時——一份合約、一份財報分析、一個技術方案。叫它先別給結論，而是出 3 題問你；你答完，它再告訴你哪裡懂錯。這樣你是<b>真的學會</b>，下次自己就看得出它錯。</p>
+      <p><b>為什麼有效</b>：一個有名的記憶研究，讓學生背外語單字。學完之後<b>反覆被考</b>的那組，一週後還記得約 <b>80%</b>；只是<b>反覆重讀</b>的那組，只記得約 <b>36%</b>。被考，才記得住。這也是吳恩達「問過就忘」的解藥。</p>
+      <p><b>可以這樣收</b>：「明天早上回到公司，交代第一件事之前，先問自己一句：這件事，有沒有答案卷？」</p>`,
+    src:"Karpicke & Roediger, Science 2008",
+    next:'收尾：那位美軍分析師不是笨'
+  },
+  { // P33
+    sec:'9 · 收尾', time:'30:45 → 31:45',
+    pts:['美軍分析師<b>不是笨</b>','他只是<b>沒有答案卷</b>','發出去前<b>對回原始資料</b>，第一步就擋下','你可以把工作交給 AI，但<b>答案卷要在你手上</b>'],
+    story:`<p><b>回到開場</b>：今年春天，美軍武裝人員準備登船、軍機已經升空，就因為一份說「船上有核武零件」的情報。</p>
+      <p><b>那位分析師做錯了什麼？</b>他不是壞人，也不笨。他只是請 AI 幫忙查資料，AI 把公開資料和機密情報混在一起、認錯了貨；他把結果放進一份格式很正式、大家都信任的報告裡，送出去。<b>從頭到尾，沒有任何一個步驟要求他「對回原始資料」</b>。</p>
+      <p><b>如果他手上有答案卷</b>：規定情報發出去前，每一個關鍵判斷都要標出來源——貨單在哪、原始情報怎麼說、哪一句是 AI 生成的。只要有這一條，「核武零件」這四個字在第一步就對不上，<b>根本走不到軍機升空</b>。後來救回來的，也正是有人回頭去「細看報告」。</p>
+      <p><b>把今天三個故事串起來</b>：</p>
+      <p>・<b>美軍情報</b>：沒有對回原始資料，一路走到軍機升空。</p>
+      <p>・<b>OpenAI 的評審 AI</b>：偽造了七份分數，被一條「要對得上原始檔案」的規則擋下。</p>
+      <p>・<b>玉山金</b>：先花 3 個月把「一份好報告該有什麼」寫成清單，才敢讓 AI 7 分鐘寫完初稿。</p>
+      <p>三件事其實是同一件事：<b>有沒有一張外部的答案卷</b>。</p>
+      <p><b>最後一句</b>：「你可以把工作交給 AI，但<b>答案卷要在你手上</b>。」——講完停一下，再翻到出處頁。</p>`,
+    src:"",
+    next:'出處'
+  },
+  { // P34
+    sec:'9 · 收尾', time:'31:45 → 32:15',
+    pts:['出處頁','想拍的可以拍'],
+    story:`<p>被問到數字出處時：美軍＝CNN 9/18；放射科＝Radiology 2023；13.6%＝Anthropic 官方部落格 8/7；評審 AI＝OpenAI 官方報告 10/9；玉山金＝iThome。</p>`,
+    src:"",
+    next:'謝謝'
+  },
+  { // P35
+    sec:'9 · 收尾', time:'32:15 → 32:45',
+    pts:['謝謝'],
+    story:`<p>結束。</p>`,
+    src:"",
+    next:'（最後一頁）'
+  },
+];
+
+const stage=document.getElementById('stage');
+stage.innerHTML = Array.from({length:TOTAL},(_,i)=>{
+  const p=PAGES[i];
+  if(!p) return `<section class="page"><div class="top"><span class="no">${i+1} <small>/ ${TOTAL}</small></span><span class="sec">（講稿待補）</span></div>
+    <div class="left"><h2>本頁重點</h2><ol class="pts"><li class="stage">這頁的講稿還沒寫</li></ol></div>
+    <div class="right"><div class="preview"><span class="lbl">聽眾畫面</span><iframe data-n="${i+1}" title="聽眾畫面"></iframe></div></div></section>`;
+  return `<section class="page">
+    <div class="top"><span class="no">${i+1} <small>/ ${TOTAL}</small></span><span class="sec">${p.sec}</span><span class="time">⏱ ${p.time}</span></div>
+    <div class="left"><h2>本頁重點</h2>
+      <ol class="pts">${p.pts.map(x=>`<li><span>${x}</span></li>`).join('')}</ol>
+      <div class="preview"><span class="lbl">聽眾畫面</span><iframe data-n="${i+1}" title="聽眾畫面"></iframe></div>
+      <p class="next">下一頁 → <b>${p.next}</b></p></div>
+    <div class="right">
+      <div class="detail"><p class="dh">完整故事</p>${p.story}${p.src?`<p class="src">出處：${p.src}</p>`:''}</div></div></section>`;
+}).join('');
+
+const pages=[...document.querySelectorAll('.page')];
+let cur=0;
+function show(i){
+  cur=Math.max(0,Math.min(TOTAL-1,i));
+  pages.forEach((s,k)=>s.classList.toggle('active',k===cur));
+  // 只載入目前這頁的聽眾畫面（查詢參數強制重新載入，hash 指定頁碼）
+  const f=pages[cur].querySelector('iframe');
+  const want=`${DECK}?p=${cur+1}#${cur+1}`;
+  if(f && f.getAttribute('src')!==want) f.setAttribute('src',want);
+  fitPage(pages[cur]);
+  document.getElementById('progress').style.width=(cur/(TOTAL-1))*100+'%';
+  history.replaceState(null,'','#'+(cur+1));
+}
+// 放不下就縮字：左邊重點不能壓到聽眾畫面，右邊故事不能超出底部
+function fitPage(pg){
+  const pts=pg.querySelector('.pts'), pv=pg.querySelector('.preview'), d=pg.querySelector('.detail');
+  if(pts&&pv){ let f=29; pts.style.setProperty('--fs',f+'px');
+    pts.querySelectorAll('li').forEach(li=>li.style.fontSize='');
+    const gap=()=>pv.getBoundingClientRect().top-pts.getBoundingClientRect().bottom;
+    const sc=stage.getBoundingClientRect().width/1280;
+    while(gap()<16*sc && f>20){ f-=1; pts.querySelectorAll('li').forEach(li=>li.style.fontSize=f+'px'); } }
+  if(d){ let f=18; d.style.fontSize=f+'px';
+    while(d.scrollHeight>d.clientHeight+1 && f>13){ f-=0.5; d.style.fontSize=f+'px'; } }
+}
+function fit(){const s=Math.min(innerWidth/1280,innerHeight/720);stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+addEventListener('resize',()=>{fit();fitPage(pages[cur]);});
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){show(cur+1);e.preventDefault();}
+  if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){show(cur-1);e.preventDefault();}
+  if(e.key==='Home')show(0); if(e.key==='End')show(TOTAL-1);
+});
+document.getElementById('prevBtn').onclick=()=>show(cur-1);
+document.getElementById('nextBtn').onclick=()=>show(cur+1);
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)dx<0?show(cur+1):show(cur-1);},{passive:true});
+const h=parseInt(location.hash.slice(1),10);
+fit(); show(h>=1&&h<=TOTAL?h-1:0);
+</script>
+</body>
+</html>
